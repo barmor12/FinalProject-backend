@@ -1,8 +1,8 @@
-
-# Cake Recipes App
+#Final Project -Backend
 
 ## Overview
-Cake Recipes App is a full-stack application for managing and sharing cake recipes. Users can register, log in, create, update, and delete recipes. It also supports Google OAuth for authentication.
+
+inal Project is a full-stack application for managing and sharing cake recipes. Users can register, log in, create, update, and delete recipes. It also supports Google OAuth for authentication.
 
 ---
 
@@ -32,20 +32,23 @@ Cake Recipes App is a full-stack application for managing and sharing cake recip
 ## Installation
 
 1. **Clone the repository**
+
    ```bash
-   git clone https://github.com/your-username/cake-recipes-app.git
-   cd cake-recipes-app
+   git clone https://github.com/barmor12/FinalProject-backend.git
+   cd backend
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
    Create a `.env` file in the root directory with the following:
+
    ```env
-   PORT=5000
+   PORT=3000
    MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/myDatabase?retryWrites=true&w=majority
    JWT_SECRET=your_jwt_secret
    GOOGLE_CLIENT_ID=your_google_client_id
@@ -54,6 +57,7 @@ Cake Recipes App is a full-stack application for managing and sharing cake recip
    ```
 
 4. **Compile TypeScript**
+
    ```bash
    npm run build
    ```
@@ -70,6 +74,7 @@ Cake Recipes App is a full-stack application for managing and sharing cake recip
 ### Endpoints
 
 #### Authentication
+
 - `POST /auth/register`: Register a new user
 - `POST /auth/login`: Log in a user
 - `GET /auth/profile`: Get user profile
@@ -77,6 +82,7 @@ Cake Recipes App is a full-stack application for managing and sharing cake recip
 - `GET /auth/google/callback`: Google OAuth callback
 
 #### Recipes
+
 - `GET /recipes`: Get all recipes
 - `GET /recipes/:id`: Get a recipe by ID
 - `POST /recipes`: Create a new recipe (authenticated)
@@ -84,6 +90,7 @@ Cake Recipes App is a full-stack application for managing and sharing cake recip
 - `DELETE /recipes/:id`: Delete a recipe (authenticated)
 
 ### Example .env File
+
 ```env
 PORT=5000
 MONGO_URI=mongodb+srv://your_username:your_password@cluster.mongodb.net/recipesDB?retryWrites=true&w=majority
@@ -98,12 +105,15 @@ SESSION_SECRET=my_session_secret
 ## Development
 
 ### Run in Development Mode
+
 Use `ts-node-dev` to run the server in development mode:
+
 ```bash
 npm run dev
 ```
 
 ### Scripts
+
 - `npm run build`: Compile TypeScript to JavaScript
 - `npm start`: Run the server
 - `npm run dev`: Run the server in development mode
@@ -111,6 +121,7 @@ npm run dev
 ---
 
 ## Folder Structure
+
 ```
 backend/
 ├── src/
@@ -136,9 +147,11 @@ backend/
 ---
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
 ## License
+
 This project is licensed under the MIT License.
