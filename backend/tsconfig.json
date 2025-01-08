@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES6", // שפת המטרה (JavaScript ES6)
+    "module": "commonjs", // סוג המודול (CommonJS, מתאים ל-Node.js)
+    "lib": ["ES6", "DOM"], // ספריות סטנדרטיות לשימוש בפרויקט
+    "outDir": "./dist", // תיקיית פלט לקבצים המתוקמפלים
+    "rootDir": "./src", // תיקיית המקור לקבצי TypeScript
+    "removeComments": true, // הסרת הערות מהקוד המתוקמפל
+    "strict": true, // הפעלת בדיקות קפדניות
+
+    /* Strict Type-Checking Options */
+    "noImplicitAny": true, // מחייב להגדיר טיפוס משתנה במקום `any`
+    "strictNullChecks": true, // מחייב טיפול במצבים של `null` ו-`undefined`
+    "strictFunctionTypes": true, // בודק טיפוסים של פונקציות בצורה מחמירה
+    "strictBindCallApply": true, // בודק את `bind`, `call`, ו-`apply`
+    "noImplicitThis": true, // מונע שימוש במשתנה `this` חסר טיפוס
+    "alwaysStrict": true, // מוסיף "use strict" אוטומטית
+
+    /* Module Resolution Options */
+    "moduleResolution": "node", // שיטת פתירת המודולים (Node.js)
+    "baseUrl": "./", // הבסיס לייבוא מודולים
+    "paths": {
+      // קיצור נתיבים בייבוא
+      "@controllers/*": ["src/controllers/*"],
+      "@routes/*": ["src/routes/*"],
+      "@models/*": ["src/models/*"],
+      "@common/*": ["src/common/*"]
+    },
+
+    /* Output Options */
+    "declaration": true, // יצירת קבצי דקלרציה `.d.ts`
+    "declarationDir": "./dist/types", // תיקיית פלט לקבצי דקלרציה
+    "sourceMap": true, // יצירת מפות מקור
+    "esModuleInterop": true, // תמיכה במודולים ES
+
+    /* Additional Checks */
+    "forceConsistentCasingInFileNames": true, // מוודא אחידות באותיות קטנות/גדולות
+    "skipLibCheck": true // מדלג על בדיקת טיפוסים בספריות חיצוניות
+  },
+  "include": ["src"], // קבצים ותיקיות לכלול
+  "exclude": ["node_modules", "dist"] // קבצים ותיקיות לא לכלול
+}

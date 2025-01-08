@@ -1,0 +1,210 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateProfile = exports.logout = exports.refresh = exports.getProfile = exports.login = exports.register = exports.getTokenFromRequest = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const multer_1 = __importDefault(require("multer"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const userModel_1 = __importDefault(require("../models/userModel"));
+const uploadsDir = path_1.default.join(__dirname, "..", "uploads");
+if (!fs_1.default.existsSync(uploadsDir)) {
+    fs_1.default.mkdirSync(uploadsDir, { recursive: true });
+}
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadsDir);
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+const upload = (0, multer_1.default)({ storage: storage });
+const getTokenFromRequest = (req) => {
+    const authHeader = req.headers["authorization"];
+    if (!authHeader)
+        return null;
+    return authHeader.split(" ")[1];
+};
+exports.getTokenFromRequest = getTokenFromRequest;
+const generateTokens = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const accessToken = jsonwebtoken_1.default.sign({ _id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
+    const refreshToken = jsonwebtoken_1.default.sign({ _id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION });
+    return { accessToken, refreshToken };
+});
+const sendError = (res, message, statusCode = 400) => {
+    if (!res.headersSent) {
+        res.status(statusCode).json({ error: message });
+    }
+};
+const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password, nickname } = req.body;
+    let profilePic = "";
+    if (req.file) {
+        profilePic = `/uploads/${req.file.filename}`;
+    }
+    if (!email || !password || !nickname) {
+        return sendError(res, "All fields are required");
+    }
+    try {
+        const existingUser = yield userModel_1.default.findOne({ email });
+        if (existingUser) {
+            return sendError(res, "User with this email already exists");
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const user = new userModel_1.default({
+            email,
+            password: hashedPassword,
+            profilePic,
+            nickname,
+        });
+        const newUser = yield user.save();
+        const tokens = yield generateTokens(newUser._id.toString());
+        res.status(201).json({ user: newUser, tokens });
+    }
+    catch (err) {
+        console.error("Registration error:", err);
+        sendError(res, "Failed to register", 500);
+    }
+});
+exports.register = register;
+const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return sendError(res, "Email and password are required");
+    }
+    try {
+        const user = yield userModel_1.default.findOne({ email });
+        if (!user || !(yield bcrypt_1.default.compare(password, user.password))) {
+            return sendError(res, "Invalid email or password");
+        }
+        const tokens = yield generateTokens(user._id.toString());
+        user.refresh_tokens.push(tokens.refreshToken);
+        yield user.save();
+        res.status(200).send(tokens);
+    }
+    catch (err) {
+        console.error("Login error:", err);
+        sendError(res, "Failed to login", 500);
+    }
+});
+exports.login = login;
+const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return sendError(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded._id).select("-password -refresh_tokens");
+        if (!user) {
+            return sendError(res, "User not found", 404);
+        }
+        res.status(200).send(user);
+    }
+    catch (err) {
+        console.error("Get profile error:", err);
+        sendError(res, "Failed to get profile", 500);
+    }
+});
+exports.getProfile = getProfile;
+const refresh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+        return sendError(res, "Refresh token is required");
+    }
+    try {
+        const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(payload._id);
+        if (!user || !user.refresh_tokens.includes(refreshToken)) {
+            return sendError(res, "Invalid refresh token", 403);
+        }
+        const tokens = yield generateTokens(user._id.toString());
+        user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
+        user.refresh_tokens.push(tokens.refreshToken);
+        yield user.save();
+        res.status(200).json(tokens);
+    }
+    catch (err) {
+        console.error("Refresh token error:", err);
+        sendError(res, "Failed to refresh token", 500);
+    }
+});
+exports.refresh = refresh;
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+        return sendError(res, "Refresh token is required");
+    }
+    try {
+        const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(payload._id);
+        if (!user) {
+            return sendError(res, "User not found", 404);
+        }
+        user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
+        yield user.save();
+        res.status(200).json({ message: "Logged out successfully" });
+    }
+    catch (err) {
+        console.error("Logout error:", err);
+        sendError(res, "Failed to logout", 500);
+    }
+});
+exports.logout = logout;
+const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return sendError(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded._id);
+        if (!user) {
+            return sendError(res, "User not found", 404);
+        }
+        const { nickname, email, oldPassword, newPassword } = req.body;
+        if (oldPassword && newPassword) {
+            const isMatch = yield bcrypt_1.default.compare(oldPassword, user.password);
+            if (!isMatch) {
+                return sendError(res, "Old password is incorrect", 400);
+            }
+            user.password = yield bcrypt_1.default.hash(newPassword, 10);
+        }
+        if (req.file) {
+            user.profilePic = `/uploads/${req.file.filename}`;
+        }
+        user.nickname = nickname || user.nickname;
+        user.email = email || user.email;
+        const updatedUser = yield user.save();
+        res.status(200).send(updatedUser);
+    }
+    catch (err) {
+        console.error("Update profile error:", err);
+        sendError(res, "Failed to update profile", 500);
+    }
+});
+exports.updateProfile = updateProfile;
+exports.default = {
+    register: exports.register,
+    login: exports.login,
+    getProfile: exports.getProfile,
+    refresh: exports.refresh,
+    logout: exports.logout,
+    updateProfile: exports.updateProfile,
+    sendError,
+    upload,
+};
+//# sourceMappingURL=authController.js.map
