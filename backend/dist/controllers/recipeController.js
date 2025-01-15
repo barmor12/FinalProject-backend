@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRecipeById = exports.deleteRecipe = exports.updateRecipe = exports.addRecipe = exports.getAllRecipes = void 0;
 const recipeModel_1 = __importDefault(require("../models/recipeModel"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const getAllRecipes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const recipes = yield recipeModel_1.default.find().populate("user", "nickname");
@@ -50,14 +52,30 @@ const addRecipe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addRecipe = addRecipe;
 const updateRecipe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, ingredients, instructions } = req.body;
+    const { title, description, ingredients, instructions } = req.body;
     const recipeId = req.params.id;
+    if (!title || !description || !ingredients || !instructions) {
+        res.status(400).json({ error: "All fields are required" });
+        return;
+    }
     try {
+        let imageUrl = undefined;
+        if (req.file) {
+            const oldRecipe = yield recipeModel_1.default.findById(recipeId);
+            if (oldRecipe === null || oldRecipe === void 0 ? void 0 : oldRecipe.image) {
+                const oldImagePath = path_1.default.join(__dirname, "..", oldRecipe.image);
+                if (fs_1.default.existsSync(oldImagePath)) {
+                    fs_1.default.unlinkSync(oldImagePath);
+                }
+            }
+            imageUrl = `/uploads/${req.file.filename}`;
+        }
         const updatedRecipe = yield recipeModel_1.default.findByIdAndUpdate(recipeId, {
             title,
-            ingredients: ingredients === null || ingredients === void 0 ? void 0 : ingredients.split(","),
+            description,
+            ingredients: ingredients.split(","),
             instructions,
-            image: req.file ? `/uploads/${req.file.filename}` : undefined,
+            image: imageUrl || undefined,
         }, { new: true });
         if (!updatedRecipe) {
             res.status(404).json({ error: "Recipe not found" });
@@ -90,7 +108,7 @@ exports.deleteRecipe = deleteRecipe;
 const getRecipeById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const recipeId = req.params.id;
     try {
-        const recipe = yield recipeModel_1.default.findById(recipeId).populate("createdBy", "nickname");
+        const recipe = yield recipeModel_1.default.findById(recipeId).populate("user", "nickname");
         if (!recipe) {
             res.status(404).json({ error: "Recipe not found" });
             return;

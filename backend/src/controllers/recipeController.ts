@@ -135,7 +135,7 @@ export const getRecipeById = async (
 
   try {
     const recipe = await Recipe.findById(recipeId).populate(
-      "createdBy",
+      "user",
       "nickname"
     );
 
