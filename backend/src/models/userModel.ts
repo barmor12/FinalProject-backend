@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
   nickname: { type: String, required: true },
   profilePic: { type: String },
   refresh_tokens: [String],
-  User: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-});
+}, { timestamps: true });  // הוספתי את timestamps כדי שיהיה לך תיעוד של תאריכי יצירה ועדכון
 
 export default mongoose.model("User", userSchema);

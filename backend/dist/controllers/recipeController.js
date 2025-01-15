@@ -16,7 +16,7 @@ exports.getRecipeById = exports.deleteRecipe = exports.updateRecipe = exports.ad
 const recipeModel_1 = __importDefault(require("../models/recipeModel"));
 const getAllRecipes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const recipes = yield recipeModel_1.default.find().populate("createdBy", "nickname");
+        const recipes = yield recipeModel_1.default.find().populate("user", "nickname");
         res.status(200).json(recipes);
     }
     catch (err) {
@@ -26,18 +26,18 @@ const getAllRecipes = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.getAllRecipes = getAllRecipes;
 const addRecipe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, ingredients, instructions } = req.body;
-    const userId = req.body.userId;
-    if (!title || !ingredients || !instructions) {
+    const { title, description, ingredients, instructions, userId } = req.body;
+    if (!title || !description || !ingredients || !instructions || !userId) {
         res.status(400).json({ error: "All fields are required" });
         return;
     }
     try {
         const recipe = new recipeModel_1.default({
             title,
+            description,
             ingredients: ingredients.split(","),
-            instructions,
-            createdBy: userId,
+            instructions: instructions.split(","),
+            user: userId,
             image: req.file ? `/uploads/${req.file.filename}` : undefined,
         });
         const savedRecipe = yield recipe.save();

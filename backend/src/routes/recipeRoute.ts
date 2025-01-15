@@ -14,7 +14,10 @@ const upload = multer({ dest: "uploads/" });
 
 router.get("/", getAllRecipes);
 router.get("/:id", getRecipeById);
+
+router.post("/newRecipe", addRecipe);
 router.post("/", authenticateMiddleware, upload.single("image"), addRecipe);
+
 router.put(
   "/:id",
   authenticateMiddleware,

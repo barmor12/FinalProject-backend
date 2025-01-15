@@ -10,7 +10,6 @@ const userSchema = new mongoose_1.default.Schema({
     nickname: { type: String, required: true },
     profilePic: { type: String },
     refresh_tokens: [String],
-    User: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", required: true },
-});
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("User", userSchema);
 //# sourceMappingURL=userModel.js.map

@@ -13,12 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateProfile = exports.logout = exports.refresh = exports.getProfile = exports.login = exports.register = exports.getTokenFromRequest = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const uploadsDir = path_1.default.join(__dirname, "..", "uploads");
 if (!fs_1.default.existsSync(uploadsDir)) {
     fs_1.default.mkdirSync(uploadsDir, { recursive: true });
@@ -40,8 +42,8 @@ const getTokenFromRequest = (req) => {
 };
 exports.getTokenFromRequest = getTokenFromRequest;
 const generateTokens = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const accessToken = jsonwebtoken_1.default.sign({ _id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
-    const refreshToken = jsonwebtoken_1.default.sign({ _id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION });
+    const accessToken = jsonwebtoken_1.default.sign({ _id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION || '1h' });
+    const refreshToken = jsonwebtoken_1.default.sign({ _id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || '7d' });
     return { accessToken, refreshToken };
 });
 const sendError = (res, message, statusCode = 400) => {
@@ -63,7 +65,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (existingUser) {
             return sendError(res, "User with this email already exists");
         }
-        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         const user = new userModel_1.default({
             email,
             password: hashedPassword,
@@ -72,7 +74,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         const newUser = yield user.save();
         const tokens = yield generateTokens(newUser._id.toString());
-        res.status(201).json({ user: newUser, tokens });
+        res.status(201).json({ message: "User created successfully", user: newUser, tokens });
     }
     catch (err) {
         console.error("Registration error:", err);
@@ -87,13 +89,16 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         const user = yield userModel_1.default.findOne({ email });
-        if (!user || !(yield bcrypt_1.default.compare(password, user.password))) {
+        if (!user || !(yield bcryptjs_1.default.compare(password, user.password))) {
             return sendError(res, "Invalid email or password");
         }
         const tokens = yield generateTokens(user._id.toString());
         user.refresh_tokens.push(tokens.refreshToken);
         yield user.save();
-        res.status(200).send(tokens);
+        res.status(200).json({
+            message: "User logged in successfully",
+            tokens: tokens,
+        });
     }
     catch (err) {
         console.error("Login error:", err);
@@ -176,12 +181,13 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             return sendError(res, "User not found", 404);
         }
         const { nickname, email, oldPassword, newPassword } = req.body;
+        console.log(nickname, email, oldPassword, newPassword);
         if (oldPassword && newPassword) {
-            const isMatch = yield bcrypt_1.default.compare(oldPassword, user.password);
+            const isMatch = yield bcryptjs_1.default.compare(oldPassword, user.password);
             if (!isMatch) {
                 return sendError(res, "Old password is incorrect", 400);
             }
-            user.password = yield bcrypt_1.default.hash(newPassword, 10);
+            user.password = yield bcryptjs_1.default.hash(newPassword, 10);
         }
         if (req.file) {
             user.profilePic = `/uploads/${req.file.filename}`;
@@ -189,7 +195,11 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         user.nickname = nickname || user.nickname;
         user.email = email || user.email;
         const updatedUser = yield user.save();
-        res.status(200).send(updatedUser);
+        console.log(updatedUser);
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: updatedUser
+        });
     }
     catch (err) {
         console.error("Update profile error:", err);

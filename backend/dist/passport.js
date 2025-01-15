@@ -20,9 +20,10 @@ dotenv_1.default.config();
 passport_1.default.use(new passport_google_oauth20_1.Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback",
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || "/auth/google/callback",
 }, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("Profile received from Google:", profile);
         let user = yield userModel_1.default.findOne({ googleId: profile.id });
         if (!user) {
             user = new userModel_1.default({
@@ -32,10 +33,12 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
                 profilePic: profile.photos ? profile.photos[0].value : undefined,
             });
             yield user.save();
+            console.log("New user created:", user);
         }
         return done(null, user);
     }
     catch (err) {
+        console.error("Error during authentication:", err);
         return done(err, false);
     }
 })));
@@ -48,6 +51,7 @@ passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 
         done(null, user);
     }
     catch (err) {
+        console.error("Error during deserialization:", err);
         done(err, null);
     }
 }));

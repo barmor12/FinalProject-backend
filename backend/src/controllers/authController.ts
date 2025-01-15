@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from "jsonwebtoken";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
 import User from "../models/userModel";
+import dotenv from "dotenv";
 
+dotenv.config();
 interface TokenPayload extends JwtPayload {
   _id: string;
 }
@@ -37,17 +39,19 @@ const generateTokens = async (userId: string) => {
   const accessToken = jwt.sign(
     { _id: userId },
     process.env.ACCESS_TOKEN_SECRET!,
-    { expiresIn: process.env.JWT_TOKEN_EXPIRATION! }
+    { expiresIn: process.env.JWT_TOKEN_EXPIRATION || '1h' }  // אם לא מוגדר, ברירת המחדל היא שעה
   );
 
   const refreshToken = jwt.sign(
     { _id: userId },
     process.env.REFRESH_TOKEN_SECRET!,
-    { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION! }
+    { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || '7d' }  // אם לא מוגדר, ברירת המחדל היא 7 ימים
   );
 
   return { accessToken, refreshToken };
 };
+
+
 
 const sendError = (
   res: Response,
@@ -63,6 +67,7 @@ export const register = async (req: Request, res: Response) => {
   const { email, password, nickname } = req.body;
   let profilePic = "";
 
+  // אם יש תמונה, נוסיף את נתיב התמונה
   if (req.file) {
     profilePic = `/uploads/${req.file.filename}`;
   }
@@ -87,12 +92,13 @@ export const register = async (req: Request, res: Response) => {
 
     const newUser = await user.save();
     const tokens = await generateTokens(newUser._id.toString());
-    res.status(201).json({ user: newUser, tokens });
+    res.status(201).json({message:"User created successfully", user: newUser, tokens });
   } catch (err) {
     console.error("Registration error:", err);
     sendError(res, "Failed to register", 500);
   }
 };
+
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -111,8 +117,11 @@ export const login = async (req: Request, res: Response) => {
     user.refresh_tokens.push(tokens.refreshToken);
     await user.save();
 
-    res.status(200).send(tokens);
-  } catch (err) {
+    res.status(200).json({
+      message: "User logged in successfully", // הודעה שהמשתמש התחבר בהצלחה
+      tokens: tokens, // שלח את הטוקנים
+    });
+      } catch (err) {
     console.error("Login error:", err);
     sendError(res, "Failed to login", 500);
   }
@@ -222,7 +231,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
 
     const { nickname, email, oldPassword, newPassword } = req.body;
-
+    console.log(nickname, email, oldPassword, newPassword);
     if (oldPassword && newPassword) {
       const isMatch = await bcrypt.compare(oldPassword, user.password);
       if (!isMatch) {
@@ -239,8 +248,12 @@ export const updateProfile = async (req: Request, res: Response) => {
     user.email = email || user.email;
 
     const updatedUser = await user.save();
-    res.status(200).send(updatedUser);
-  } catch (err) {
+    console.log(updatedUser);
+    res.status(200).json({
+      message: "Profile updated successfully", 
+      user: updatedUser
+    });
+    } catch (err) {
     console.error("Update profile error:", err);
     sendError(res, "Failed to update profile", 500);
   }
