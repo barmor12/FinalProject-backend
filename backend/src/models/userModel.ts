@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   nickname: { type: String, required: true },
   profilePic: { type: String },
+  role: { type: String, default: "user" }, // ניתן להוסיף פרופרטי של "role"
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cake" }], // עוגות מועדפות
   refresh_tokens: [String],
-}, { timestamps: true });  // הוספתי את timestamps כדי שיהיה לך תיעוד של תאריכי יצירה ועדכון
+}, { timestamps: true });
 
 export default mongoose.model("User", userSchema);

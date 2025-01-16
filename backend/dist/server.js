@@ -12,6 +12,8 @@ const passport_1 = __importDefault(require("passport"));
 const express_session_1 = __importDefault(require("express-session"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const recipeRoute_1 = __importDefault(require("./routes/recipeRoute"));
+const orderRoute_1 = __importDefault(require("./routes/orderRoute"));
+const cakeRoute_1 = __importDefault(require("./routes/cakeRoute"));
 require("./passport");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -29,6 +31,8 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.use("/auth", authRoute_1.default);
 app.use("/recipes", recipeRoute_1.default);
+app.use("/cakes", cakeRoute_1.default);
+app.use("/order", orderRoute_1.default);
 mongoose_1.default
     .connect(process.env.MONGO_URI)
     .then(() => console.log("Connected to MongoDB"))

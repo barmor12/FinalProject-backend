@@ -63,41 +63,52 @@ const sendError = (
   }
 };
 
-export const register = async (req: Request, res: Response) => {
-  const { email, password, nickname } = req.body;
-  let profilePic = "";
+export const register = async (req: Request, res: Response): Promise<void> => {
+  const { email, password, nickname, role } = req.body;
 
-  // אם יש תמונה, נוסיף את נתיב התמונה
-  if (req.file) {
-    profilePic = `/uploads/${req.file.filename}`;
-  }
-
-  if (!email || !password || !nickname) {
-    return sendError(res, "All fields are required");
+  // אם יש שדה חסר
+  if (!email || !password || !nickname || !role) {
+    res.status(400).json({ error: "All fields are required" });
+    return;
   }
 
   try {
+    // בדיקה אם המשתמש כבר קיים במערכת
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return sendError(res, "User with this email already exists");
+      res.status(400).json({ error: "User already exists" });
+      return;
     }
 
+    // הצפנת הסיסמה
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
+
+    // יצירת משתמש חדש עם role שנשלח בבקשה
+    const newUser = new User({
       email,
       password: hashedPassword,
-      profilePic,
       nickname,
+      role,  // ודא שה-role נכנס נכון
     });
 
-    const newUser = await user.save();
-    const tokens = await generateTokens(newUser._id.toString());
-    res.status(201).json({message:"User created successfully", user: newUser, tokens });
+    const savedUser = await newUser.save();
+
+    res.status(201).json({
+      message: "User created successfully",
+      user: savedUser,
+      tokens: {
+        accessToken: "your-access-token",  // יש להוסיף את יצירת ה-Token כאן
+        refreshToken: "your-refresh-token",  // יש להוסיף את יצירת ה-Token כאן
+      },
+    });
+
   } catch (err) {
-    console.error("Registration error:", err);
-    sendError(res, "Failed to register", 500);
+    console.error("Error creating user:", err);
+    res.status(500).json({ error: "Error creating user" });
   }
 };
+
+
 
 
 export const login = async (req: Request, res: Response) => {

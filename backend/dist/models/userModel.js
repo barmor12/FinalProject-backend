@@ -9,6 +9,8 @@ const userSchema = new mongoose_1.default.Schema({
     password: { type: String, required: true },
     nickname: { type: String, required: true },
     profilePic: { type: String },
+    role: { type: String, default: "user" },
+    favorites: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Cake" }],
     refresh_tokens: [String],
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("User", userSchema);

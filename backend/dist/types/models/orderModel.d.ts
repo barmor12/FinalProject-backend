@@ -1,34 +1,31 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 declare const _default: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     user: mongoose.Types.ObjectId;
-    description: string;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    image?: string | null | undefined;
+    cake: mongoose.Types.ObjectId;
+    quantity: number;
+    totalPrice: number;
+    orderDate: NativeDate;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     user: mongoose.Types.ObjectId;
-    description: string;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    image?: string | null | undefined;
+    cake: mongoose.Types.ObjectId;
+    quantity: number;
+    totalPrice: number;
+    orderDate: NativeDate;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     user: mongoose.Types.ObjectId;
-    description: string;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    image?: string | null | undefined;
+    cake: mongoose.Types.ObjectId;
+    quantity: number;
+    totalPrice: number;
+    orderDate: NativeDate;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -40,31 +37,28 @@ declare const _default: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     user: mongoose.Types.ObjectId;
-    description: string;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    image?: string | null | undefined;
+    cake: mongoose.Types.ObjectId;
+    quantity: number;
+    totalPrice: number;
+    orderDate: NativeDate;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     user: mongoose.Types.ObjectId;
-    description: string;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    image?: string | null | undefined;
+    cake: mongoose.Types.ObjectId;
+    quantity: number;
+    totalPrice: number;
+    orderDate: NativeDate;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     user: mongoose.Types.ObjectId;
-    description: string;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    image?: string | null | undefined;
+    cake: mongoose.Types.ObjectId;
+    quantity: number;
+    totalPrice: number;
+    orderDate: NativeDate;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

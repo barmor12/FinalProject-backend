@@ -52,33 +52,37 @@ const sendError = (res, message, statusCode = 400) => {
     }
 };
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, nickname } = req.body;
-    let profilePic = "";
-    if (req.file) {
-        profilePic = `/uploads/${req.file.filename}`;
-    }
-    if (!email || !password || !nickname) {
-        return sendError(res, "All fields are required");
+    const { email, password, nickname, role } = req.body;
+    if (!email || !password || !nickname || !role) {
+        res.status(400).json({ error: "All fields are required" });
+        return;
     }
     try {
         const existingUser = yield userModel_1.default.findOne({ email });
         if (existingUser) {
-            return sendError(res, "User with this email already exists");
+            res.status(400).json({ error: "User already exists" });
+            return;
         }
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
-        const user = new userModel_1.default({
+        const newUser = new userModel_1.default({
             email,
             password: hashedPassword,
-            profilePic,
             nickname,
+            role,
         });
-        const newUser = yield user.save();
-        const tokens = yield generateTokens(newUser._id.toString());
-        res.status(201).json({ message: "User created successfully", user: newUser, tokens });
+        const savedUser = yield newUser.save();
+        res.status(201).json({
+            message: "User created successfully",
+            user: savedUser,
+            tokens: {
+                accessToken: "your-access-token",
+                refreshToken: "your-refresh-token",
+            },
+        });
     }
     catch (err) {
-        console.error("Registration error:", err);
-        sendError(res, "Failed to register", 500);
+        console.error("Error creating user:", err);
+        res.status(500).json({ error: "Error creating user" });
     }
 });
 exports.register = register;

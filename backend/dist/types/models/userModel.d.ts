@@ -6,6 +6,8 @@ declare const _default: mongoose.Model<{
     email: string;
     password: string;
     nickname: string;
+    role: string;
+    favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     profilePic?: string | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
@@ -15,6 +17,8 @@ declare const _default: mongoose.Model<{
     email: string;
     password: string;
     nickname: string;
+    role: string;
+    favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     profilePic?: string | null | undefined;
 }> & {
@@ -24,6 +28,8 @@ declare const _default: mongoose.Model<{
     email: string;
     password: string;
     nickname: string;
+    role: string;
+    favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     profilePic?: string | null | undefined;
 } & {
@@ -39,6 +45,8 @@ declare const _default: mongoose.Model<{
     email: string;
     password: string;
     nickname: string;
+    role: string;
+    favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     profilePic?: string | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
@@ -48,6 +56,8 @@ declare const _default: mongoose.Model<{
     email: string;
     password: string;
     nickname: string;
+    role: string;
+    favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     profilePic?: string | null | undefined;
 }>> & mongoose.FlatRecord<{
@@ -57,6 +67,8 @@ declare const _default: mongoose.Model<{
     email: string;
     password: string;
     nickname: string;
+    role: string;
+    favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     profilePic?: string | null | undefined;
 }> & {
