@@ -8,8 +8,9 @@ import session from "express-session";
 
 import authRoute from "./routes/authRoute";
 import recipeRoute from "./routes/recipeRoute";
-import orderRoute from "./routes/orderRoute"; 
-import cakeRoute from "./routes/cakeRoute"; 
+import orderRoute from "./routes/orderRoute";
+import cakeRoute from "./routes/cakeRoute";
+import userRoute from "./routes/userRoute";
 
 import "./passport";
 
@@ -38,6 +39,7 @@ app.use("/auth", authRoute);
 app.use("/recipes", recipeRoute);
 app.use("/cakes", cakeRoute);
 app.use("/order", orderRoute);
+app.use("/user", userRoute);
 
 mongoose
   .connect(process.env.MONGO_URI!)

@@ -53,7 +53,7 @@ const generateTokens = async (userId: string) => {
 
 
 
-const sendError = (
+export const sendError = (
   res: Response,
   message: string,
   statusCode: number = 400
@@ -64,7 +64,7 @@ const sendError = (
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password} = req.body;
+  const { firstName, lastName, email, password } = req.body;
   let profilePic = "";
 
   // אם יש תמונה, נוסיף את נתיב התמונה
@@ -94,7 +94,7 @@ export const register = async (req: Request, res: Response) => {
 
     const newUser = await user.save();
     const tokens = await generateTokens(newUser._id.toString());
-    res.status(201).json({message:"User created successfully", user: newUser, tokens });
+    res.status(201).json({ message: "User created successfully", user: newUser, tokens });
   } catch (err) {
     console.error("Registration error:", err);
     sendError(res, "Failed to register", 500);
@@ -123,37 +123,12 @@ export const login = async (req: Request, res: Response) => {
       message: "User logged in successfully", // הודעה שהמשתמש התחבר בהצלחה
       tokens: tokens, // שלח את הטוקנים
     });
-      } catch (err) {
+  } catch (err) {
     console.error("Login error:", err);
     sendError(res, "Failed to login", 500);
   }
 };
 
-export const getProfile = async (req: Request, res: Response) => {
-  const token = getTokenFromRequest(req);
-  if (!token) {
-    return sendError(res, "Token required", 401);
-  }
-
-  try {
-    const decoded = jwt.verify(
-      token,
-      process.env.ACCESS_TOKEN_SECRET!
-    ) as TokenPayload;
-
-    const user = await User.findById(decoded._id).select(
-      "-password -refresh_tokens"
-    );
-    if (!user) {
-      return sendError(res, "User not found", 404);
-    }
-
-    res.status(200).send(user);
-  } catch (err) {
-    console.error("Get profile error:", err);
-    sendError(res, "Failed to get profile", 500);
-  }
-};
 
 export const refresh = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
@@ -215,59 +190,13 @@ export const logout = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProfile = async (req: Request, res: Response) => {
-  const token = getTokenFromRequest(req);
-  if (!token) {
-    return sendError(res, "Token required", 401);
-  }
-
-  try {
-    const decoded = jwt.verify(
-      token,
-      process.env.ACCESS_TOKEN_SECRET!
-    ) as TokenPayload;
-
-    const user = await User.findById(decoded._id);
-    if (!user) {
-      return sendError(res, "User not found", 404);
-    }
-
-    const { firstName, lastName, email, oldPassword, newPassword } = req.body;
-    if (oldPassword && newPassword) {
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
-      if (!isMatch) {
-        return sendError(res, "Old password is incorrect", 400);
-      }
-      user.password = await bcrypt.hash(newPassword, 10);
-    }
-
-    if (req.file) {
-      user.profilePic = `/uploads/${req.file.filename}`;
-    }
-
-    user.firstName = firstName || user.firstName;
-    user.lastName = lastName || user.lastName;
-    user.email = email || user.email;
-
-    const updatedUser = await user.save();
-    console.log(updatedUser);
-    res.status(200).json({
-      message: "Profile updated successfully", 
-      user: updatedUser
-    });
-    } catch (err) {
-    console.error("Update profile error:", err);
-    sendError(res, "Failed to update profile", 500);
-  }
-};
 
 export default {
   register,
   login,
-  getProfile,
   refresh,
   logout,
-  updateProfile,
   sendError,
   upload,
+  getTokenFromRequest,
 };

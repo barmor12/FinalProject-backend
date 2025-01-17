@@ -1,5 +1,5 @@
 import express from "express";
-import { getProfile, updateProfile} from "../controllers/authController";
+import { getProfile, updateProfile } from "../controllers/userController";
 import authenticateMiddleware from "../common/authMiddleware";
 import multer from "multer";
 

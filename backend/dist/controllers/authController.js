@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProfile = exports.logout = exports.refresh = exports.getProfile = exports.login = exports.register = exports.getTokenFromRequest = void 0;
+exports.logout = exports.refresh = exports.login = exports.register = exports.sendError = exports.getTokenFromRequest = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -51,6 +51,7 @@ const sendError = (res, message, statusCode = 400) => {
         res.status(statusCode).json({ error: message });
     }
 };
+exports.sendError = sendError;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
     let profilePic = "";
@@ -58,12 +59,12 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         profilePic = `/uploads/${req.file.filename}`;
     }
     if (!firstName || !lastName || !email || !password) {
-        return sendError(res, "All fields are required");
+        return (0, exports.sendError)(res, "All fields are required");
     }
     try {
         const existingUser = yield userModel_1.default.findOne({ email });
         if (existingUser) {
-            return sendError(res, "User with this email already exists");
+            return (0, exports.sendError)(res, "User with this email already exists");
         }
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         const user = new userModel_1.default({
@@ -80,19 +81,19 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.error("Registration error:", err);
-        sendError(res, "Failed to register", 500);
+        (0, exports.sendError)(res, "Failed to register", 500);
     }
 });
 exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     if (!email || !password) {
-        return sendError(res, "Email and password are required");
+        return (0, exports.sendError)(res, "Email and password are required");
     }
     try {
         const user = yield userModel_1.default.findOne({ email });
         if (!user || !(yield bcryptjs_1.default.compare(password, user.password))) {
-            return sendError(res, "Invalid email or password");
+            return (0, exports.sendError)(res, "Invalid email or password");
         }
         const tokens = yield generateTokens(user._id.toString());
         user.refresh_tokens.push(tokens.refreshToken);
@@ -104,39 +105,20 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.error("Login error:", err);
-        sendError(res, "Failed to login", 500);
+        (0, exports.sendError)(res, "Failed to login", 500);
     }
 });
 exports.login = login;
-const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = (0, exports.getTokenFromRequest)(req);
-    if (!token) {
-        return sendError(res, "Token required", 401);
-    }
-    try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = yield userModel_1.default.findById(decoded._id).select("-password -refresh_tokens");
-        if (!user) {
-            return sendError(res, "User not found", 404);
-        }
-        res.status(200).send(user);
-    }
-    catch (err) {
-        console.error("Get profile error:", err);
-        sendError(res, "Failed to get profile", 500);
-    }
-});
-exports.getProfile = getProfile;
 const refresh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.body;
     if (!refreshToken) {
-        return sendError(res, "Refresh token is required");
+        return (0, exports.sendError)(res, "Refresh token is required");
     }
     try {
         const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         const user = yield userModel_1.default.findById(payload._id);
         if (!user || !user.refresh_tokens.includes(refreshToken)) {
-            return sendError(res, "Invalid refresh token", 403);
+            return (0, exports.sendError)(res, "Invalid refresh token", 403);
         }
         const tokens = yield generateTokens(user._id.toString());
         user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
@@ -146,20 +128,20 @@ const refresh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.error("Refresh token error:", err);
-        sendError(res, "Failed to refresh token", 500);
+        (0, exports.sendError)(res, "Failed to refresh token", 500);
     }
 });
 exports.refresh = refresh;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.body;
     if (!refreshToken) {
-        return sendError(res, "Refresh token is required");
+        return (0, exports.sendError)(res, "Refresh token is required");
     }
     try {
         const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         const user = yield userModel_1.default.findById(payload._id);
         if (!user) {
-            return sendError(res, "User not found", 404);
+            return (0, exports.sendError)(res, "User not found", 404);
         }
         user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
         yield user.save();
@@ -167,56 +149,17 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.error("Logout error:", err);
-        sendError(res, "Failed to logout", 500);
+        (0, exports.sendError)(res, "Failed to logout", 500);
     }
 });
 exports.logout = logout;
-const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = (0, exports.getTokenFromRequest)(req);
-    if (!token) {
-        return sendError(res, "Token required", 401);
-    }
-    try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = yield userModel_1.default.findById(decoded._id);
-        if (!user) {
-            return sendError(res, "User not found", 404);
-        }
-        const { firstName, lastName, email, oldPassword, newPassword } = req.body;
-        if (oldPassword && newPassword) {
-            const isMatch = yield bcryptjs_1.default.compare(oldPassword, user.password);
-            if (!isMatch) {
-                return sendError(res, "Old password is incorrect", 400);
-            }
-            user.password = yield bcryptjs_1.default.hash(newPassword, 10);
-        }
-        if (req.file) {
-            user.profilePic = `/uploads/${req.file.filename}`;
-        }
-        user.firstName = firstName || user.firstName;
-        user.lastName = lastName || user.lastName;
-        user.email = email || user.email;
-        const updatedUser = yield user.save();
-        console.log(updatedUser);
-        res.status(200).json({
-            message: "Profile updated successfully",
-            user: updatedUser
-        });
-    }
-    catch (err) {
-        console.error("Update profile error:", err);
-        sendError(res, "Failed to update profile", 500);
-    }
-});
-exports.updateProfile = updateProfile;
 exports.default = {
     register: exports.register,
     login: exports.login,
-    getProfile: exports.getProfile,
     refresh: exports.refresh,
     logout: exports.logout,
-    updateProfile: exports.updateProfile,
-    sendError,
+    sendError: exports.sendError,
     upload,
+    getTokenFromRequest: exports.getTokenFromRequest,
 };
 //# sourceMappingURL=authController.js.map
