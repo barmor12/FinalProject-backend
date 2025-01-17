@@ -63,52 +63,43 @@ const sendError = (
   }
 };
 
-export const register = async (req: Request, res: Response): Promise<void> => {
-  const { email, password, nickname, role } = req.body;
+export const register = async (req: Request, res: Response) => {
+  const { firstName, lastName, email, password} = req.body;
+  let profilePic = "";
 
-  // אם יש שדה חסר
-  if (!email || !password || !nickname || !role) {
-    res.status(400).json({ error: "All fields are required" });
-    return;
+  // אם יש תמונה, נוסיף את נתיב התמונה
+  if (req.file) {
+    profilePic = `/uploads/${req.file.filename}`;
+  }
+
+  if (!firstName || !lastName || !email || !password) {
+    return sendError(res, "All fields are required");
   }
 
   try {
-    // בדיקה אם המשתמש כבר קיים במערכת
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(400).json({ error: "User already exists" });
-      return;
+      return sendError(res, "User with this email already exists");
     }
 
-    // הצפנת הסיסמה
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // יצירת משתמש חדש עם role שנשלח בבקשה
-    const newUser = new User({
+    const user = new User({
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
-      nickname,
-      role,  // ודא שה-role נכנס נכון
+      profilePic,
+      role: "user"
     });
 
-    const savedUser = await newUser.save();
-
-    res.status(201).json({
-      message: "User created successfully",
-      user: savedUser,
-      tokens: {
-        accessToken: "your-access-token",  // יש להוסיף את יצירת ה-Token כאן
-        refreshToken: "your-refresh-token",  // יש להוסיף את יצירת ה-Token כאן
-      },
-    });
-
+    const newUser = await user.save();
+    const tokens = await generateTokens(newUser._id.toString());
+    res.status(201).json({message:"User created successfully", user: newUser, tokens });
   } catch (err) {
-    console.error("Error creating user:", err);
-    res.status(500).json({ error: "Error creating user" });
+    console.error("Registration error:", err);
+    sendError(res, "Failed to register", 500);
   }
 };
-
-
 
 
 export const login = async (req: Request, res: Response) => {
@@ -241,8 +232,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       return sendError(res, "User not found", 404);
     }
 
-    const { nickname, email, oldPassword, newPassword } = req.body;
-    console.log(nickname, email, oldPassword, newPassword);
+    const { firstName, lastName, email, oldPassword, newPassword } = req.body;
     if (oldPassword && newPassword) {
       const isMatch = await bcrypt.compare(oldPassword, user.password);
       if (!isMatch) {
@@ -255,7 +245,8 @@ export const updateProfile = async (req: Request, res: Response) => {
       user.profilePic = `/uploads/${req.file.filename}`;
     }
 
-    user.nickname = nickname || user.nickname;
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
     user.email = email || user.email;
 
     const updatedUser = await user.save();

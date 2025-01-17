@@ -5,7 +5,8 @@ declare const _default: mongoose.Model<{
 } & {
     email: string;
     password: string;
-    nickname: string;
+    firstName: string;
+    lastName: string;
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
@@ -16,7 +17,8 @@ declare const _default: mongoose.Model<{
 } & {
     email: string;
     password: string;
-    nickname: string;
+    firstName: string;
+    lastName: string;
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
@@ -27,7 +29,8 @@ declare const _default: mongoose.Model<{
 } & {
     email: string;
     password: string;
-    nickname: string;
+    firstName: string;
+    lastName: string;
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
@@ -44,7 +47,8 @@ declare const _default: mongoose.Model<{
 } & {
     email: string;
     password: string;
-    nickname: string;
+    firstName: string;
+    lastName: string;
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
@@ -55,7 +59,8 @@ declare const _default: mongoose.Model<{
 } & {
     email: string;
     password: string;
-    nickname: string;
+    firstName: string;
+    lastName: string;
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
@@ -66,7 +71,8 @@ declare const _default: mongoose.Model<{
 } & {
     email: string;
     password: string;
-    nickname: string;
+    firstName: string;
+    lastName: string;
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];

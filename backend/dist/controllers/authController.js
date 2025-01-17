@@ -52,37 +52,35 @@ const sendError = (res, message, statusCode = 400) => {
     }
 };
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, nickname, role } = req.body;
-    if (!email || !password || !nickname || !role) {
-        res.status(400).json({ error: "All fields are required" });
-        return;
+    const { firstName, lastName, email, password } = req.body;
+    let profilePic = "";
+    if (req.file) {
+        profilePic = `/uploads/${req.file.filename}`;
+    }
+    if (!firstName || !lastName || !email || !password) {
+        return sendError(res, "All fields are required");
     }
     try {
         const existingUser = yield userModel_1.default.findOne({ email });
         if (existingUser) {
-            res.status(400).json({ error: "User already exists" });
-            return;
+            return sendError(res, "User with this email already exists");
         }
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
-        const newUser = new userModel_1.default({
+        const user = new userModel_1.default({
+            firstName,
+            lastName,
             email,
             password: hashedPassword,
-            nickname,
-            role,
+            profilePic,
+            role: "user"
         });
-        const savedUser = yield newUser.save();
-        res.status(201).json({
-            message: "User created successfully",
-            user: savedUser,
-            tokens: {
-                accessToken: "your-access-token",
-                refreshToken: "your-refresh-token",
-            },
-        });
+        const newUser = yield user.save();
+        const tokens = yield generateTokens(newUser._id.toString());
+        res.status(201).json({ message: "User created successfully", user: newUser, tokens });
     }
     catch (err) {
-        console.error("Error creating user:", err);
-        res.status(500).json({ error: "Error creating user" });
+        console.error("Registration error:", err);
+        sendError(res, "Failed to register", 500);
     }
 });
 exports.register = register;
@@ -184,8 +182,7 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!user) {
             return sendError(res, "User not found", 404);
         }
-        const { nickname, email, oldPassword, newPassword } = req.body;
-        console.log(nickname, email, oldPassword, newPassword);
+        const { firstName, lastName, email, oldPassword, newPassword } = req.body;
         if (oldPassword && newPassword) {
             const isMatch = yield bcryptjs_1.default.compare(oldPassword, user.password);
             if (!isMatch) {
@@ -196,7 +193,8 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (req.file) {
             user.profilePic = `/uploads/${req.file.filename}`;
         }
-        user.nickname = nickname || user.nickname;
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
         user.email = email || user.email;
         const updatedUser = yield user.save();
         console.log(updatedUser);
