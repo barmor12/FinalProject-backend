@@ -1,23 +1,10 @@
 import mongoose from 'mongoose';
 
-const orderSchema = new mongoose.Schema(
-    {
-      user: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User",  // הפניה למודל משתמש
-        required: true 
-      },
-      cake: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Cake",  // הפניה למודל עוגה
-        required: true 
-      },
-      quantity: { type: Number, required: true },  // כמות העוגות שהוזמנו
-      totalPrice: { type: Number, required: true },  // המחיר הכולל של ההזמנה
-      orderDate: { type: Date, default: Date.now },  // תאריך ההזמנה
-    },
-    { timestamps: true }  // מאפשר תיעוד של תאריך יצירה ועדכון
-  );
-  
+const orderSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // קשר למשתמש
+  totalPrice: { type: Number, required: true },
+  status: { type: String, enum: ['pending', 'confirmed', 'delivered'], default: 'pending' },
+  createdAt: { type: Date, default: Date.now },
+});
 
-export default mongoose.model('Order', orderSchema);
+module.exports = mongoose.model('Order', orderSchema);
