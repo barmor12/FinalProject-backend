@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import multer from "multer";
@@ -14,6 +14,14 @@ dotenv.config();
 interface TokenPayload extends JwtPayload {
   userId: string;
 }
+
+// Enforce HTTPS middleware
+const enforceHttps = (req: Request, res: Response, next: NextFunction) => {
+  if (req.headers["x-forwarded-proto"] !== "https") {
+    return res.status(403).send("Please use HTTPS for secure connections.");
+  }
+  next();
+};
 
 // Create the uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, "..", "uploads");
@@ -81,6 +89,7 @@ const sendVerificationEmail = async (email: string, token: string) => {
       <h1>Email Verification</h1>
       <p>Click the link below to verify your email address:</p>
       <a href="${verificationLink}">Verify Email</a>
+      <p>This link will expire in 24 hours.</p>
     `,
   };
 
@@ -101,12 +110,7 @@ export const sendError = (
 // Register function
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
-  let profilePic = "";
-
-  // Handle profile picture upload
-  if (req.file) {
-    profilePic = `/uploads/${req.file.filename}`;
-  }
+  let profilePic = req.file ? `/uploads/${req.file.filename}` : "";
 
   // Validate required fields
   if (!firstName || !lastName || !email || !password) {
@@ -293,11 +297,57 @@ export const logout = async (req: Request, res: Response) => {
   }
 };
 
+// Password reset function with a 10-second timeout
+export const resetPassword = async (req: Request, res: Response) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return sendError(res, "Email and new password are required");
+  }
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (!passwordRegex.test(newPassword)) {
+    return sendError(
+      res,
+      "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+    );
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const timeoutPromise = new Promise<void>((_, reject) => {
+      setTimeout(() => reject(new Error("Password reset timeout")), 10000);
+    });
+
+    await Promise.race([
+      (async () => {
+        user.password = hashedPassword;
+        await user.save();
+      })(),
+      timeoutPromise,
+    ]);
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (err) {
+    logger.error("Password reset error:", err);
+    sendError(res, "Failed to reset password", 500);
+  }
+};
+
 export default {
+  enforceHttps,
   register,
   login,
   refresh,
   logout,
+  resetPassword,
   sendError,
   upload,
   getTokenFromRequest,
