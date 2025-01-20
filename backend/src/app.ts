@@ -1,14 +1,12 @@
-import server from "./server";
-import io from "./socket_server";
+import { server } from "./server";
+import io from "./socket_server"; // מניח שיצרת מודול WebSocket
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
-// חיבור ה-WebSocket לשרת
+// חיבור WebSocket לשרת HTTP
 io(server);
 
 // הפעלת השרת
 server.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
-
-export default server;

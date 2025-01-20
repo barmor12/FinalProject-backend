@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
 import User from "../models/userModel";
 import dotenv from "dotenv";
+import logger from "../logger";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 interface TokenPayload extends JwtPayload {
@@ -39,19 +41,17 @@ const generateTokens = async (userId: string) => {
   const accessToken = jwt.sign(
     { _id: userId },
     process.env.ACCESS_TOKEN_SECRET!,
-    { expiresIn: process.env.JWT_TOKEN_EXPIRATION || '1h' }  // אם לא מוגדר, ברירת המחדל היא שעה
+    { expiresIn: process.env.JWT_TOKEN_EXPIRATION || "1h" } // אם לא מוגדר, ברירת המחדל היא שעה
   );
 
   const refreshToken = jwt.sign(
     { _id: userId },
     process.env.REFRESH_TOKEN_SECRET!,
-    { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || '7d' }  // אם לא מוגדר, ברירת המחדל היא 7 ימים
+    { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d" } // אם לא מוגדר, ברירת המחדל היא 7 ימים
   );
 
   return { accessToken, refreshToken };
 };
-
-
 
 export const sendError = (
   res: Response,
@@ -62,23 +62,23 @@ export const sendError = (
     res.status(statusCode).json({ error: message });
   }
 };
-
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
   let profilePic = "";
 
-  // אם יש תמונה, נוסיף את נתיב התמונה
   if (req.file) {
     profilePic = `/uploads/${req.file.filename}`;
   }
 
   if (!firstName || !lastName || !email || !password) {
+    logger.warn("Registration failed: Missing fields");
     return sendError(res, "All fields are required");
   }
 
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      logger.warn(`Registration failed: Email ${email} already exists`);
       return sendError(res, "User with this email already exists");
     }
 
@@ -89,18 +89,25 @@ export const register = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       profilePic,
-      role: "user"
+      role: "user",
+      isVerified: false, // משתמש חדש אינו מאומת
     });
 
     const newUser = await user.save();
-    const tokens = await generateTokens(newUser._id.toString());
-    res.status(201).json({ message: "User created successfully", user: newUser, tokens });
+
+    // Generate verification token and send email
+    const verificationToken = generateVerificationToken(newUser._id.toString());
+    await sendVerificationEmail(email, verificationToken);
+
+    logger.info(`User registered successfully: ${newUser.email}`);
+    res.status(201).json({
+      message: "User created successfully. Please verify your email.",
+    });
   } catch (err) {
-    console.error("Registration error:", err);
+    logger.error("Registration error:", err);
     sendError(res, "Failed to register", 500);
   }
 };
-
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -128,7 +135,6 @@ export const login = async (req: Request, res: Response) => {
     sendError(res, "Failed to login", 500);
   }
 };
-
 
 export const refresh = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
@@ -190,6 +196,67 @@ export const logout = async (req: Request, res: Response) => {
   }
 };
 
+const generateVerificationToken = (userId: string) => {
+  return jwt.sign({ userId }, process.env.EMAIL_SECRET!, { expiresIn: "1d" }); // תוקף של יום
+};
+
+const sendVerificationEmail = async (email: any, token: string) => {
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Verify your email address",
+    html: `
+      <h1>Email Verification</h1>
+      <p>Click the link below to verify your email address:</p>
+      <a href="${verificationLink}">Verify Email</a>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+export const verifyEmail = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { token } = req.query;
+
+  try {
+    const decoded = jwt.verify(token as string, process.env.EMAIL_SECRET!);
+    const user = await User.findById((decoded as any).userId);
+
+    if (!user) {
+      logger.warn("Invalid token: User not found");
+      res.status(400).json({ error: "Invalid or expired token" });
+      return;
+    }
+
+    if (user.isVerified) {
+      logger.info(`Email already verified for user: ${user.email}`);
+      res.status(200).json({ message: "Email already verified" });
+      return;
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    logger.info(`Email verified successfully for user: ${user.email}`);
+    res.status(200).json({ message: "Email verified successfully" });
+  } catch (err) {
+    logger.error("Email verification error:", err);
+    res.status(400).json({ error: "Invalid or expired token" });
+  }
+};
 
 export default {
   register,
@@ -199,4 +266,5 @@ export default {
   sendError,
   upload,
   getTokenFromRequest,
+  verifyEmail,
 };
