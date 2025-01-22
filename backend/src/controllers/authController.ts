@@ -270,28 +270,50 @@ export const refresh = async (req: Request, res: Response) => {
 // Logout function
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
+
   if (!refreshToken) {
-    return sendError(res, "Refresh token is required");
+    logger.warn("No refresh token provided");
+    return sendError(res, "Refresh token is required", 400);
   }
 
   try {
+    // Verify the refresh token
     const payload = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET!
     ) as TokenPayload;
-    const user = await User.findById(payload.userId);
 
+    const user = await User.findById(payload.userId);
     if (!user) {
+      logger.warn("User not found for given refresh token");
       return sendError(res, "User not found", 404);
     }
 
-    user.refresh_tokens = user.refresh_tokens.filter(
-      (token) => token !== refreshToken
-    );
+    // Remove the token from the user's list
+    const tokenIndex = user.refresh_tokens.indexOf(refreshToken);
+    if (tokenIndex === -1) {
+      logger.warn("Refresh token not found in user's tokens");
+      return sendError(res, "Invalid refresh token", 400);
+    }
+
+    user.refresh_tokens.splice(tokenIndex, 1);
     await user.save();
 
+    logger.info(`User ${user.email} logged out successfully.`);
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
+    if (err instanceof Error) {
+      if (err.name === "JsonWebTokenError") {
+        logger.warn("Invalid JWT:", err.message);
+        return sendError(res, "Invalid refresh token", 400);
+      }
+
+      if (err.name === "TokenExpiredError") {
+        logger.warn("Expired JWT:", err.message);
+        return sendError(res, "Refresh token expired", 401);
+      }
+    }
+
     logger.error("Logout error:", err);
     sendError(res, "Failed to logout", 500);
   }
