@@ -13,39 +13,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const authController_1 = __importDefault(require("../controllers/authController"));
-const authController_2 = require("../controllers/authController");
+const authController_1 = require("../controllers/authController");
 const userModel_1 = __importDefault(require("../models/userModel"));
-function isTokenPayload(payload) {
-    return payload && typeof payload === "object" && "_id" in payload;
-}
 const authenticateAdminMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = (0, authController_2.getTokenFromRequest)(req);
-    if (!token) {
-        return authController_1.default.sendError(res, "Token required", 401);
-    }
     try {
+        const token = (0, authController_1.getTokenFromRequest)(req);
+        if (!token) {
+            return (0, authController_1.sendError)(res, "Token is required for authentication", 401);
+        }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        if (!isTokenPayload(decoded)) {
-            return authController_1.default.sendError(res, "Invalid token data", 403);
+        if (!decoded || !decoded._id) {
+            return (0, authController_1.sendError)(res, "Invalid token data", 403);
         }
         const user = yield userModel_1.default.findById(decoded._id);
         if (!user) {
-            return authController_1.default.sendError(res, "User not found", 404);
+            return (0, authController_1.sendError)(res, "User not found", 404);
         }
         if (user.role !== "admin") {
-            return authController_1.default.sendError(res, "Access denied, admin required", 403);
+            return (0, authController_1.sendError)(res, "Access denied, admin privileges required", 403);
         }
-        req.body.userId = decoded._id;
-        console.log("Authenticated admin user ID: " + decoded._id);
+        req.body.userId = user._id;
+        console.log(`[INFO] Admin authentication successful for user ID: ${user._id}`);
         next();
     }
     catch (err) {
         if (err.name === "TokenExpiredError") {
-            return authController_1.default.sendError(res, "Token expired", 401);
+            console.error(`[ERROR] Token expired: ${err.message}`);
+            return (0, authController_1.sendError)(res, "Token has expired", 401);
         }
-        console.error("Authentication error:", err);
-        return authController_1.default.sendError(res, "Invalid token", 403);
+        else if (err.name === "JsonWebTokenError") {
+            console.error(`[ERROR] Invalid token: ${err.message}`);
+            return (0, authController_1.sendError)(res, "Invalid token", 403);
+        }
+        else {
+            console.error(`[ERROR] Authentication error: ${err.message}`);
+            return (0, authController_1.sendError)(res, "Authentication failed", 500);
+        }
     }
 });
 exports.default = authenticateAdminMiddleware;

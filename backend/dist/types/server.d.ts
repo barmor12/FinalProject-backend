@@ -1,4 +1,5 @@
 import http from "http";
 import "./passport";
+declare const app: import("express-serve-static-core").Express;
 declare const server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
-export default server;
+export { server, app };

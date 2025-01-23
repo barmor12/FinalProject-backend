@@ -10,7 +10,10 @@ declare const _default: mongoose.Model<{
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
+    isVerified: boolean;
     profilePic?: string | null | undefined;
+    phone?: string | null | undefined;
+    address?: string | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -22,7 +25,10 @@ declare const _default: mongoose.Model<{
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
+    isVerified: boolean;
     profilePic?: string | null | undefined;
+    phone?: string | null | undefined;
+    address?: string | null | undefined;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -34,7 +40,10 @@ declare const _default: mongoose.Model<{
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
+    isVerified: boolean;
     profilePic?: string | null | undefined;
+    phone?: string | null | undefined;
+    address?: string | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -52,7 +61,10 @@ declare const _default: mongoose.Model<{
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
+    isVerified: boolean;
     profilePic?: string | null | undefined;
+    phone?: string | null | undefined;
+    address?: string | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -64,7 +76,10 @@ declare const _default: mongoose.Model<{
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
+    isVerified: boolean;
     profilePic?: string | null | undefined;
+    phone?: string | null | undefined;
+    address?: string | null | undefined;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -76,7 +91,10 @@ declare const _default: mongoose.Model<{
     role: string;
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
+    isVerified: boolean;
     profilePic?: string | null | undefined;
+    phone?: string | null | undefined;
+    address?: string | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

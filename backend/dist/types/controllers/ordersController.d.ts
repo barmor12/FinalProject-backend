@@ -1,3 +1,18 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 export declare const placeOrder: (req: Request, res: Response) => Promise<void>;
 export declare const getAllOrders: (req: Request, res: Response) => Promise<void>;
+export declare const saveDraftOrder: (req: Request, res: Response) => Promise<void>;
+export declare const duplicateOrder: (req: Request, res: Response) => Promise<void>;
+export declare const applyDiscountCode: (req: Request, res: Response) => Promise<void>;
+export declare const checkDeliveryDate: (req: Request, res: Response) => Promise<void>;
+export declare const validateOrderInput: (req: Request, res: Response) => Promise<void>;
+declare const _default: {
+    placeOrder: (req: Request, res: Response) => Promise<void>;
+    getAllOrders: (req: Request, res: Response) => Promise<void>;
+    saveDraftOrder: (req: Request, res: Response) => Promise<void>;
+    duplicateOrder: (req: Request, res: Response) => Promise<void>;
+    applyDiscountCode: (req: Request, res: Response) => Promise<void>;
+    checkDeliveryDate: (req: Request, res: Response) => Promise<void>;
+    validateOrderInput: (req: Request, res: Response) => Promise<void>;
+};
+export default _default;

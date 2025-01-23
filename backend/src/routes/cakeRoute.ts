@@ -15,7 +15,7 @@ const upload = multer({
 // רוטים לניהול עוגות
 router.post('/addcake', authenticateAdminMiddleware, upload.single('image'), addCake);
 router.put('/cakes/:id',authenticateAdminMiddleware, upload.single('image'), updateCake);
-router.get('/cakes', getAllCakes);
+router.get('/', getAllCakes);
 router.delete('/cakes/:id',authenticateAdminMiddleware, deleteCake);
 
 // הוספת עוגה למועדפים

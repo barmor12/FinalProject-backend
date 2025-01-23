@@ -15,7 +15,7 @@ const upload = (0, multer_1.default)({
 });
 router.post('/addcake', authAdminMiddleware_1.default, upload.single('image'), cakeController_1.addCake);
 router.put('/cakes/:id', authAdminMiddleware_1.default, upload.single('image'), cakeController_1.updateCake);
-router.get('/cakes', cakeController_1.getAllCakes);
+router.get('/', cakeController_1.getAllCakes);
 router.delete('/cakes/:id', authAdminMiddleware_1.default, cakeController_1.deleteCake);
 router.post("/favorites", authMiddleware_1.default, cakeController_1.addToFavorites);
 router.delete("/favorites", authMiddleware_1.default, cakeController_1.removeFromFavorites);

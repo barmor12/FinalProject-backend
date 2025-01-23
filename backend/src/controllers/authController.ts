@@ -10,6 +10,8 @@ import User from "../models/userModel";
 import logger from "../logger";
 
 dotenv.config();
+console.log(process.env.ACCESS_TOKEN_SECRET);
+console.log(process.env.REFRESH_TOKEN_SECRET);
 
 interface TokenPayload extends JwtPayload {
   userId: string;
