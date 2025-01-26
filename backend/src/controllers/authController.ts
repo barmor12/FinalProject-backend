@@ -10,8 +10,6 @@ import User from "../models/userModel";
 import logger from "../logger";
 
 dotenv.config();
-console.log(process.env.ACCESS_TOKEN_SECRET);
-console.log(process.env.REFRESH_TOKEN_SECRET);
 
 interface TokenPayload extends JwtPayload {
   userId: string;
@@ -114,34 +112,29 @@ export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
   let profilePic = req.file ? `/uploads/${req.file.filename}` : "";
 
-  // Validate required fields
   if (!firstName || !lastName || !email || !password) {
     logger.warn("Registration failed: Missing fields");
     return sendError(res, "All fields are required");
   }
 
-  // Validate password strength
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   if (!passwordRegex.test(password)) {
     return sendError(
       res,
-      "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+      "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character."
     );
   }
 
   try {
-    // Check if email is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       logger.warn(`Registration failed: Email ${email} already exists`);
       return sendError(res, "User with this email already exists");
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user
     const user = new User({
       firstName,
       lastName,
@@ -149,12 +142,11 @@ export const register = async (req: Request, res: Response) => {
       password: hashedPassword,
       profilePic,
       role: "user",
-      isVerified: false, // New users are not verified by default
+      isVerified: false,
     });
 
     const newUser = await user.save();
 
-    // Generate and send email verification token
     const verificationToken = generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, verificationToken);
 
@@ -272,96 +264,30 @@ export const refresh = async (req: Request, res: Response) => {
 // Logout function
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
-
   if (!refreshToken) {
-    logger.warn("No refresh token provided");
-    return sendError(res, "Refresh token is required", 400);
+    return sendError(res, "Refresh token is required");
   }
 
   try {
-    // Verify the refresh token
     const payload = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET!
     ) as TokenPayload;
-
     const user = await User.findById(payload.userId);
+
     if (!user) {
-      logger.warn("User not found for given refresh token");
       return sendError(res, "User not found", 404);
     }
 
-    // Remove the token from the user's list
-    const tokenIndex = user.refresh_tokens.indexOf(refreshToken);
-    if (tokenIndex === -1) {
-      logger.warn("Refresh token not found in user's tokens");
-      return sendError(res, "Invalid refresh token", 400);
-    }
-
-    user.refresh_tokens.splice(tokenIndex, 1);
+    user.refresh_tokens = user.refresh_tokens.filter(
+      (token) => token !== refreshToken
+    );
     await user.save();
 
-    logger.info(`User ${user.email} logged out successfully.`);
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === "JsonWebTokenError") {
-        logger.warn("Invalid JWT:", err.message);
-        return sendError(res, "Invalid refresh token", 400);
-      }
-
-      if (err.name === "TokenExpiredError") {
-        logger.warn("Expired JWT:", err.message);
-        return sendError(res, "Refresh token expired", 401);
-      }
-    }
-
     logger.error("Logout error:", err);
     sendError(res, "Failed to logout", 500);
-  }
-};
-
-// Password reset function with a 10-second timeout
-export const resetPassword = async (req: Request, res: Response) => {
-  const { email, newPassword } = req.body;
-
-  if (!email || !newPassword) {
-    return sendError(res, "Email and new password are required");
-  }
-
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  if (!passwordRegex.test(newPassword)) {
-    return sendError(
-      res,
-      "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
-    );
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return sendError(res, "User not found", 404);
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    const timeoutPromise = new Promise<void>((_, reject) => {
-      setTimeout(() => reject(new Error("Password reset timeout")), 10000);
-    });
-
-    await Promise.race([
-      (async () => {
-        user.password = hashedPassword;
-        await user.save();
-      })(),
-      timeoutPromise,
-    ]);
-
-    res.status(200).json({ message: "Password reset successfully" });
-  } catch (err) {
-    logger.error("Password reset error:", err);
-    sendError(res, "Failed to reset password", 500);
   }
 };
 
@@ -371,7 +297,6 @@ export default {
   login,
   refresh,
   logout,
-  resetPassword,
   sendError,
   upload,
   getTokenFromRequest,

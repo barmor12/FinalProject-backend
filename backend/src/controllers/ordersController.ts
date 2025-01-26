@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import Order from "../models/orderModel";
 import Cake from "../models/cakeModel";
 import User from "../models/userModel";
+import DiscountCode from "../models/discountCodeModel";
+import mongoose from "mongoose";
 
 export const placeOrder = async (
   req: Request,
@@ -17,6 +19,14 @@ export const placeOrder = async (
   }
 
   try {
+    if (
+      !mongoose.Types.ObjectId.isValid(userId) ||
+      !mongoose.Types.ObjectId.isValid(cakeId)
+    ) {
+      res.status(400).json({ error: "Invalid ID format" });
+      return;
+    }
+
     const cake = await Cake.findById(cakeId);
     if (!cake) {
       res.status(404).json({ error: "Cake not found" });
@@ -39,8 +49,6 @@ export const placeOrder = async (
     res.status(500).json({ error: "Failed to place order" });
   }
 };
-
-// פונקציה זו מחזירה את כל ההזמנות
 
 export const getAllOrders = async (
   req: Request,
@@ -74,7 +82,7 @@ export const saveDraftOrder = async (req: Request, res: Response) => {
       cake: cakeId,
       quantity,
       status: "draft",
-      imagePath: req.file?.path || null, // נתיב תמונה אם קיים
+      imagePath: req.file?.path || null,
     });
 
     const savedOrder = await order.save();
@@ -84,6 +92,7 @@ export const saveDraftOrder = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to save draft order" });
   }
 };
+
 export const duplicateOrder = async (req: Request, res: Response) => {
   const { orderId } = req.body;
 
@@ -94,9 +103,11 @@ export const duplicateOrder = async (req: Request, res: Response) => {
       return;
     }
 
+    const { _id, createdAt, updatedAt, ...orderData } =
+      originalOrder.toObject();
+
     const duplicatedOrder = new Order({
-      ...originalOrder.toObject(),
-      _id: undefined,
+      ...orderData,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -108,14 +119,21 @@ export const duplicateOrder = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to duplicate order" });
   }
 };
+
 export const applyDiscountCode = async (req: Request, res: Response) => {
   const { orderId, discountCode } = req.body;
 
+  if (!mongoose.Types.ObjectId.isValid(orderId)) {
+    res.status(400).json({ error: "Invalid order ID format" });
+    return;
+  }
+
   try {
-    const validCode = await discountCode.findOne({
+    const validCode = await DiscountCode.findOne({
       code: discountCode,
       isActive: true,
     });
+
     if (!validCode) {
       res.status(400).json({ error: "Invalid or expired discount code" });
       return;
@@ -136,6 +154,7 @@ export const applyDiscountCode = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to apply discount code" });
   }
 };
+
 export const checkDeliveryDate = async (req: Request, res: Response) => {
   const { date } = req.body;
 
@@ -145,18 +164,19 @@ export const checkDeliveryDate = async (req: Request, res: Response) => {
   }
 
   try {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
     const ordersOnDate = await Order.countDocuments({
-      deliveryDate: new Date(date),
+      deliveryDate: { $gte: startOfDay, $lte: endOfDay },
     });
 
-    // לדוגמה: 10 הזמנות לכל יום מקסימום
     const maxOrdersPerDay = 10;
 
-    if (ordersOnDate >= maxOrdersPerDay) {
-      res.status(200).json({ available: false });
-    } else {
-      res.status(200).json({ available: true });
-    }
+    res.status(200).json({ available: ordersOnDate < maxOrdersPerDay });
   } catch (err) {
     console.error("Failed to check delivery date:", err);
     res.status(500).json({ error: "Failed to check delivery date" });
@@ -177,6 +197,14 @@ export const validateOrderInput = async (req: Request, res: Response) => {
   }
 
   try {
+    if (
+      !mongoose.Types.ObjectId.isValid(userId) ||
+      !mongoose.Types.ObjectId.isValid(cakeId)
+    ) {
+      res.status(400).json({ error: "Invalid ID format" });
+      return;
+    }
+
     const userExists = await User.exists({ _id: userId });
     const cakeExists = await Cake.exists({ _id: cakeId });
 

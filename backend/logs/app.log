@@ -2,3 +2,25 @@
 2025-01-23T21:28:58.991Z [WARN]: Registration failed: Email avieles100@gmail.com already exists
 2025-01-23T21:29:12.767Z [ERROR]: Registration error: secretOrPrivateKey must have a value
 2025-01-23T21:32:25.994Z [WARN]: Registration failed: Email avieles101@gmail.com already exists
+2025-01-26T09:29:30.664Z [ERROR]: Registration error: secretOrPrivateKey must have a value
+2025-01-26T09:33:33.326Z [WARN]: Registration failed: Email barmor1@gmail.com already exists
+2025-01-26T09:33:58.569Z [ERROR]: Registration error: secretOrPrivateKey must have a value
+2025-01-26T09:37:24.933Z [ERROR]: Registration error: secretOrPrivateKey must have a value
+2025-01-26T09:50:23.769Z [WARN]: Registration failed: Email Bb@gmail.com already exists
+2025-01-26T09:50:32.479Z [WARN]: Registration failed: Email B@gmail.com already exists
+2025-01-26T09:50:46.290Z [ERROR]: Registration error: secretOrPrivateKey must have a value
+2025-01-26T09:59:39.305Z [WARN]: Registration failed: Email Ffbn@gmail.com already exists
+2025-01-26T09:59:46.488Z [ERROR]: Registration error: secretOrPrivateKey must have a value
+2025-01-26T10:35:58.058Z [INFO]: User barmor123456@gmail.com logged out successfully.
+2025-01-26T10:36:35.719Z [ERROR]: Registration error: secretOrPrivateKey must have a value
+2025-01-26T10:40:13.102Z [WARN]: Registration failed: Email Jdhdb@gmail.com already exists
+2025-01-26T10:40:20.318Z [ERROR]: Registration error: Missing credentials for "PLAIN"
+2025-01-26T10:40:48.992Z [WARN]: Registration failed: Email Changes@gmail.com already exists
+2025-01-26T10:41:01.330Z [ERROR]: Registration error: Missing credentials for "PLAIN"
+2025-01-26T10:43:21.566Z [WARN]: Registration failed: Email Dhdgerheh@gmail.com already exists
+2025-01-26T10:43:29.912Z [ERROR]: Registration error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-438bd507d60sm90103205e9.18 - gsmtp
+2025-01-26T10:57:26.328Z [INFO]: User registered successfully: Hhdhdh@gmail.com
+2025-01-26T11:06:16.071Z [INFO]: User barmor123456@gmail.com logged out successfully.
+2025-01-26T11:06:47.256Z [INFO]: User Hhdhdh@gmail.com logged out successfully.
+2025-01-26T11:08:04.044Z [INFO]: User Hhdhdh@gmail.com logged out successfully.
