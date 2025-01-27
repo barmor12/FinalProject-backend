@@ -5,7 +5,7 @@ import { getTokenFromRequest, sendError } from "./authController";
 import bcrypt from 'bcryptjs';
 
 interface TokenPayload extends JwtPayload {
-    _id: string;
+    userId: string;  // עדכון כאן ל- userId
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
@@ -20,27 +20,37 @@ export const updateProfile = async (req: Request, res: Response) => {
             process.env.ACCESS_TOKEN_SECRET!
         ) as TokenPayload;
 
-        const user = await User.findById(decoded._id);
+        const user = await User.findById(decoded.userId);  // עדכון כאן ל- userId
         if (!user) {
             return sendError(res, "User not found", 404);
         }
 
         const { firstName, lastName, email, oldPassword, newPassword } = req.body;
+
+        // אם יש סיסמה ישנה וחדשה, נבצע את אימות הסיסמה
         if (oldPassword && newPassword) {
             const isMatch = await bcrypt.compare(oldPassword, user.password);
             if (!isMatch) {
                 return sendError(res, "Old password is incorrect", 400);
             }
-            user.password = await bcrypt.hash(newPassword, 10);
+            user.password = await bcrypt.hash(newPassword, 10); // עדכון סיסמה
         }
 
+        // אם יש קובץ, נשנה את תמונת הפרופיל
         if (req.file) {
             user.profilePic = `/uploads/${req.file.filename}`;
         }
 
+        // עדכון פרטים אישיים
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
-        user.email = email || user.email;
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return sendError(res, "Email is already in use", 400);
+            }
+            user.email = email;
+        }
 
         const updatedUser = await user.save();
         console.log(updatedUser);
@@ -66,7 +76,7 @@ export const getProfile = async (req: Request, res: Response) => {
             process.env.ACCESS_TOKEN_SECRET!
         ) as TokenPayload;
 
-        const user = await User.findById(decoded._id).select(
+        const user = await User.findById(decoded.userId).select(  // עדכון כאן ל- userId
             "-password -refresh_tokens"
         );
         if (!user) {

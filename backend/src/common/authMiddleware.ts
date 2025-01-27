@@ -2,14 +2,15 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { sendError, getTokenFromRequest } from "../controllers/authController";
 
+// הגדרת מבנה הטוקן
 interface TokenPayload extends JwtPayload {
-  _id: string;
-  role?: string; // במידת הצורך, ניתן להוסיף גם role
+  userId: string; // שדה זה ישתמש ב-userId במקום _id
+  role?: string;  // במידת הצורך, ניתן להוסיף גם role
 }
 
 // פונקציה לבדיקת מבנה הטוקן
 function isTokenPayload(payload: any): payload is TokenPayload {
-  return payload && typeof payload === "object" && "_id" in payload;
+  return payload && typeof payload === "object" && "userId" in payload; // כאן נשנה ל- userId
 }
 
 // Middleware לאימות משתמשים
@@ -53,8 +54,8 @@ const authenticateMiddleware = async (
     }
 
     // הוספת מזהה המשתמש לבקשה
-    req.body.userId = decoded._id;
-    console.log("[INFO] Authenticated user ID:", decoded._id);
+    req.body.userId = decoded.userId; // כאן השתמשנו ב- userId
+    console.log("[INFO] Authenticated user ID:", decoded.userId);
 
     // אם יש צורך לבדוק role, ניתן לעשות כאן
     if (decoded.role) {
