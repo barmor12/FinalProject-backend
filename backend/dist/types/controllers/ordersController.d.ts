@@ -6,6 +6,7 @@ export declare const duplicateOrder: (req: Request, res: Response) => Promise<vo
 export declare const applyDiscountCode: (req: Request, res: Response) => Promise<void>;
 export declare const checkDeliveryDate: (req: Request, res: Response) => Promise<void>;
 export declare const validateOrderInput: (req: Request, res: Response) => Promise<void>;
+export declare const getDecorations: (req: Request, res: Response) => Promise<void>;
 declare const _default: {
     placeOrder: (req: Request, res: Response) => Promise<void>;
     getAllOrders: (req: Request, res: Response) => Promise<void>;
@@ -14,5 +15,6 @@ declare const _default: {
     applyDiscountCode: (req: Request, res: Response) => Promise<void>;
     checkDeliveryDate: (req: Request, res: Response) => Promise<void>;
     validateOrderInput: (req: Request, res: Response) => Promise<void>;
+    getDecorations: (req: Request, res: Response) => Promise<void>;
 };
 export default _default;

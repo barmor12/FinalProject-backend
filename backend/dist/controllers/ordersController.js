@@ -8,16 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
+exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const discountCodeModel_1 = __importDefault(require("../models/discountCodeModel"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, cakeId, quantity } = req.body;
+    const { userId, cakeId, quantity, decoration } = req.body;
     if (!userId || !cakeId || !quantity) {
         res
             .status(400)
@@ -25,6 +38,11 @@ const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return;
     }
     try {
+        if (!mongoose_1.default.Types.ObjectId.isValid(userId) ||
+            !mongoose_1.default.Types.ObjectId.isValid(cakeId)) {
+            res.status(400).json({ error: "Invalid ID format" });
+            return;
+        }
         const cake = yield cakeModel_1.default.findById(cakeId);
         if (!cake) {
             res.status(404).json({ error: "Cake not found" });
@@ -36,6 +54,7 @@ const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             cake: cakeId,
             quantity,
             totalPrice,
+            decoration: decoration || null,
         });
         const savedOrder = yield order.save();
         res.status(201).json(savedOrder);
@@ -93,7 +112,8 @@ const duplicateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).json({ error: "Original order not found" });
             return;
         }
-        const duplicatedOrder = new orderModel_1.default(Object.assign(Object.assign({}, originalOrder.toObject()), { _id: undefined, createdAt: new Date(), updatedAt: new Date() }));
+        const _a = originalOrder.toObject(), { _id, createdAt, updatedAt } = _a, orderData = __rest(_a, ["_id", "createdAt", "updatedAt"]);
+        const duplicatedOrder = new orderModel_1.default(Object.assign(Object.assign({}, orderData), { createdAt: new Date(), updatedAt: new Date() }));
         const savedOrder = yield duplicatedOrder.save();
         res.status(201).json(savedOrder);
     }
@@ -105,8 +125,12 @@ const duplicateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.duplicateOrder = duplicateOrder;
 const applyDiscountCode = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { orderId, discountCode } = req.body;
+    if (!mongoose_1.default.Types.ObjectId.isValid(orderId)) {
+        res.status(400).json({ error: "Invalid order ID format" });
+        return;
+    }
     try {
-        const validCode = yield discountCode.findOne({
+        const validCode = yield discountCodeModel_1.default.findOne({
             code: discountCode,
             isActive: true,
         });
@@ -136,16 +160,15 @@ const checkDeliveryDate = (req, res) => __awaiter(void 0, void 0, void 0, functi
         return;
     }
     try {
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23, 59, 59, 999);
         const ordersOnDate = yield orderModel_1.default.countDocuments({
-            deliveryDate: new Date(date),
+            deliveryDate: { $gte: startOfDay, $lte: endOfDay },
         });
         const maxOrdersPerDay = 10;
-        if (ordersOnDate >= maxOrdersPerDay) {
-            res.status(200).json({ available: false });
-        }
-        else {
-            res.status(200).json({ available: true });
-        }
+        res.status(200).json({ available: ordersOnDate < maxOrdersPerDay });
     }
     catch (err) {
         console.error("Failed to check delivery date:", err);
@@ -164,6 +187,11 @@ const validateOrderInput = (req, res) => __awaiter(void 0, void 0, void 0, funct
         return;
     }
     try {
+        if (!mongoose_1.default.Types.ObjectId.isValid(userId) ||
+            !mongoose_1.default.Types.ObjectId.isValid(cakeId)) {
+            res.status(400).json({ error: "Invalid ID format" });
+            return;
+        }
         const userExists = yield userModel_1.default.exists({ _id: userId });
         const cakeExists = yield cakeModel_1.default.exists({ _id: cakeId });
         if (!userExists) {
@@ -182,6 +210,23 @@ const validateOrderInput = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.validateOrderInput = validateOrderInput;
+const getDecorations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const decorations = [
+            "Sprinkles",
+            "Chocolates",
+            "Fondant",
+            "Fruit Slices",
+            "Icing Roses",
+        ];
+        res.status(200).json(decorations);
+    }
+    catch (error) {
+        console.error("Error fetching decorations:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+exports.getDecorations = getDecorations;
 exports.default = {
     placeOrder: exports.placeOrder,
     getAllOrders: exports.getAllOrders,
@@ -190,5 +235,6 @@ exports.default = {
     applyDiscountCode: exports.applyDiscountCode,
     checkDeliveryDate: exports.checkDeliveryDate,
     validateOrderInput: exports.validateOrderInput,
+    getDecorations: exports.getDecorations,
 };
 //# sourceMappingURL=ordersController.js.map

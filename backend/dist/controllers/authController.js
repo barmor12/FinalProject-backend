@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.logout = exports.refresh = exports.login = exports.verifyEmail = exports.register = exports.sendError = exports.getTokenFromRequest = void 0;
+exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -23,43 +23,59 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const logger_1 = __importDefault(require("../logger"));
 dotenv_1.default.config();
-console.log(process.env.ACCESS_TOKEN_SECRET);
-console.log(process.env.REFRESH_TOKEN_SECRET);
 const enforceHttps = (req, res, next) => {
     if (req.headers["x-forwarded-proto"] !== "https") {
+        logger_1.default.warn("[WARN] Request not using HTTPS");
         return res.status(403).send("Please use HTTPS for secure connections.");
     }
     next();
 };
+exports.enforceHttps = enforceHttps;
 const uploadsDir = path_1.default.join(__dirname, "..", "uploads");
 if (!fs_1.default.existsSync(uploadsDir)) {
     fs_1.default.mkdirSync(uploadsDir, { recursive: true });
 }
 const storage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
+    destination: (req, file, cb) => {
         cb(null, uploadsDir);
     },
-    filename: function (req, file, cb) {
+    filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
-const upload = (0, multer_1.default)({ storage: storage });
+exports.upload = (0, multer_1.default)({ storage });
 const getTokenFromRequest = (req) => {
     const authHeader = req.headers["authorization"];
-    if (!authHeader)
+    if (!authHeader) {
+        logger_1.default.warn("[WARN] Authorization header missing");
         return null;
+    }
     return authHeader.split(" ")[1];
 };
 exports.getTokenFromRequest = getTokenFromRequest;
-const generateTokens = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const accessToken = jsonwebtoken_1.default.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION || "1h" });
-    const refreshToken = jsonwebtoken_1.default.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d" });
+const generateTokens = (userId, role) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
+        throw new Error("Token secrets are not configured in .env file");
+    }
+    logger_1.default.info(`[INFO] Generating tokens for userId: ${userId}, role: ${role}`);
+    const accessToken = jsonwebtoken_1.default.sign({ userId, role }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: process.env.JWT_TOKEN_EXPIRATION || "1h",
+    });
+    const refreshToken = jsonwebtoken_1.default.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
+        expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d",
+    });
+    logger_1.default.info(`[INFO] Tokens generated successfully for userId: ${userId}`);
     return { accessToken, refreshToken };
 });
 const generateVerificationToken = (userId) => {
+    logger_1.default.info(`[INFO] Generating email verification token for userId: ${userId}`);
     return jsonwebtoken_1.default.sign({ userId }, process.env.EMAIL_SECRET, { expiresIn: "1d" });
 };
 const sendVerificationEmail = (email, token) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        throw new Error("Email credentials are not configured");
+    }
+    logger_1.default.info(`[INFO] Sending email verification to: ${email}`);
     const transporter = nodemailer_1.default.createTransport({
         service: "Gmail",
         auth: {
@@ -80,8 +96,11 @@ const sendVerificationEmail = (email, token) => __awaiter(void 0, void 0, void 0
     `,
     };
     yield transporter.sendMail(mailOptions);
+    logger_1.default.info(`[INFO] Verification email sent to: ${email}`);
 });
+exports.sendVerificationEmail = sendVerificationEmail;
 const sendError = (res, message, statusCode = 400) => {
+    logger_1.default.error(`[ERROR] ${message} (Status: ${statusCode})`);
     if (!res.headersSent) {
         res.status(statusCode).json({ error: message });
     }
@@ -89,19 +108,20 @@ const sendError = (res, message, statusCode = 400) => {
 exports.sendError = sendError;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
-    let profilePic = req.file ? `/uploads/${req.file.filename}` : "";
+    const profilePic = req.file ? `/uploads/${req.file.filename}` : "";
+    logger_1.default.info(`[INFO] Attempting to register user: ${email}`);
     if (!firstName || !lastName || !email || !password) {
-        logger_1.default.warn("Registration failed: Missing fields");
+        logger_1.default.warn("[WARN] Registration failed: Missing fields");
         return (0, exports.sendError)(res, "All fields are required");
     }
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-        return (0, exports.sendError)(res, "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        return (0, exports.sendError)(res, "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.");
     }
     try {
         const existingUser = yield userModel_1.default.findOne({ email });
         if (existingUser) {
-            logger_1.default.warn(`Registration failed: Email ${email} already exists`);
+            logger_1.default.warn(`[WARN] Registration failed: Email ${email} already exists`);
             return (0, exports.sendError)(res, "User with this email already exists");
         }
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
@@ -116,58 +136,35 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         const newUser = yield user.save();
         const verificationToken = generateVerificationToken(newUser._id.toString());
-        yield sendVerificationEmail(email, verificationToken);
-        logger_1.default.info(`User registered successfully: ${newUser.email}`);
+        yield (0, exports.sendVerificationEmail)(email, verificationToken);
+        logger_1.default.info(`[INFO] User registered successfully: ${email}`);
         res.status(201).json({
             message: "User created successfully. Please verify your email.",
         });
     }
     catch (err) {
-        logger_1.default.error("Registration error:", err);
+        logger_1.default.error(`[ERROR] Registration error: ${err.message}`);
         (0, exports.sendError)(res, "Failed to register", 500);
     }
 });
 exports.register = register;
-const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { token } = req.query;
-    try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.EMAIL_SECRET);
-        const user = yield userModel_1.default.findById(decoded.userId);
-        if (!user) {
-            logger_1.default.warn("Invalid token: User not found");
-            res.status(400).json({ error: "Invalid or expired token" });
-            return;
-        }
-        if (user.isVerified) {
-            logger_1.default.info(`Email already verified for user: ${user.email}`);
-            res.status(200).json({ message: "Email already verified" });
-            return;
-        }
-        user.isVerified = true;
-        yield user.save();
-        logger_1.default.info(`Email verified successfully for user: ${user.email}`);
-        res.status(200).json({ message: "Email verified successfully" });
-    }
-    catch (err) {
-        logger_1.default.error("Email verification error:", err);
-        res.status(400).json({ error: "Invalid or expired token" });
-    }
-});
-exports.verifyEmail = verifyEmail;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
+    logger_1.default.info(`[INFO] Login attempt for email: ${email}`);
     if (!email || !password) {
         return (0, exports.sendError)(res, "Email and password are required");
     }
     try {
         const user = yield userModel_1.default.findOne({ email });
+        logger_1.default.info(`[INFO] User fetched during login: ${user}`);
         if (!user || !(yield bcryptjs_1.default.compare(password, user.password))) {
             return (0, exports.sendError)(res, "Invalid email or password");
         }
         if (!user.isVerified) {
             return (0, exports.sendError)(res, "Email not verified. Please check your inbox.");
         }
-        const tokens = yield generateTokens(user._id.toString());
+        const tokens = yield generateTokens(user._id.toString(), user.role);
+        logger_1.default.info(`[INFO] Generated tokens for user: ${email}`);
         user.refresh_tokens.push(tokens.refreshToken);
         yield user.save();
         res.status(200).json({
@@ -176,115 +173,95 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (err) {
-        logger_1.default.error("Login error:", err);
+        logger_1.default.error(`[ERROR] Login error: ${err.message}`);
         (0, exports.sendError)(res, "Failed to login", 500);
     }
 });
 exports.login = login;
 const refresh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.body;
+    logger_1.default.info("[INFO] Refresh token process started");
     if (!refreshToken) {
         return (0, exports.sendError)(res, "Refresh token is required");
     }
     try {
         const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        logger_1.default.info(`[INFO] Refresh token verified for userId: ${payload.userId}`);
         const user = yield userModel_1.default.findById(payload.userId);
         if (!user || !user.refresh_tokens.includes(refreshToken)) {
             return (0, exports.sendError)(res, "Invalid refresh token", 403);
         }
-        const tokens = yield generateTokens(user._id.toString());
+        const tokens = yield generateTokens(user._id.toString(), user.role);
         user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
         user.refresh_tokens.push(tokens.refreshToken);
         yield user.save();
+        logger_1.default.info(`[INFO] Refresh token process completed for userId: ${user._id}`);
         res.status(200).json(tokens);
     }
     catch (err) {
-        logger_1.default.error("Refresh token error:", err);
+        logger_1.default.error(`[ERROR] Refresh token error: ${err.message}`);
         (0, exports.sendError)(res, "Failed to refresh token", 500);
     }
 });
 exports.refresh = refresh;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.body;
+    logger_1.default.info("[INFO] Logout process started");
     if (!refreshToken) {
-        logger_1.default.warn("No refresh token provided");
-        return (0, exports.sendError)(res, "Refresh token is required", 400);
+        return (0, exports.sendError)(res, "Refresh token is required");
     }
     try {
         const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         const user = yield userModel_1.default.findById(payload.userId);
         if (!user) {
-            logger_1.default.warn("User not found for given refresh token");
             return (0, exports.sendError)(res, "User not found", 404);
         }
-        const tokenIndex = user.refresh_tokens.indexOf(refreshToken);
-        if (tokenIndex === -1) {
-            logger_1.default.warn("Refresh token not found in user's tokens");
-            return (0, exports.sendError)(res, "Invalid refresh token", 400);
-        }
-        user.refresh_tokens.splice(tokenIndex, 1);
+        user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
         yield user.save();
-        logger_1.default.info(`User ${user.email} logged out successfully.`);
+        logger_1.default.info(`[INFO] User logged out: ${user._id}`);
         res.status(200).json({ message: "Logged out successfully" });
     }
     catch (err) {
-        if (err instanceof Error) {
-            if (err.name === "JsonWebTokenError") {
-                logger_1.default.warn("Invalid JWT:", err.message);
-                return (0, exports.sendError)(res, "Invalid refresh token", 400);
-            }
-            if (err.name === "TokenExpiredError") {
-                logger_1.default.warn("Expired JWT:", err.message);
-                return (0, exports.sendError)(res, "Refresh token expired", 401);
-            }
-        }
-        logger_1.default.error("Logout error:", err);
+        logger_1.default.error(`[ERROR] Logout error: ${err.message}`);
         (0, exports.sendError)(res, "Failed to logout", 500);
     }
 });
 exports.logout = logout;
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, newPassword } = req.body;
-    if (!email || !newPassword) {
-        return (0, exports.sendError)(res, "Email and new password are required");
-    }
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(newPassword)) {
-        return (0, exports.sendError)(res, "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token } = req.query;
+    logger_1.default.info("[INFO] Email verification process started");
+    if (!token) {
+        return (0, exports.sendError)(res, "Token is required", 400);
     }
     try {
-        const user = yield userModel_1.default.findOne({ email });
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.EMAIL_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
         if (!user) {
             return (0, exports.sendError)(res, "User not found", 404);
         }
-        const hashedPassword = yield bcryptjs_1.default.hash(newPassword, 10);
-        const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error("Password reset timeout")), 10000);
-        });
-        yield Promise.race([
-            (() => __awaiter(void 0, void 0, void 0, function* () {
-                user.password = hashedPassword;
-                yield user.save();
-            }))(),
-            timeoutPromise,
-        ]);
-        res.status(200).json({ message: "Password reset successfully" });
+        if (user.isVerified) {
+            logger_1.default.info(`[INFO] Email already verified for user: ${user.email}`);
+            return res.status(200).json({ message: "Email already verified" });
+        }
+        user.isVerified = true;
+        yield user.save();
+        logger_1.default.info(`[INFO] Email verification successful for user: ${user.email}`);
+        res.status(200).json({ message: "Email verified successfully" });
     }
     catch (err) {
-        logger_1.default.error("Password reset error:", err);
-        (0, exports.sendError)(res, "Failed to reset password", 500);
+        logger_1.default.error(`[ERROR] Email verification error: ${err.message}`);
+        (0, exports.sendError)(res, "Invalid or expired token", 400);
     }
 });
-exports.resetPassword = resetPassword;
+exports.verifyEmail = verifyEmail;
 exports.default = {
-    enforceHttps,
+    enforceHttps: exports.enforceHttps,
     register: exports.register,
     login: exports.login,
     refresh: exports.refresh,
     logout: exports.logout,
-    resetPassword: exports.resetPassword,
     sendError: exports.sendError,
-    upload,
+    upload: exports.upload,
     getTokenFromRequest: exports.getTokenFromRequest,
     verifyEmail: exports.verifyEmail,
 };

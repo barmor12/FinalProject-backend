@@ -9,8 +9,10 @@ import {
   validateOrderInput,
 } from "../controllers/ordersController";
 import authenticateMiddleware from "../common/authMiddleware";
-import authenticateAdminMiddleware from "../common/authAdminMiddleware";
+
 import upload from "../common/multerMiddleware"; // Middleware לטיפול בקבצים
+import { getDecorations } from "../controllers/ordersController";
+import authenticateAdminMiddleware from "../common/authAdminMiddleware";
 
 const router = express.Router();
 
@@ -23,12 +25,14 @@ router.post(
 );
 
 // הצגת כל ההזמנות
+
 router.get("/orders", authenticateAdminMiddleware, getAllOrders);
 
 // שמירת טיוטת הזמנה עם העלאת תמונה
 router.post(
   "/draft",
   authenticateMiddleware,
+
   upload.single("image"),
   saveDraftOrder
 );
@@ -44,5 +48,7 @@ router.post("/check-date", authenticateMiddleware, checkDeliveryDate);
 
 // ולידציה של הזמנה
 router.post("/validate", authenticateMiddleware, validateOrderInput);
+
+router.get("/", authenticateMiddleware, getDecorations); // GET /decorations
 
 export default router;

@@ -1,48 +1,76 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { sendError, getTokenFromRequest } from "../controllers/authController";
 
-interface TokenPayload {
+interface TokenPayload extends JwtPayload {
   _id: string;
+  role?: string; // במידת הצורך, ניתן להוסיף גם role
 }
 
-// פונקציה לבדיקת מבנה נתונים של הטוקן
+// פונקציה לבדיקת מבנה הטוקן
 function isTokenPayload(payload: any): payload is TokenPayload {
   return payload && typeof payload === "object" && "_id" in payload;
 }
 
-// Middleware לאימות טוקן
+// Middleware לאימות משתמשים
 const authenticateMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const token = getTokenFromRequest(req);
-
-  if (!token) {
-    return sendError(res, "Token required", 401); // טוקן חסר
-  }
-
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as any;
+    // בדיקה אם הסוד מוגדר ב-.env
+    if (!process.env.ACCESS_TOKEN_SECRET) {
+      console.error(
+        "[ERROR] ACCESS_TOKEN_SECRET is not defined in environment variables."
+      );
+      throw new Error("Missing ACCESS_TOKEN_SECRET in environment variables");
+    }
 
+    // שליפת הטוקן מתוך הבקשה
+    const token = getTokenFromRequest(req);
+    console.log("[INFO] Authorization Header:", req.headers.authorization);
+    console.log("[INFO] Extracted Token:", token);
+
+    if (!token) {
+      console.error("[ERROR] Token is missing from the request");
+      return sendError(res, "Authorization token is required", 401);
+    }
+
+    // פענוח הטוקן
+    console.log("[INFO] Decoding token...");
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET
+    ) as TokenPayload;
+
+    console.log("[INFO] Decoded Token:", decoded);
+
+    // בדיקת מבנה הטוקן
     if (!isTokenPayload(decoded)) {
-      return sendError(res, "Invalid token data", 403); // טוקן לא חוקי
+      console.error("[ERROR] Invalid token payload structure:", decoded);
+      return sendError(res, "Invalid token data", 403);
     }
 
     // הוספת מזהה המשתמש לבקשה
     req.body.userId = decoded._id;
+    console.log("[INFO] Authenticated user ID:", decoded._id);
 
-    console.log("Authenticated user ID:", decoded._id); // פלט לדיבוג
-
-    next();
-  } catch (err: any) {
-    if (err.name === "TokenExpiredError") {
-      return sendError(res, "Token expired", 401); // טוקן שפג תוקפו
+    // אם יש צורך לבדוק role, ניתן לעשות כאן
+    if (decoded.role) {
+      console.log("[INFO] User role:", decoded.role);
     }
 
-    console.error("Authentication error:", err); // לוג לשגיאות
-    return sendError(res, "Invalid token", 403); // טוקן לא חוקי
+    // העברת הבקשה ל-Next Middleware
+    next();
+  } catch (err: any) {
+    console.error("[ERROR] Error verifying token:", err.message);
+    if (err.name === "TokenExpiredError") {
+      return sendError(res, "Token has expired", 401);
+    } else if (err.name === "JsonWebTokenError") {
+      return sendError(res, "Invalid token", 403);
+    }
+    return sendError(res, "Authentication failed", 500);
   }
 };
 

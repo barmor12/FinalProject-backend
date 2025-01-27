@@ -9,8 +9,9 @@ export const placeOrder = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { userId, cakeId, quantity } = req.body;
+  const { userId, cakeId, quantity, decoration } = req.body; // נוסיף שדה decoration
 
+  // בדיקות תקינות להזמנה
   if (!userId || !cakeId || !quantity) {
     res
       .status(400)
@@ -19,6 +20,7 @@ export const placeOrder = async (
   }
 
   try {
+    // בדיקה אם ה-ID תקין
     if (
       !mongoose.Types.ObjectId.isValid(userId) ||
       !mongoose.Types.ObjectId.isValid(cakeId)
@@ -27,21 +29,25 @@ export const placeOrder = async (
       return;
     }
 
+    // בדיקה אם העוגה קיימת
     const cake = await Cake.findById(cakeId);
     if (!cake) {
       res.status(404).json({ error: "Cake not found" });
       return;
     }
 
-    const totalPrice = cake.price * quantity;
+    const totalPrice = cake.price * quantity; // חישוב המחיר הכולל
 
+    // יצירת אובייקט הזמנה
     const order = new Order({
       user: userId,
       cake: cakeId,
       quantity,
       totalPrice,
+      decoration: decoration || null, // שמירת הקישוט אם נשלח
     });
 
+    // שמירת ההזמנה ושליחת תגובה
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
   } catch (err) {
@@ -224,6 +230,24 @@ export const validateOrderInput = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to validate order" });
   }
 };
+export const getDecorations = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const decorations = [
+      "Sprinkles",
+      "Chocolates",
+      "Fondant",
+      "Fruit Slices",
+      "Icing Roses",
+    ]; // רשימה קשיחה לדוגמה
+    res.status(200).json(decorations);
+  } catch (error) {
+    console.error("Error fetching decorations:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 export default {
   placeOrder,
@@ -233,4 +257,5 @@ export default {
   applyDiscountCode,
   checkDeliveryDate,
   validateOrderInput,
+  getDecorations,
 };

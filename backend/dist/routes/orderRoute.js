@@ -6,8 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const ordersController_1 = require("../controllers/ordersController");
 const authMiddleware_1 = __importDefault(require("../common/authMiddleware"));
-const authAdminMiddleware_1 = __importDefault(require("../common/authAdminMiddleware"));
 const multerMiddleware_1 = __importDefault(require("../common/multerMiddleware"));
+const ordersController_2 = require("../controllers/ordersController");
+const authAdminMiddleware_1 = __importDefault(require("../common/authAdminMiddleware"));
 const router = express_1.default.Router();
 router.post("/new-order", authMiddleware_1.default, multerMiddleware_1.default.single("image"), ordersController_1.placeOrder);
 router.get("/orders", authAdminMiddleware_1.default, ordersController_1.getAllOrders);
@@ -16,5 +17,6 @@ router.post("/duplicate", authMiddleware_1.default, ordersController_1.duplicate
 router.post("/apply-discount", authMiddleware_1.default, ordersController_1.applyDiscountCode);
 router.post("/check-date", authMiddleware_1.default, ordersController_1.checkDeliveryDate);
 router.post("/validate", authMiddleware_1.default, ordersController_1.validateOrderInput);
+router.get("/", authMiddleware_1.default, ordersController_2.getDecorations);
 exports.default = router;
 //# sourceMappingURL=orderRoute.js.map

@@ -9,6 +9,7 @@ const orderSchema = new mongoose_1.default.Schema({
     cake: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Cake", required: true },
     quantity: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
+    decoration: { type: String, default: "" },
     status: {
         type: String,
         enum: ["draft", "pending", "confirmed", "delivered"],

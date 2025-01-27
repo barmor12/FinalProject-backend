@@ -10,7 +10,9 @@ const router = express_1.default.Router();
 router.post("/register", authController_1.register);
 router.post("/login", authController_1.login);
 router.post("/logout", authController_1.logout);
-router.get("/verify-email", authController_1.verifyEmail);
+router.get("/verify-email", (req, res, next) => {
+    (0, authController_1.verifyEmail)(req, res).catch(next);
+});
 router.get("/google", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
 router.get("/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), (req, res) => res.redirect("/"));
 exports.default = router;

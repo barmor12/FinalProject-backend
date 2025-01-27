@@ -6,6 +6,7 @@ declare const Order: mongoose.Model<{
     cake: mongoose.Types.ObjectId;
     quantity: number;
     totalPrice: number;
+    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
     expiresAt: NativeDate;
     discountCode?: string | null | undefined;
@@ -17,6 +18,7 @@ declare const Order: mongoose.Model<{
     cake: mongoose.Types.ObjectId;
     quantity: number;
     totalPrice: number;
+    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
     expiresAt: NativeDate;
     discountCode?: string | null | undefined;
@@ -28,6 +30,7 @@ declare const Order: mongoose.Model<{
     cake: mongoose.Types.ObjectId;
     quantity: number;
     totalPrice: number;
+    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
     expiresAt: NativeDate;
     discountCode?: string | null | undefined;
@@ -43,6 +46,7 @@ declare const Order: mongoose.Model<{
     cake: mongoose.Types.ObjectId;
     quantity: number;
     totalPrice: number;
+    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
     expiresAt: NativeDate;
     discountCode?: string | null | undefined;
@@ -54,6 +58,7 @@ declare const Order: mongoose.Model<{
     cake: mongoose.Types.ObjectId;
     quantity: number;
     totalPrice: number;
+    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
     expiresAt: NativeDate;
     discountCode?: string | null | undefined;
@@ -65,6 +70,7 @@ declare const Order: mongoose.Model<{
     cake: mongoose.Types.ObjectId;
     quantity: number;
     totalPrice: number;
+    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
     expiresAt: NativeDate;
     discountCode?: string | null | undefined;
