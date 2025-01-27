@@ -260,38 +260,51 @@ export const refresh = async (req: Request, res: Response) => {
 };
 
 // יציאת משתמש
+
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
   logger.info("[INFO] Logout process started");
 
   if (!refreshToken) {
-    return sendError(res, "Refresh token is required");
+    logger.warn("[WARN] Refresh token is missing from the request");
+    return sendError(res, "Refresh token is required", 400);
   }
 
   try {
+    // Verify the refresh token
     const payload = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET!
     ) as TokenPayload;
 
+    // Find the user by ID
     const user = await User.findById(payload.userId);
     if (!user) {
+      logger.warn("[WARN] User not found during logout");
       return sendError(res, "User not found", 404);
     }
 
-    user.refresh_tokens = user.refresh_tokens.filter(
-      (token) => token !== refreshToken
-    );
+    // Remove ALL refresh tokens for the user
+    user.refresh_tokens = [];
     await user.save();
 
-    logger.info(`[INFO] User logged out: ${user._id}`);
+    logger.info(`[INFO] User logged out successfully: ${user._id}`);
     res.status(200).json({ message: "Logged out successfully" });
-  } catch (err) {
-    logger.error(`[ERROR] Logout error: ${(err as Error).message}`);
+  } catch (err: any) {
+    // Handle token verification errors
+    if (err.name === "JsonWebTokenError") {
+      logger.warn("[WARN] Invalid refresh token provided");
+      return sendError(res, "Invalid refresh token", 403);
+    } else if (err.name === "TokenExpiredError") {
+      logger.warn("[WARN] Refresh token expired");
+      return sendError(res, "Refresh token expired", 401);
+    }
+
+    // Handle other errors
+    logger.error(`[ERROR] Logout error: ${err.message}`);
     sendError(res, "Failed to logout", 500);
   }
 };
-
 // אימות דוא"ל
 export const verifyEmail = async (req: Request, res: Response) => {
   const { token } = req.query;

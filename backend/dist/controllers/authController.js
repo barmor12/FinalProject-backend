@@ -208,20 +208,30 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.body;
     logger_1.default.info("[INFO] Logout process started");
     if (!refreshToken) {
-        return (0, exports.sendError)(res, "Refresh token is required");
+        logger_1.default.warn("[WARN] Refresh token is missing from the request");
+        return (0, exports.sendError)(res, "Refresh token is required", 400);
     }
     try {
         const payload = jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
         const user = yield userModel_1.default.findById(payload.userId);
         if (!user) {
+            logger_1.default.warn("[WARN] User not found during logout");
             return (0, exports.sendError)(res, "User not found", 404);
         }
-        user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
+        user.refresh_tokens = [];
         yield user.save();
-        logger_1.default.info(`[INFO] User logged out: ${user._id}`);
+        logger_1.default.info(`[INFO] User logged out successfully: ${user._id}`);
         res.status(200).json({ message: "Logged out successfully" });
     }
     catch (err) {
+        if (err.name === "JsonWebTokenError") {
+            logger_1.default.warn("[WARN] Invalid refresh token provided");
+            return (0, exports.sendError)(res, "Invalid refresh token", 403);
+        }
+        else if (err.name === "TokenExpiredError") {
+            logger_1.default.warn("[WARN] Refresh token expired");
+            return (0, exports.sendError)(res, "Refresh token expired", 401);
+        }
         logger_1.default.error(`[ERROR] Logout error: ${err.message}`);
         (0, exports.sendError)(res, "Failed to logout", 500);
     }
