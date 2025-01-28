@@ -1480,3 +1480,349 @@
 2025-01-27T18:52:38.078Z [INFO]: [INFO] Generating tokens for userId: 6797a47e827a5d91f34cccae, role: admin
 2025-01-27T18:52:38.085Z [INFO]: [INFO] Tokens generated successfully for userId: 6797a47e827a5d91f34cccae
 2025-01-27T18:52:38.086Z [INFO]: [INFO] Generated tokens for user: aviel@gmail.com
+2025-01-28T12:33:36.115Z [INFO]: [INFO] Attempting to register user: avieles100@gmail.com
+2025-01-28T12:33:36.258Z [WARN]: [WARN] Registration failed: Email avieles100@gmail.com already exists
+2025-01-28T12:33:36.259Z [ERROR]: [ERROR] User with this email already exists (Status: 400)
+2025-01-28T12:36:54.529Z [INFO]: [INFO] Attempting to register user: avieles100@gmail.com
+2025-01-28T12:36:54.880Z [INFO]: [INFO] Generating email verification token for userId: 6798cf666290530e3f77af43
+2025-01-28T12:36:54.882Z [INFO]: [INFO] Sending email verification to: avieles100@gmail.com
+2025-01-28T12:36:56.111Z [INFO]: [INFO] Verification email sent to: avieles100@gmail.com
+2025-01-28T12:36:56.111Z [INFO]: [INFO] User registered successfully: avieles100@gmail.com
+2025-01-28T12:38:07.467Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T12:38:07.605Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T12:36:54.735Z,
+  __v: 0
+}
+2025-01-28T12:38:07.664Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T12:38:07.665Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T12:38:07.666Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T12:39:06.519Z [ERROR]: [ERROR] Access denied, admin privileges required (Status: 403)
+2025-01-28T12:57:58.222Z [INFO]: [INFO] Logout process started
+2025-01-28T12:57:58.467Z [INFO]: [INFO] User logged out successfully: 6798cf666290530e3f77af43
+2025-01-28T12:58:19.840Z [INFO]: [INFO] Login attempt for email: aviel@gmail.com
+2025-01-28T12:58:19.959Z [INFO]: [INFO] User fetched during login: null
+2025-01-28T12:58:19.959Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-01-28T12:58:26.450Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T12:58:26.568Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T12:57:58.343Z,
+  __v: 2
+}
+2025-01-28T12:58:26.632Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T12:58:26.634Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T12:58:26.634Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T13:02:55.231Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T13:02:55.342Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNjkxMDYsImV4cCI6MTczODY3MzkwNn0.Ywp3wnpXPZ_UwZfyDO0_U-kuFXOhkUcQwH12nAcV_Yw'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T12:58:26.634Z,
+  __v: 3
+}
+2025-01-28T13:02:55.397Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T13:02:55.398Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T13:02:55.398Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T13:08:17.871Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T13:08:17.995Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNjkxMDYsImV4cCI6MTczODY3MzkwNn0.Ywp3wnpXPZ_UwZfyDO0_U-kuFXOhkUcQwH12nAcV_Yw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNjkzNzUsImV4cCI6MTczODY3NDE3NX0.NmQGBtUsCfbC8uI6xLlIt50fsM4heTHDbrLu4zJS33U'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T13:02:55.399Z,
+  __v: 4
+}
+2025-01-28T13:08:18.059Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T13:08:18.061Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T13:08:18.062Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T14:02:17.065Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:08:23.991Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-01-28T14:08:35.423Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-01-28T14:08:44.000Z [INFO]: [INFO] Logout process started
+2025-01-28T14:08:44.284Z [INFO]: [INFO] User logged out successfully: 6798cf666290530e3f77af43
+2025-01-28T14:08:52.334Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T14:08:52.501Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T14:08:44.144Z,
+  __v: 6
+}
+2025-01-28T14:08:52.563Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T14:08:52.565Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T14:08:52.565Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T14:08:55.242Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:09:57.534Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:10:13.907Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:14:34.342Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:14:38.754Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:15:06.244Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:15:41.067Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:18:16.377Z [INFO]: [INFO] Logout process started
+2025-01-28T14:18:16.662Z [INFO]: [INFO] User logged out successfully: 6798cf666290530e3f77af43
+2025-01-28T14:18:32.471Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T14:18:32.609Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T14:18:16.518Z,
+  __v: 8
+}
+2025-01-28T14:18:32.670Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T14:18:32.671Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T14:18:32.671Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T14:18:37.354Z [ERROR]: [ERROR] Cake ID is required (Status: 400)
+2025-01-28T14:20:27.760Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T14:20:27.876Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzM5MTIsImV4cCI6MTczODY3ODcxMn0.vcVjqO0U0MYnjZ3PNqlwLynZpzDdkXHtjpT5EoQMowQ'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T14:18:32.672Z,
+  __v: 9
+}
+2025-01-28T14:20:27.934Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T14:20:27.935Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T14:20:27.936Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T14:34:46.498Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T14:34:46.636Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzM5MTIsImV4cCI6MTczODY3ODcxMn0.vcVjqO0U0MYnjZ3PNqlwLynZpzDdkXHtjpT5EoQMowQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzQwMjcsImV4cCI6MTczODY3ODgyN30.ehyVDkyZSsUDgBuO5p4V1SUl8CnRv1Om5EsXgpVVeKE'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T14:20:27.936Z,
+  __v: 10
+}
+2025-01-28T14:34:46.693Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T14:34:46.695Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T14:34:46.695Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T14:36:25.633Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T14:36:25.770Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzM5MTIsImV4cCI6MTczODY3ODcxMn0.vcVjqO0U0MYnjZ3PNqlwLynZpzDdkXHtjpT5EoQMowQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzQwMjcsImV4cCI6MTczODY3ODgyN30.ehyVDkyZSsUDgBuO5p4V1SUl8CnRv1Om5EsXgpVVeKE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzQ4ODYsImV4cCI6MTczODY3OTY4Nn0.eQ32O8Kiav0qsUmNwduPM6kghVZ07HV53fOH5BPofcs'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T14:34:46.695Z,
+  __v: 11
+}
+2025-01-28T14:36:25.827Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T14:36:25.828Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T14:36:25.828Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T15:13:11.829Z [INFO]: [INFO] Logout process started
+2025-01-28T15:13:12.103Z [INFO]: [INFO] User logged out successfully: 6798cf666290530e3f77af43
+2025-01-28T15:13:19.273Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T15:13:19.405Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T15:13:11.966Z,
+  __v: 13
+}
+2025-01-28T15:13:19.470Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T15:13:19.472Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T15:13:19.472Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T15:13:29.764Z [ERROR]: [ERROR] Access denied, admin privileges required (Status: 403)
+2025-01-28T15:25:10.013Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T15:25:10.130Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzcxOTksImV4cCI6MTczODY4MTk5OX0.29bMpnR-ZHYfwulNCdurTrh_iGb9SxqFb0awKJe7GO8'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T15:13:19.473Z,
+  __v: 14
+}
+2025-01-28T15:25:10.185Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T15:25:10.187Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T15:25:10.187Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T15:33:22.670Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T15:33:22.787Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzcxOTksImV4cCI6MTczODY4MTk5OX0.29bMpnR-ZHYfwulNCdurTrh_iGb9SxqFb0awKJe7GO8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzc5MTAsImV4cCI6MTczODY4MjcxMH0.UHTtqWctBnQoxYdjsxpSoRoW0lCMW6VA39yS1fxexgA'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T15:25:10.187Z,
+  __v: 15
+}
+2025-01-28T15:33:22.842Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T15:33:22.843Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T15:33:22.844Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T15:33:27.908Z [ERROR]: [ERROR] Access denied, admin privileges required (Status: 403)
+2025-01-28T16:09:18.641Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T16:09:18.768Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzcxOTksImV4cCI6MTczODY4MTk5OX0.29bMpnR-ZHYfwulNCdurTrh_iGb9SxqFb0awKJe7GO8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzc5MTAsImV4cCI6MTczODY4MjcxMH0.UHTtqWctBnQoxYdjsxpSoRoW0lCMW6VA39yS1fxexgA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk4Y2Y2NjYyOTA1MzBlM2Y3N2FmNDMiLCJpYXQiOjE3MzgwNzg0MDIsImV4cCI6MTczODY4MzIwMn0.Qimq2PVRU9DC8BwmGQgHFHDUB-LvITuSCAKRbjqe16s'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T15:33:22.844Z,
+  __v: 16
+}
+2025-01-28T16:09:18.835Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T16:09:18.838Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T16:09:18.838Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T16:13:34.794Z [INFO]: [INFO] Logout process started
+2025-01-28T16:13:35.036Z [INFO]: [INFO] User logged out successfully: 6798cf666290530e3f77af43
+2025-01-28T16:13:42.340Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T16:13:42.457Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T16:13:34.915Z,
+  __v: 18
+}
+2025-01-28T16:13:42.521Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T16:13:42.523Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T16:13:42.524Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T16:14:31.609Z [INFO]: [INFO] Logout process started
+2025-01-28T16:14:31.907Z [INFO]: [INFO] User logged out successfully: 6798cf666290530e3f77af43
+2025-01-28T16:14:39.178Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-01-28T16:14:39.314Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6798cf666290530e3f77af43'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$7Pz4q6PFYsQp4BHeRlIJA.p.dSDnozJAd8bWqC5L31D3D.MaNl29a',
+  firstName: 'Aviel',
+  lastName: 'Esperansa',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-28T12:36:54.735Z,
+  updatedAt: 2025-01-28T16:14:31.746Z,
+  __v: 20
+}
+2025-01-28T16:14:39.372Z [INFO]: [INFO] Generating tokens for userId: 6798cf666290530e3f77af43, role: user
+2025-01-28T16:14:39.374Z [INFO]: [INFO] Tokens generated successfully for userId: 6798cf666290530e3f77af43
+2025-01-28T16:14:39.374Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-01-28T16:14:44.882Z [ERROR]: [ERROR] Access denied, admin privileges required (Status: 403)

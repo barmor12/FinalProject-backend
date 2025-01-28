@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authController_1 = require("../controllers/authController");
 function isTokenPayload(payload) {
-    return payload && typeof payload === "object" && "_id" in payload;
+    return payload && typeof payload === "object" && "userId" in payload;
 }
 const authenticateMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -37,8 +37,8 @@ const authenticateMiddleware = (req, res, next) => __awaiter(void 0, void 0, voi
             console.error("[ERROR] Invalid token payload structure:", decoded);
             return (0, authController_1.sendError)(res, "Invalid token data", 403);
         }
-        req.body.userId = decoded._id;
-        console.log("[INFO] Authenticated user ID:", decoded._id);
+        req.body.userId = decoded.userId;
+        console.log("[INFO] Authenticated user ID:", decoded.userId);
         if (decoded.role) {
             console.log("[INFO] User role:", decoded.role);
         }

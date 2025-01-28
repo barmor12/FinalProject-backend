@@ -11,6 +11,7 @@ import recipeRoute from "./routes/recipeRoute";
 import orderRoute from "./routes/orderRoute";
 import cakeRoute from "./routes/cakeRoute";
 import userRoute from "./routes/userRoute";
+import cartRoute from "./routes/cartRoute";
 
 import "./passport";
 
@@ -41,6 +42,7 @@ app.use("/auth", authRoute);
 app.use("/recipes", recipeRoute);
 app.use("/cakes", cakeRoute);
 app.use("/order", orderRoute);
+app.use("/cart", cartRoute);
 app.use("/user", userRoute);
 
 // Database Connection

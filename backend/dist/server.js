@@ -16,6 +16,7 @@ const recipeRoute_1 = __importDefault(require("./routes/recipeRoute"));
 const orderRoute_1 = __importDefault(require("./routes/orderRoute"));
 const cakeRoute_1 = __importDefault(require("./routes/cakeRoute"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
+const cartRoute_1 = __importDefault(require("./routes/cartRoute"));
 require("./passport");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -36,6 +37,7 @@ app.use("/auth", authRoute_1.default);
 app.use("/recipes", recipeRoute_1.default);
 app.use("/cakes", cakeRoute_1.default);
 app.use("/order", orderRoute_1.default);
+app.use("/cart", cartRoute_1.default);
 app.use("/user", userRoute_1.default);
 mongoose_1.default
     .connect(process.env.MONGO_URI)

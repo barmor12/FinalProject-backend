@@ -24,7 +24,7 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = yield userModel_1.default.findById(decoded._id);
+        const user = yield userModel_1.default.findById(decoded.userId);
         if (!user) {
             return (0, authController_1.sendError)(res, "User not found", 404);
         }
@@ -41,7 +41,13 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
-        user.email = email || user.email;
+        if (email && email !== user.email) {
+            const existingUser = yield userModel_1.default.findOne({ email });
+            if (existingUser) {
+                return (0, authController_1.sendError)(res, "Email is already in use", 400);
+            }
+            user.email = email;
+        }
         const updatedUser = yield user.save();
         console.log(updatedUser);
         res.status(200).json({
@@ -62,7 +68,7 @@ const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = yield userModel_1.default.findById(decoded._id).select("-password -refresh_tokens");
+        const user = yield userModel_1.default.findById(decoded.userId).select("-password -refresh_tokens");
         if (!user) {
             return (0, authController_1.sendError)(res, "User not found", 404);
         }
