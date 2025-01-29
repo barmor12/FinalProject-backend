@@ -132,6 +132,45 @@ export const sendError = (
   }
 };
 
+export const updatePassword = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return sendError(res, "Token required", 401);
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return sendError(res, "Both old and new passwords are required", 400);
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return sendError(res, "Old password is incorrect", 400);
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    res.status(200).json({
+      message: "Password updated successfully",
+    });
+  } catch (err) {
+    console.error("Update password error:", err);
+    sendError(res, "Failed to update password", 500);
+  }
+};
+
 // רישום משתמש חדש
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
@@ -351,4 +390,5 @@ export default {
   upload,
   getTokenFromRequest,
   verifyEmail,
+  updatePassword
 };
