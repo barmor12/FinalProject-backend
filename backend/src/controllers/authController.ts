@@ -253,6 +253,7 @@ export const login = async (req: Request, res: Response) => {
     res.status(200).json({
       message: "User logged in successfully",
       tokens,
+      role: user.role,
     });
   } catch (err) {
     logger.error(`[ERROR] Login error: ${(err as Error).message}`);
@@ -390,5 +391,5 @@ export default {
   upload,
   getTokenFromRequest,
   verifyEmail,
-  updatePassword
+  updatePassword,
 };

@@ -1,27 +1,27 @@
 import mongoose from 'mongoose';
 declare const _default: mongoose.Model<{
     name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    description: string;
-    ingredients: string[];
-    price: number;
     image?: string | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    description: string;
-    ingredients: string[];
-    price: number;
     image?: string | null | undefined;
 }> & {
     name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    description: string;
-    ingredients: string[];
-    price: number;
     image?: string | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
@@ -29,27 +29,27 @@ declare const _default: mongoose.Model<{
     __v: number;
 }, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
     name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    description: string;
-    ingredients: string[];
-    price: number;
     image?: string | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    description: string;
-    ingredients: string[];
-    price: number;
     image?: string | null | undefined;
 }>> & mongoose.FlatRecord<{
     name: string;
+    description: string;
+    price: number;
+    ingredients: string[];
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    description: string;
-    ingredients: string[];
-    price: number;
     image?: string | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;

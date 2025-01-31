@@ -26,7 +26,7 @@ router.post(
 
 // הצגת כל ההזמנות
 
-router.get("/orders", authenticateAdminMiddleware, getAllOrders);
+router.get("/orders", authenticateMiddleware, getAllOrders);
 
 // שמירת טיוטת הזמנה עם העלאת תמונה
 router.post(

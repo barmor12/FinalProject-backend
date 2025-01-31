@@ -3,30 +3,30 @@ declare const _default: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    user: mongoose.Types.ObjectId;
     description: string;
-    title: string;
     ingredients: string[];
+    user: mongoose.Types.ObjectId;
+    title: string;
     instructions: string[];
     image?: string | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    user: mongoose.Types.ObjectId;
     description: string;
-    title: string;
     ingredients: string[];
+    user: mongoose.Types.ObjectId;
+    title: string;
     instructions: string[];
     image?: string | null | undefined;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    user: mongoose.Types.ObjectId;
     description: string;
-    title: string;
     ingredients: string[];
+    user: mongoose.Types.ObjectId;
+    title: string;
     instructions: string[];
     image?: string | null | undefined;
 } & {
@@ -39,30 +39,30 @@ declare const _default: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    user: mongoose.Types.ObjectId;
     description: string;
-    title: string;
     ingredients: string[];
+    user: mongoose.Types.ObjectId;
+    title: string;
     instructions: string[];
     image?: string | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    user: mongoose.Types.ObjectId;
     description: string;
-    title: string;
     ingredients: string[];
+    user: mongoose.Types.ObjectId;
+    title: string;
     instructions: string[];
     image?: string | null | undefined;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
-    user: mongoose.Types.ObjectId;
     description: string;
-    title: string;
     ingredients: string[];
+    user: mongoose.Types.ObjectId;
+    title: string;
     instructions: string[];
     image?: string | null | undefined;
 }> & {

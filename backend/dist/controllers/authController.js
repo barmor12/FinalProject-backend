@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
+exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -106,6 +106,37 @@ const sendError = (res, message, statusCode = 400) => {
     }
 };
 exports.sendError = sendError;
+const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return (0, exports.sendError)(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        const { oldPassword, newPassword } = req.body;
+        if (!oldPassword || !newPassword) {
+            return (0, exports.sendError)(res, "Both old and new passwords are required", 400);
+        }
+        const isMatch = yield bcryptjs_1.default.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return (0, exports.sendError)(res, "Old password is incorrect", 400);
+        }
+        user.password = yield bcryptjs_1.default.hash(newPassword, 10);
+        yield user.save();
+        res.status(200).json({
+            message: "Password updated successfully",
+        });
+    }
+    catch (err) {
+        console.error("Update password error:", err);
+        (0, exports.sendError)(res, "Failed to update password", 500);
+    }
+});
+exports.updatePassword = updatePassword;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
     const profilePic = req.file ? `/uploads/${req.file.filename}` : "";
@@ -170,6 +201,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json({
             message: "User logged in successfully",
             tokens,
+            role: user.role,
         });
     }
     catch (err) {
@@ -274,5 +306,6 @@ exports.default = {
     upload: exports.upload,
     getTokenFromRequest: exports.getTokenFromRequest,
     verifyEmail: exports.verifyEmail,
+    updatePassword: exports.updatePassword,
 };
 //# sourceMappingURL=authController.js.map
