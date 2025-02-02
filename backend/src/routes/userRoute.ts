@@ -14,7 +14,6 @@ router.post("/delete-profile", authenticateMiddleware, deleteProfile);
 router.put(
   "/profile",
   authenticateMiddleware,
-  upload.single("profilePic"),
   updateProfile
 );
 

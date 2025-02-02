@@ -167,9 +167,10 @@ export const updatePassword = async (req: Request, res: Response) => {
     });
   } catch (err) {
     console.error("Update password error:", err);
-    sendError(res, "Failed to update password", 500);
+    return sendError(res, "Failed to update password", 500);  // make sure `sendError` sends proper JSON
   }
 };
+
 
 // רישום משתמש חדש
 export const register = async (req: Request, res: Response) => {

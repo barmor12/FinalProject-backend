@@ -27,10 +27,6 @@ export const updateProfile = async (req: Request, res: Response) => {
 
         const { firstName, lastName } = req.body;
 
-        if (req.file) {
-            user.profilePic = `/uploads/${req.file.filename}`;
-        }
-
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
 

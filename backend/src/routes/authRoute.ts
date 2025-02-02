@@ -5,11 +5,13 @@ import {
   login,
   logout,
   verifyEmail,
+  updatePassword,
 } from "../controllers/authController";
 
 const router = express.Router();
 
 router.post("/register", register);
+router.put("/update-password", updatePassword);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/verify-email", (req, res, next) => {
