@@ -7,6 +7,7 @@ import {
   verifyEmail,
   updatePassword,
 } from "../controllers/authController";
+import { forgotPassword, resetPassword } from "../controllers/authController";
 
 const router = express.Router();
 
@@ -27,5 +28,6 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => res.redirect("/")
 );
-
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 export default router;

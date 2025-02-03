@@ -167,10 +167,9 @@ export const updatePassword = async (req: Request, res: Response) => {
     });
   } catch (err) {
     console.error("Update password error:", err);
-    return sendError(res, "Failed to update password", 500);  // make sure `sendError` sends proper JSON
+    return sendError(res, "Failed to update password", 500); // make sure `sendError` sends proper JSON
   }
 };
-
 
 // רישום משתמש חדש
 export const register = async (req: Request, res: Response) => {
@@ -380,6 +379,105 @@ export const verifyEmail = async (req: Request, res: Response) => {
     logger.error(`[ERROR] Email verification error: ${(err as Error).message}`);
     sendError(res, "Invalid or expired token", 400);
   }
+};
+const resetPasswordTokens = new Map<
+  string,
+  { code: string; expiresAt: number }
+>();
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  if (!email) {
+    return sendError(res, "Email is required", 400);
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    // יצירת קוד אימות בן 6 ספרות
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 15 * 60 * 1000; // תוקף ל-15 דקות
+
+    // שמירת הקוד בזיכרון (אפשר להשתמש גם בבסיס נתונים)
+    resetPasswordTokens.set(user.email, { code: resetCode, expiresAt });
+
+    // שליחת אימייל למשתמש
+    await sendResetEmail(user.email, resetCode);
+
+    res.status(200).json({ message: "Reset code sent to email" });
+  } catch (err) {
+    logger.error(`[ERROR] Forgot password error: ${(err as Error).message}`);
+    sendError(res, "Failed to send reset email", 500);
+  }
+};
+export const resetPassword = async (req: Request, res: Response) => {
+  const { email, code, newPassword } = req.body;
+
+  if (!email || !code || !newPassword) {
+    return sendError(res, "All fields are required", 400);
+  }
+
+  try {
+    // בדיקת קיום המשתמש
+    const user = await User.findOne({ email });
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    // בדיקת קוד שחזור
+    const storedToken = resetPasswordTokens.get(email);
+    if (
+      !storedToken ||
+      storedToken.code !== code ||
+      Date.now() > storedToken.expiresAt
+    ) {
+      return sendError(res, "Invalid or expired reset code", 400);
+    }
+
+    // מחיקת הטוקן מהזיכרון לאחר השימוש
+    resetPasswordTokens.delete(email);
+
+    // הצפנת הסיסמה החדשה ועדכונה במסד הנתונים
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (err) {
+    logger.error(`[ERROR] Reset password error: ${(err as Error).message}`);
+    sendError(res, "Failed to reset password", 500);
+  }
+};
+const sendResetEmail = async (email: string, resetCode: string) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    throw new Error("Email credentials are missing in environment variables");
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Password Reset Code",
+    html: `
+      <h1>Password Reset Request</h1>
+      <p>Use the following code to reset your password:</p>
+      <h2>${resetCode}</h2>
+      <p>This code will expire in 15 minutes.</p>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+  logger.info(`[INFO] Password reset email sent to: ${email}`);
 };
 
 export default {

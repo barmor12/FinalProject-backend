@@ -11,6 +11,8 @@ export declare const login: (req: Request, res: Response) => Promise<void>;
 export declare const refresh: (req: Request, res: Response) => Promise<void>;
 export declare const logout: (req: Request, res: Response) => Promise<void>;
 export declare const verifyEmail: (req: Request, res: Response) => Promise<void | express.Response<any, Record<string, any>>>;
+export declare const forgotPassword: (req: Request, res: Response) => Promise<void>;
+export declare const resetPassword: (req: Request, res: Response) => Promise<void>;
 declare const _default: {
     enforceHttps: (req: Request, res: Response, next: NextFunction) => express.Response<any, Record<string, any>> | undefined;
     register: (req: Request, res: Response) => Promise<void>;

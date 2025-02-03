@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
+exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -296,6 +296,82 @@ const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.verifyEmail = verifyEmail;
+const resetPasswordTokens = new Map();
+const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    if (!email) {
+        return (0, exports.sendError)(res, "Email is required", 400);
+    }
+    try {
+        const user = yield userModel_1.default.findOne({ email });
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiresAt = Date.now() + 15 * 60 * 1000;
+        resetPasswordTokens.set(user.email, { code: resetCode, expiresAt });
+        yield sendResetEmail(user.email, resetCode);
+        res.status(200).json({ message: "Reset code sent to email" });
+    }
+    catch (err) {
+        logger_1.default.error(`[ERROR] Forgot password error: ${err.message}`);
+        (0, exports.sendError)(res, "Failed to send reset email", 500);
+    }
+});
+exports.forgotPassword = forgotPassword;
+const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, code, newPassword } = req.body;
+    if (!email || !code || !newPassword) {
+        return (0, exports.sendError)(res, "All fields are required", 400);
+    }
+    try {
+        const user = yield userModel_1.default.findOne({ email });
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        const storedToken = resetPasswordTokens.get(email);
+        if (!storedToken ||
+            storedToken.code !== code ||
+            Date.now() > storedToken.expiresAt) {
+            return (0, exports.sendError)(res, "Invalid or expired reset code", 400);
+        }
+        resetPasswordTokens.delete(email);
+        const hashedPassword = yield bcryptjs_1.default.hash(newPassword, 10);
+        user.password = hashedPassword;
+        yield user.save();
+        res.status(200).json({ message: "Password reset successfully" });
+    }
+    catch (err) {
+        logger_1.default.error(`[ERROR] Reset password error: ${err.message}`);
+        (0, exports.sendError)(res, "Failed to reset password", 500);
+    }
+});
+exports.resetPassword = resetPassword;
+const sendResetEmail = (email, resetCode) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        throw new Error("Email credentials are missing in environment variables");
+    }
+    const transporter = nodemailer_1.default.createTransport({
+        service: "Gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
+        },
+    });
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Password Reset Code",
+        html: `
+      <h1>Password Reset Request</h1>
+      <p>Use the following code to reset your password:</p>
+      <h2>${resetCode}</h2>
+      <p>This code will expire in 15 minutes.</p>
+    `,
+    };
+    yield transporter.sendMail(mailOptions);
+    logger_1.default.info(`[INFO] Password reset email sent to: ${email}`);
+});
 exports.default = {
     enforceHttps: exports.enforceHttps,
     register: exports.register,
