@@ -11,6 +11,6 @@ const router = express_1.default.Router();
 const upload = (0, multer_1.default)({ dest: "uploads/" });
 router.get("/profile", authMiddleware_1.default, userController_1.getProfile);
 router.post("/delete-profile", authMiddleware_1.default, userController_1.deleteProfile);
-router.put("/profile", authMiddleware_1.default, upload.single("profilePic"), userController_1.updateProfile);
+router.put("/profile", authMiddleware_1.default, userController_1.updateProfile);
 exports.default = router;
 //# sourceMappingURL=userRoute.js.map

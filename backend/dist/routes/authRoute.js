@@ -8,6 +8,7 @@ const passport_1 = __importDefault(require("passport"));
 const authController_1 = require("../controllers/authController");
 const router = express_1.default.Router();
 router.post("/register", authController_1.register);
+router.put("/update-password", authController_1.updatePassword);
 router.post("/login", authController_1.login);
 router.post("/logout", authController_1.logout);
 router.get("/verify-email", (req, res, next) => {

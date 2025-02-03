@@ -28,9 +28,6 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             return (0, authController_1.sendError)(res, "User not found", 404);
         }
         const { firstName, lastName } = req.body;
-        if (req.file) {
-            user.profilePic = `/uploads/${req.file.filename}`;
-        }
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
         const updatedUser = yield user.save();

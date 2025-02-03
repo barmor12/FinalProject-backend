@@ -11,5 +11,6 @@ router.post("/add", authMiddleware_1.default, cartController_1.default.addToCart
 router.get("/", authMiddleware_1.default, cartController_1.default.getCart);
 router.delete("/remove", authMiddleware_1.default, cartController_1.default.removeFromCart);
 router.delete("/clear", authMiddleware_1.default, cartController_1.default.clearCart);
+router.post("/update", authMiddleware_1.default, cartController_1.default.updateCartItem);
 exports.default = router;
 //# sourceMappingURL=cartRoute.js.map

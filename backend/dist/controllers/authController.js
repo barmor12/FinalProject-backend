@@ -133,7 +133,7 @@ const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (err) {
         console.error("Update password error:", err);
-        (0, exports.sendError)(res, "Failed to update password", 500);
+        return (0, exports.sendError)(res, "Failed to update password", 500);
     }
 });
 exports.updatePassword = updatePassword;

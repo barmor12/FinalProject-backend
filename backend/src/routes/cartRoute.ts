@@ -8,5 +8,6 @@ router.post("/add", authenticateMiddleware, cartController.addToCart);
 router.get("/", authenticateMiddleware, cartController.getCart);
 router.delete("/remove", authenticateMiddleware, cartController.removeFromCart);
 router.delete("/clear", authenticateMiddleware, cartController.clearCart);
+router.post("/update", authenticateMiddleware, cartController.updateCartItem);
 
 export default router;

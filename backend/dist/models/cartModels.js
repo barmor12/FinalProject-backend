@@ -37,7 +37,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const cartItemSchema = new mongoose_1.Schema({
     cake: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Cake", required: true },
     quantity: { type: Number, required: true, default: 1 },
-});
+}, { _id: true });
 const cartSchema = new mongoose_1.Schema({
     user: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", required: true },
     items: [cartItemSchema],

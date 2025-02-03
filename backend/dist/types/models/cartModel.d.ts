@@ -1,5 +1,6 @@
 import mongoose, { Document } from "mongoose";
 interface CartItem {
+    _id?: mongoose.Types.ObjectId;
     cake: mongoose.Types.ObjectId;
     quantity: number;
 }
