@@ -4886,3 +4886,1173 @@
 2025-02-03T18:53:11.614Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
 2025-02-03T18:54:03.722Z [INFO]: [INFO] Logout process started
 2025-02-03T18:54:03.955Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-03T19:17:16.342Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-02-03T19:18:01.953Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-03T19:18:02.068Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$FyRSr6vm.foopND21f3T5Ofretf1Y25Ut5ydrdHiGE6HaKWfZE5T6',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-03T19:17:54.296Z,
+  __v: 100
+}
+2025-02-03T19:18:02.187Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-02-03T19:18:12.603Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-03T19:18:12.720Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$FyRSr6vm.foopND21f3T5Ofretf1Y25Ut5ydrdHiGE6HaKWfZE5T6',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-03T19:17:54.296Z,
+  __v: 100
+}
+2025-02-03T19:18:12.840Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-02-03T19:18:37.039Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-02-03T19:19:17.442Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-03T19:19:17.556Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-03T19:19:08.217Z,
+  __v: 100
+}
+2025-02-03T19:19:17.674Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-02-03T19:19:27.572Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-03T19:19:27.689Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-03T19:19:08.217Z,
+  __v: 100
+}
+2025-02-03T19:19:27.808Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-03T19:19:27.809Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-03T19:19:27.809Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-04T06:40:00.594Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-04T06:40:00.818Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg2MTAzNjcsImV4cCI6MTczOTIxNTE2N30.NSb9MIP_jUiMHpg05N9X79gH7JPxgHA7XHrvbmEsfrc'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-03T19:19:27.809Z,
+  __v: 101
+}
+2025-02-04T06:40:01.061Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-04T06:40:01.082Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-04T06:40:01.082Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-04T06:40:22.777Z [INFO]: [INFO] Logout process started
+2025-02-04T06:40:23.015Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-04T06:41:58.819Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-04T06:41:58.939Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-04T06:40:22.896Z,
+  __v: 103
+}
+2025-02-04T06:41:59.054Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: admin
+2025-02-04T06:41:59.059Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-04T06:41:59.059Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-04T06:57:29.602Z [INFO]: [INFO] Logout process started
+2025-02-04T06:57:29.909Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-04T07:04:28.914Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-04T07:04:29.119Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-04T06:57:29.779Z,
+  __v: 105
+}
+2025-02-04T07:04:29.285Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: admin
+2025-02-04T07:04:29.295Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-04T07:04:29.295Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-04T07:05:05.811Z [INFO]: [INFO] Logout process started
+2025-02-04T07:05:06.049Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-04T07:05:25.401Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-04T07:05:25.627Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-04T07:05:05.930Z,
+  __v: 107
+}
+2025-02-04T07:05:25.748Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-04T07:05:25.749Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-04T07:05:25.749Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-04T07:07:30.434Z [INFO]: [INFO] Logout process started
+2025-02-04T07:07:30.678Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T21:18:07.605Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:18:07.613Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:18:11.992Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:18:11.994Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:18:41.041Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:20:06.311Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:20:07.428Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:20:07.433Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:20:39.722Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:20:39.731Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:22:52.050Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:22:52.053Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:22:52.872Z [INFO]: [INFO] Logout process started
+2025-02-05T21:22:53.237Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T21:23:00.850Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T21:23:01.050Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-04T07:07:30.552Z,
+  __v: 109
+}
+2025-02-05T21:23:01.152Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T21:23:01.153Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T21:23:01.153Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T21:28:16.937Z [INFO]: [INFO] Logout process started
+2025-02-05T21:28:17.292Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T21:31:56.562Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T21:31:56.750Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T21:28:17.115Z,
+  __v: 111
+}
+2025-02-05T21:31:56.850Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T21:31:56.851Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T21:31:56.851Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T21:33:28.598Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:33:32.687Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:33:37.383Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:35:04.131Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:36:14.747Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:36:14.748Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:36:14.748Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:37:02.082Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:37:02.083Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:37:02.085Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:43:23.735Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:43:23.736Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:43:23.736Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:48:34.188Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:48:34.189Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:48:34.194Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:55:41.492Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:55:41.498Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:55:41.500Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:55:46.018Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T21:55:46.021Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:00:06.813Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:00:06.821Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:00:06.836Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:00:06.837Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:00:06.845Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:00:06.845Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:00:06.981Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:00:06.981Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:00:06.998Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:00:06.999Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:00:07.126Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:00:07.161Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 112 modifiedPaths "refresh_tokens"
+2025-02-05T22:00:07.162Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:03:43.750Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:03:43.752Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:01.757Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:01.758Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:16.996Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:16.997Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:19.573Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:19.574Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:49.683Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:49.685Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:04:49.703Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:04:49.703Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:04:49.705Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:04:49.705Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:04:49.860Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:04:49.866Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:05:17.771Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:05:17.779Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:05:17.794Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:05:17.795Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:05:17.797Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:05:17.798Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:05:17.935Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:05:17.950Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:05:24.775Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:05:24.781Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:05:24.789Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:05:24.789Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:05:24.804Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:05:24.805Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:05:24.951Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:05:24.961Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:05:25.711Z [INFO]: [INFO] Logout process started
+2025-02-05T22:05:26.074Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T22:05:33.344Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:05:33.508Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:05:25.903Z,
+  __v: 114
+}
+2025-02-05T22:05:33.590Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:05:33.591Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:05:33.591Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:05:33.756Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:23:04.127Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:23:04.299Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTMxMzMsImV4cCI6MTczOTM5NzkzM30.BGHfs9krxZqTtLcKXASY1ttPZUn-UHK_Z0yq2oHHXdg'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:05:33.592Z,
+  __v: 115
+}
+2025-02-05T22:23:04.396Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:23:04.397Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:23:04.397Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:23:04.558Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:24:04.133Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:24:04.161Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:24:04.162Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:24:04.354Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:24:04.357Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:24:04.546Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:24:14.430Z [INFO]: [INFO] Logout process started
+2025-02-05T22:24:14.810Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T22:24:22.298Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:24:22.495Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:24:14.642Z,
+  __v: 118
+}
+2025-02-05T22:24:22.601Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:24:22.601Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:24:22.601Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:24:22.799Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:28:36.802Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:28:36.806Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:28:36.818Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:28:36.818Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:28:36.820Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:28:36.820Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:28:36.985Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:28:36.987Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:28:36.990Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:28:36.991Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:28:37.172Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 119 modifiedPaths "refresh_tokens"
+2025-02-05T22:28:37.172Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:28:37.173Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:28:50.222Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:29:05.720Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:29:05.885Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ1MTYsImV4cCI6MTczOTM5OTMxNn0.3zioj2Er1zeoqOvD8qsZIfa2JtTS513NcDGp1pegCCY'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:28:36.992Z,
+  __v: 120
+}
+2025-02-05T22:29:05.978Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:29:05.979Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:29:05.979Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:29:06.149Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:29:14.540Z [INFO]: [INFO] Logout process started
+2025-02-05T22:29:14.917Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T22:29:23.085Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:29:23.271Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:29:14.752Z,
+  __v: 122
+}
+2025-02-05T22:29:23.368Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:29:23.369Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:29:23.369Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:29:23.537Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:30:07.927Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:30:07.934Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:30:07.945Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:30:07.946Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:30:07.949Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:30:07.950Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:30:08.110Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:30:08.111Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:30:08.117Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:30:08.118Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:30:08.285Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:30:08.287Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 123 modifiedPaths "refresh_tokens"
+2025-02-05T22:30:08.287Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:30:27.562Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:30:27.564Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:32:47.686Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:32:47.872Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ2MDgsImV4cCI6MTczOTM5OTQwOH0.RDrivlUWVFhbzwfUD-2WRo66TKrQ09bNyx1x7ytTObA'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:30:08.119Z,
+  __v: 124
+}
+2025-02-05T22:32:47.966Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:32:47.966Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:32:47.966Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:32:48.134Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:33:10.118Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.120Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.125Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.126Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.130Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.133Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.135Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:33:10.140Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.140Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.142Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.142Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.267Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.267Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.273Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.274Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.277Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.277Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.287Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.287Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.422Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:33:10.423Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.436Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:33:10.437Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.442Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:33:10.442Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.443Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:33:10.443Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.567Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.576Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:33:10.576Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:10.595Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 125 modifiedPaths "refresh_tokens"
+2025-02-05T22:33:10.596Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:33:10.603Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 125 modifiedPaths "refresh_tokens"
+2025-02-05T22:33:10.603Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:33:10.608Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 125 modifiedPaths "refresh_tokens"
+2025-02-05T22:33:10.608Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:33:10.730Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:33:11.306Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:33:11.419Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:33:18.711Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:33:18.877Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ2MDgsImV4cCI6MTczOTM5OTQwOH0.RDrivlUWVFhbzwfUD-2WRo66TKrQ09bNyx1x7ytTObA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ3OTAsImV4cCI6MTczOTM5OTU5MH0.3EiMwd2RW_oeQWhyPFL8DbNwv2XxWT9e3QLaoJ8ZnS0'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:33:10.424Z,
+  __v: 126
+}
+2025-02-05T22:33:18.969Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:33:18.969Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:33:18.969Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:33:19.138Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:34:18.023Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:34:18.025Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:34:18.040Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:34:18.040Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:34:18.042Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:34:18.042Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:34:18.197Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:34:18.198Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:34:18.201Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:34:18.202Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:34:18.368Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:34:18.370Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 127 modifiedPaths "refresh_tokens"
+2025-02-05T22:34:18.370Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:34:29.011Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:35:29.272Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:35:29.437Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ2MDgsImV4cCI6MTczOTM5OTQwOH0.RDrivlUWVFhbzwfUD-2WRo66TKrQ09bNyx1x7ytTObA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ3OTAsImV4cCI6MTczOTM5OTU5MH0.3EiMwd2RW_oeQWhyPFL8DbNwv2XxWT9e3QLaoJ8ZnS0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ4NTgsImV4cCI6MTczOTM5OTY1OH0.8Bm_bxcqcVIU54y6Jl-lVS9x5T9OHrRoZ6Q-6XN4H00'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:34:18.199Z,
+  __v: 128
+}
+2025-02-05T22:35:29.529Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:35:29.529Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:35:29.529Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:35:29.696Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:35:39.967Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:35:39.988Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:35:39.989Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:35:40.165Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:35:40.166Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:35:40.329Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:35:58.007Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:35:58.022Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:35:58.023Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:35:58.207Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:40:47.260Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:40:47.440Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ2MDgsImV4cCI6MTczOTM5OTQwOH0.RDrivlUWVFhbzwfUD-2WRo66TKrQ09bNyx1x7ytTObA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ3OTAsImV4cCI6MTczOTM5OTU5MH0.3EiMwd2RW_oeQWhyPFL8DbNwv2XxWT9e3QLaoJ8ZnS0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ4NTgsImV4cCI6MTczOTM5OTY1OH0.8Bm_bxcqcVIU54y6Jl-lVS9x5T9OHrRoZ6Q-6XN4H00',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ5NDAsImV4cCI6MTczOTM5OTc0MH0.XCMSInmbAocSfeG9mhM0f3yE_b4FHI70iTIRtlmpeQI'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:35:40.166Z,
+  __v: 130
+}
+2025-02-05T22:40:47.536Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:40:47.536Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:40:47.536Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:40:47.703Z [INFO]: [INFO] Updated refresh tokens for user: barmor123456@gmail.com
+2025-02-05T22:41:16.788Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.790Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.795Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.796Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.800Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.801Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.806Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:41:16.814Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:16.814Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.816Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:16.816Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.942Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:16.942Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.943Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:16.943Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.947Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:16.947Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.948Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:16.948Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.951Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:41:16.952Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:16.970Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:41:16.970Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.098Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:41:17.099Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.101Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:41:17.101Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.104Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:41:17.104Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.108Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:41:17.108Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.110Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.117Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:41:17.118Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:41:17.163Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 131 modifiedPaths "refresh_tokens"
+2025-02-05T22:41:17.163Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:41:17.242Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 131 modifiedPaths "refresh_tokens"
+2025-02-05T22:41:17.244Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:41:17.267Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 131 modifiedPaths "refresh_tokens"
+2025-02-05T22:41:17.269Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:41:17.274Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 131 modifiedPaths "refresh_tokens"
+2025-02-05T22:41:17.274Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:41:17.275Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:41:17.276Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 131 modifiedPaths "refresh_tokens"
+2025-02-05T22:41:17.276Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:46:11.535Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:46:11.823Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:46:11.825Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:46:11.993Z [INFO]: [INFO] Tokens generated for user: barmor123456@gmail.com
+2025-02-05T22:46:46.332Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:46:46.354Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:46:46.514Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:46:46.516Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:46:46.686Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:47:11.830Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:47:16.130Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:47:16.156Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:47:16.302Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T22:52:11.064Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:52:11.358Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:52:11.359Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:52:11.521Z [INFO]: [INFO] Tokens generated for user: barmor123456@gmail.com
+2025-02-05T22:52:30.398Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:52:30.402Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:52:30.641Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:52:30.642Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:52:30.647Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:52:30.649Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:52:30.823Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:52:44.535Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:52:58.725Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:52:59.024Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:52:59.024Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:52:59.202Z [INFO]: [INFO] Tokens generated for user: barmor123456@gmail.com
+2025-02-05T22:53:18.318Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:53:18.323Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:53:18.546Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:53:18.547Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:53:18.553Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:53:18.553Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:53:18.725Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:53:35.460Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:53:35.473Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:53:45.054Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:53:45.359Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:53:45.361Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:53:45.535Z [INFO]: [INFO] Tokens generated for user: barmor123456@gmail.com
+2025-02-05T22:54:02.789Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:54:02.794Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:54:02.812Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:54:02.817Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:54:02.992Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:54:02.994Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:54:03.000Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:54:03.001Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:54:03.144Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:54:03.157Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 139 modifiedPaths "refresh_tokens"
+2025-02-05T22:54:03.157Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:56:20.038Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:56:20.043Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:56:20.045Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:56:20.046Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:58:30.720Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:58:30.916Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ2MDgsImV4cCI6MTczOTM5OTQwOH0.RDrivlUWVFhbzwfUD-2WRo66TKrQ09bNyx1x7ytTObA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ3OTAsImV4cCI6MTczOTM5OTU5MH0.3EiMwd2RW_oeQWhyPFL8DbNwv2XxWT9e3QLaoJ8ZnS0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ4NTgsImV4cCI6MTczOTM5OTY1OH0.8Bm_bxcqcVIU54y6Jl-lVS9x5T9OHrRoZ6Q-6XN4H00',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTQ5NDAsImV4cCI6MTczOTM5OTc0MH0.XCMSInmbAocSfeG9mhM0f3yE_b4FHI70iTIRtlmpeQI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTUyNzYsImV4cCI6MTczOTQwMDA3Nn0.UjYh_hm0knjlfwJXuWbMnMHgsgJ8TssjUJzcje5m46M',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTU2MDYsImV4cCI6MTczOTQwMDQwNn0.6vQu3eoFXWM_F7nMIz-bxvvQTsnEpLQCKBX_MUqQ0Bg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTU5NTAsImV4cCI6MTczOTQwMDc1MH0.StubXeDO1A3dCp7eZjD56QCnbDTdDVjzhe5DccuIOv4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTU5OTgsImV4cCI6MTczOTQwMDc5OH0.R8DBYbHKd_T4pMxfceUoZUjXLGgiqHpx7JKyduhWzQQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYwNDIsImV4cCI6MTczOTQwMDg0Mn0.c0o1CdZ2_8wlQ6nqeN5LTnEbB7fN-zPbgI1VnZGNdsI'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:54:02.997Z,
+  __v: 140
+}
+2025-02-05T22:58:31.011Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:58:31.012Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:58:31.012Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:58:41.511Z [INFO]: [INFO] Logout process started
+2025-02-05T22:58:41.846Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-05T22:58:46.890Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T22:58:47.061Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:58:41.682Z,
+  __v: 142
+}
+2025-02-05T22:58:47.153Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:58:47.154Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:58:47.154Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T22:59:08.496Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:59:08.499Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:59:08.525Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:59:08.525Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:59:08.528Z [INFO]: [INFO] Refresh token process started
+2025-02-05T22:59:08.528Z [INFO]: [INFO] Refresh token verified for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:59:08.715Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:59:08.717Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:59:08.725Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T22:59:08.726Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:59:08.874Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T22:59:08.885Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 143 modifiedPaths "refresh_tokens"
+2025-02-05T22:59:08.885Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T22:59:27.543Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T22:59:27.545Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:01:03.168Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:01:03.340Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T22:59:08.718Z,
+  __v: 144
+}
+2025-02-05T23:01:03.434Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:01:03.435Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:01:03.436Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:01:24.666Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:01:24.674Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:01:24.684Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:01:24.848Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:01:24.850Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:01:25.025Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:01:37.130Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:02:12.815Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:02:12.840Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:02:12.995Z [WARN]: [WARN] Invalid refresh token attempt
+2025-02-05T23:02:12.996Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T23:04:34.211Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:04:34.381Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:01:24.853Z,
+  __v: 146
+}
+2025-02-05T23:04:34.470Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:04:34.471Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:04:34.471Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:04:56.242Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:04:56.247Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:04:56.272Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:04:56.452Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:04:56.454Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:04:56.633Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:05:14.358Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:05:18.044Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:05:18.085Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:05:18.248Z [WARN]: [WARN] Invalid refresh token attempt
+2025-02-05T23:05:18.248Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T23:06:22.256Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:06:22.451Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY2OTYsImV4cCI6MTczOTQwMTQ5Nn0.3lmSS7BjWBuaMSnu9egFVc1c_dz6AamXYjYxgkjXAYw'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:04:56.456Z,
+  __v: 148
+}
+2025-02-05T23:06:22.544Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:06:22.544Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:06:22.544Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:06:48.029Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:06:48.051Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:06:48.191Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:06:48.192Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:06:48.352Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:06:59.110Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:06:59.135Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:06:59.323Z [WARN]: [WARN] Invalid refresh token attempt
+2025-02-05T23:06:59.323Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T23:07:55.950Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:07:56.119Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY2OTYsImV4cCI6MTczOTQwMTQ5Nn0.3lmSS7BjWBuaMSnu9egFVc1c_dz6AamXYjYxgkjXAYw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4MDgsImV4cCI6MTczOTQwMTYwOH0.ijmXqAF5XsLtWY3uoCldH5XZHHyR1KnuJ7mUUNHpEPQ'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:06:48.193Z,
+  __v: 150
+}
+2025-02-05T23:07:56.212Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:07:56.212Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:07:56.212Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:08:07.313Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:08:07.319Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:08:07.332Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:08:07.347Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:08:07.501Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:08:07.502Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:08:07.507Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:08:07.508Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:08:07.662Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:08:07.681Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 151 modifiedPaths "refresh_tokens"
+2025-02-05T23:08:07.681Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T23:08:26.332Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:08:26.501Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY2OTYsImV4cCI6MTczOTQwMTQ5Nn0.3lmSS7BjWBuaMSnu9egFVc1c_dz6AamXYjYxgkjXAYw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4MDgsImV4cCI6MTczOTQwMTYwOH0.ijmXqAF5XsLtWY3uoCldH5XZHHyR1KnuJ7mUUNHpEPQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4ODcsImV4cCI6MTczOTQwMTY4N30.GIx5Ch6le05DaqSUS3sa15KNt8u2_mxuFyp20uRuwTA'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:08:07.503Z,
+  __v: 152
+}
+2025-02-05T23:08:26.597Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:08:26.597Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:08:26.597Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:08:37.112Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:08:37.133Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:08:37.285Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:08:37.287Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:08:37.440Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:08:47.968Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:08:47.993Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:08:48.139Z [WARN]: [WARN] Invalid refresh token attempt
+2025-02-05T23:08:48.140Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T23:13:11.768Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:13:11.954Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY2OTYsImV4cCI6MTczOTQwMTQ5Nn0.3lmSS7BjWBuaMSnu9egFVc1c_dz6AamXYjYxgkjXAYw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4MDgsImV4cCI6MTczOTQwMTYwOH0.ijmXqAF5XsLtWY3uoCldH5XZHHyR1KnuJ7mUUNHpEPQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4ODcsImV4cCI6MTczOTQwMTY4N30.GIx5Ch6le05DaqSUS3sa15KNt8u2_mxuFyp20uRuwTA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY5MTcsImV4cCI6MTczOTQwMTcxN30.c2NQvIkbSwaYpYwmCjPZlPg3sLYpcw2-iO1_rxvvcn4'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:08:37.288Z,
+  __v: 154
+}
+2025-02-05T23:13:12.050Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:13:12.051Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:13:12.051Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:13:22.325Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:13:22.341Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:13:22.522Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:13:22.523Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:13:22.693Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:13:32.854Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:13:32.883Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:13:33.040Z [WARN]: [WARN] Invalid refresh token attempt
+2025-02-05T23:13:33.040Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-02-05T23:18:28.326Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:18:28.515Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY2OTYsImV4cCI6MTczOTQwMTQ5Nn0.3lmSS7BjWBuaMSnu9egFVc1c_dz6AamXYjYxgkjXAYw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4MDgsImV4cCI6MTczOTQwMTYwOH0.ijmXqAF5XsLtWY3uoCldH5XZHHyR1KnuJ7mUUNHpEPQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4ODcsImV4cCI6MTczOTQwMTY4N30.GIx5Ch6le05DaqSUS3sa15KNt8u2_mxuFyp20uRuwTA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY5MTcsImV4cCI6MTczOTQwMTcxN30.c2NQvIkbSwaYpYwmCjPZlPg3sLYpcw2-iO1_rxvvcn4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTcyMDIsImV4cCI6MTczOTQwMjAwMn0.I5-Lv8dDHHXNwmxvYgeiJIwAK3pVMwxYLJ9Y87tqJS4'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:13:22.526Z,
+  __v: 156
+}
+2025-02-05T23:18:28.607Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:18:28.608Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:18:28.608Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:18:54.312Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:18:54.314Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:18:54.329Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:18:54.334Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:18:54.509Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:18:54.510Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:18:54.516Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:18:54.517Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:18:54.673Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:18:54.680Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 157 modifiedPaths "refresh_tokens"
+2025-02-05T23:18:54.680Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T23:19:30.453Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:19:30.617Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTYzNDgsImV4cCI6MTczOTQwMTE0OH0.TAk8jE0kGrJIpqW7wW4J5WissawUuHwZkB5YMKsl0Bw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY0ODQsImV4cCI6MTczOTQwMTI4NH0.u1QWFu3r8zMA6pbkZSlKB294IvWdLECGMloRkN7cVgE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY2OTYsImV4cCI6MTczOTQwMTQ5Nn0.3lmSS7BjWBuaMSnu9egFVc1c_dz6AamXYjYxgkjXAYw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4MDgsImV4cCI6MTczOTQwMTYwOH0.ijmXqAF5XsLtWY3uoCldH5XZHHyR1KnuJ7mUUNHpEPQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY4ODcsImV4cCI6MTczOTQwMTY4N30.GIx5Ch6le05DaqSUS3sa15KNt8u2_mxuFyp20uRuwTA',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTY5MTcsImV4cCI6MTczOTQwMTcxN30.c2NQvIkbSwaYpYwmCjPZlPg3sLYpcw2-iO1_rxvvcn4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTcyMDIsImV4cCI6MTczOTQwMjAwMn0.I5-Lv8dDHHXNwmxvYgeiJIwAK3pVMwxYLJ9Y87tqJS4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTc1MzQsImV4cCI6MTczOTQwMjMzNH0.qYDbg-BVfHtkDRTB_kbQ1arzwhpvd8bVlDJXzLYlxCg'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:18:54.512Z,
+  __v: 158
+}
+2025-02-05T23:19:30.712Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:19:30.714Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:19:30.714Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:19:43.087Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:19:43.093Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:19:43.110Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:19:43.113Z [INFO]: [INFO] Refresh token process started
+2025-02-05T23:19:43.287Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:19:43.289Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:19:43.295Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:19:43.295Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:19:43.461Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "6799f989dcae8375ff99c306" version 159 modifiedPaths "refresh_tokens"
+2025-02-05T23:19:43.462Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-02-05T23:19:43.464Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:19:54.541Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:19:54.544Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:19:56.916Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:20:00.682Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:20:02.645Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:24:48.889Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:24:48.931Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:24:48.932Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:24:48.933Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:25:48.894Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:25:49.053Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:25:49.054Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:25:57.458Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:25:57.626Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:25:57.629Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:27:57.556Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:27:57.557Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:27:57.558Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:28:40.255Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:28:40.257Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:28:40.259Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:28:46.469Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:28:46.474Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:28:46.476Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:29:52.901Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:29:52.901Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:29:52.902Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:30:07.350Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:30:07.519Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:30:07.520Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:30:52.276Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:30:52.278Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:30:52.280Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:06.337Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:06.499Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:06.499Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:10.950Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:13.407Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:13.415Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:19.743Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:22.318Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:40.540Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:31:40.540Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:05.018Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:05.019Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:11.202Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:11.202Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:49.625Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:49.634Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:51.207Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:51.210Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:32:54.644Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:36:16.617Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:36:18.152Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:10.126Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:20.713Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:20.716Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:37.969Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:37.970Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:45.138Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:38:45.142Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:39:44.757Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:39:44.759Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:45:02.623Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:45:02.625Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:52:09.602Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-05T23:52:09.753Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:19:43.291Z,
+  __v: 160
+}
+2025-02-05T23:52:09.844Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-05T23:52:09.845Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-05T23:52:09.845Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-05T23:52:21.878Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-05T23:52:24.000Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:05:44.382Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-06T00:05:44.534Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg3OTk1MjksImV4cCI6MTczOTQwNDMyOX0.K6OPbaE--Hzmq2pwQJ-_8Eyx7-zuDlNVa68VnYQTee8'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-05T23:52:09.847Z,
+  __v: 161
+}
+2025-02-06T00:05:44.626Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-06T00:05:44.626Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:05:44.627Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-06T00:05:55.412Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:05:57.584Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:05:59.015Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:06:01.316Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:06:03.317Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:06:04.584Z [INFO]: [INFO] Logout process started
+2025-02-06T00:06:05.217Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-06T00:09:55.777Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-06T00:09:55.924Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-06T00:06:05.036Z,
+  __v: 163
+}
+2025-02-06T00:09:56.020Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-06T00:09:56.021Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:09:56.021Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-06T00:10:09.371Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:10:12.463Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:14:20.721Z [INFO]: [INFO] Refresh token process started
+2025-02-06T00:14:20.890Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-06T00:14:20.891Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:14:21.065Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:14:45.572Z [INFO]: [INFO] Refresh token process started
+2025-02-06T00:14:45.761Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-06T00:14:45.763Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:14:45.936Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:15:24.911Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:15:24.912Z [ERROR]: [ERROR] Token has expired (Status: 401)

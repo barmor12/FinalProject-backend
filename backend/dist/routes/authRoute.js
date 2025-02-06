@@ -19,5 +19,6 @@ router.get("/google", passport_1.default.authenticate("google", { scope: ["profi
 router.get("/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), (req, res) => res.redirect("/"));
 router.post("/forgot-password", authController_2.forgotPassword);
 router.post("/reset-password", authController_2.resetPassword);
+router.post("/refresh", authController_1.refresh);
 exports.default = router;
 //# sourceMappingURL=authRoute.js.map

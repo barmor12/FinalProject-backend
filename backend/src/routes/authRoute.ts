@@ -6,6 +6,7 @@ import {
   logout,
   verifyEmail,
   updatePassword,
+  refresh,
 } from "../controllers/authController";
 import { forgotPassword, resetPassword } from "../controllers/authController";
 
@@ -30,4 +31,5 @@ router.get(
 );
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
+router.post("/refresh", refresh);
 export default router;

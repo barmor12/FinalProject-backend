@@ -12,6 +12,7 @@ import orderRoute from "./routes/orderRoute";
 import cakeRoute from "./routes/cakeRoute";
 import userRoute from "./routes/userRoute";
 import cartRoute from "./routes/cartRoute";
+import inventoryRoute from "./routes/inventoryRoutes";
 
 import "./passport";
 
@@ -44,6 +45,7 @@ app.use("/cakes", cakeRoute);
 app.use("/order", orderRoute);
 app.use("/cart", cartRoute);
 app.use("/user", userRoute);
+app.use("/inventory", inventoryRoute);
 
 // Database Connection
 mongoose
