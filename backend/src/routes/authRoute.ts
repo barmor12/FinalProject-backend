@@ -9,6 +9,8 @@ import {
   refresh,
   forgotPassword,
   resetPassword,
+  uploadProfilePic,
+  upload,
 } from "../controllers/authController";
 
 const router = express.Router();
@@ -37,5 +39,9 @@ router.get(
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/refresh", refresh);
-
+router.post(
+  "/upload-profile-pic",
+  upload.single("profilePic"),
+  uploadProfilePic
+);
 export default router;

@@ -629,6 +629,42 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   await transporter.sendMail(mailOptions);
   logger.info(`[INFO] Password reset email sent to: ${email}`);
 };
+export const uploadProfilePic = async (req: Request, res: Response) => {
+  try {
+    const token = getTokenFromRequest(req);
+    if (!token) {
+      return sendError(res, "Authentication required", 401);
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    if (!req.file) {
+      return sendError(res, "No file uploaded", 400);
+    }
+
+    user.profilePic = `/uploads/${req.file.filename}`;
+    await user.save();
+
+    // שימוש בכתובת ברירת מחדל אם BASE_URL לא מוגדר
+    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+
+    res.status(200).json({
+      message: "Profile picture updated successfully",
+      profilePicUrl: `${baseUrl}/uploads/${req.file.filename}`,
+    });
+  } catch (error) {
+    console.error("[ERROR] Upload profile picture failed:", error);
+    sendError(res, "Failed to upload profile picture", 500);
+  }
+};
 
 export default {
   enforceHttps,
@@ -641,4 +677,7 @@ export default {
   getTokenFromRequest,
   verifyEmail,
   updatePassword,
+  forgotPassword,
+  resetPassword,
+  uploadProfilePic,
 };

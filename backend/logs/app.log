@@ -6223,3 +6223,24 @@
 2025-02-06T02:57:01.957Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
 2025-02-06T02:57:01.958Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
 2025-02-06T02:57:01.958Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-06T03:00:09.968Z [INFO]: [INFO] Logout process started
+2025-02-06T03:00:10.314Z [INFO]: [INFO] User logged out successfully: 67a4248449deb4dcfeca75e5
+2025-02-06T03:02:46.096Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-06T03:02:46.263Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$32Fffl74NyIvEKkKADZ1..UnxLR2Q7.Mq3mTQT0aPRhJk4G7jBwpS',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-02-06T03:00:10.150Z,
+  __v: 2
+}
+2025-02-06T03:02:46.365Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-02-06T03:02:46.366Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-02-06T03:02:46.366Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
