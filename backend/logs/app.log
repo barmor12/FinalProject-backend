@@ -6056,3 +6056,47 @@
 2025-02-06T00:14:45.936Z [INFO]: [INFO] Refresh token process completed for userId: 6799f989dcae8375ff99c306
 2025-02-06T00:15:24.911Z [ERROR]: [ERROR] Token has expired (Status: 401)
 2025-02-06T00:15:24.912Z [ERROR]: [ERROR] Token has expired (Status: 401)
+2025-02-06T00:25:47.448Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-06T00:25:47.599Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg4MDA1OTYsImV4cCI6MTczOTQwNTM5Nn0.bBl_iCmakclvcHBJsyZhWDTGBL_mODXAnotn0Hvfeks',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg4MDA4NjAsImV4cCI6MTczOTQwNTY2MH0.OnNp6r_4GQ8iYHWUc1hsPY4y36x2NxLATZDrezIJGVs',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzk5Zjk4OWRjYWU4Mzc1ZmY5OWMzMDYiLCJpYXQiOjE3Mzg4MDA4ODUsImV4cCI6MTczOTQwNTY4NX0.XDRbzlzJHQPvAFmlHj8SCH_vjACAMviiQnypkHD3gHk'
+  ],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-06T00:14:45.764Z,
+  __v: 166
+}
+2025-02-06T00:25:47.674Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-06T00:25:47.676Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:25:47.676Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-06T00:26:03.993Z [INFO]: [INFO] Logout process started
+2025-02-06T00:26:04.317Z [INFO]: [INFO] User logged out successfully: 6799f989dcae8375ff99c306
+2025-02-06T00:26:10.014Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-02-06T00:26:10.162Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('6799f989dcae8375ff99c306'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$U8ggspKzA2XoUqsF6NtgSuslPbgC586x.EnCPiX73gtplz.KOZcra',
+  firstName: 'bar',
+  lastName: 'Mor',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-01-29T09:48:57.147Z,
+  updatedAt: 2025-02-06T00:26:04.174Z,
+  __v: 168
+}
+2025-02-06T00:26:10.259Z [INFO]: [INFO] Generating tokens for userId: 6799f989dcae8375ff99c306, role: user
+2025-02-06T00:26:10.260Z [INFO]: [INFO] Tokens generated successfully for userId: 6799f989dcae8375ff99c306
+2025-02-06T00:26:10.260Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
