@@ -10,7 +10,7 @@ export declare const register: (req: Request, res: Response) => Promise<void>;
 export declare const login: (req: Request, res: Response) => Promise<void>;
 export declare const refresh: (req: Request, res: Response) => Promise<void>;
 export declare const logout: (req: Request, res: Response) => Promise<void>;
-export declare const verifyEmail: (req: Request, res: Response) => Promise<void | express.Response<any, Record<string, any>>>;
+export declare const verifyEmail: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>>>;
 export declare const forgotPassword: (req: Request, res: Response) => Promise<void>;
 export declare const resetPassword: (req: Request, res: Response) => Promise<void>;
 declare const _default: {
@@ -22,7 +22,7 @@ declare const _default: {
     sendError: (res: Response, message: string, statusCode?: number) => void;
     upload: multer.Multer;
     getTokenFromRequest: (req: Request) => string | null;
-    verifyEmail: (req: Request, res: Response) => Promise<void | express.Response<any, Record<string, any>>>;
+    verifyEmail: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>>>;
     updatePassword: (req: Request, res: Response) => Promise<void>;
 };
 export default _default;

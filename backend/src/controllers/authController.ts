@@ -81,45 +81,50 @@ const generateTokens = async (userId: string, role: string) => {
 };
 
 // יצירת טוקן לאימות דוא"ל
+
 const generateVerificationToken = (userId: string) => {
-  logger.info(
-    `[INFO] Generating email verification token for userId: ${userId}`
-  );
-  return jwt.sign({ userId }, process.env.EMAIL_SECRET!, { expiresIn: "1d" });
+  if (!process.env.EMAIL_SECRET) {
+    throw new Error("EMAIL_SECRET is missing in .env file");
+  }
+  return jwt.sign({ userId }, process.env.EMAIL_SECRET, { expiresIn: "1d" });
 };
 
 // שליחת קישור לאימות דוא"ל
+// שליחת קישור לאימות דוא"ל
 export const sendVerificationEmail = async (email: string, token: string) => {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-    throw new Error("Email credentials are not configured");
+  try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+      throw new Error("Email credentials are missing in .env file");
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      secure: true,
+    });
+
+    const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email?token=${token}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Verify your email address",
+      html: `
+        <h1>Email Verification</h1>
+        <p>Click the link below to verify your email address:</p>
+        <a href="${verificationLink}">Verify Email</a>
+        <p>This link will expire in 24 hours.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    logger.info(`[INFO] Verification email sent to: ${email}`);
+  } catch (error: any) {
+    logger.error(`[ERROR] Failed to send verification email: ${error.message}`);
   }
-
-  logger.info(`[INFO] Sending email verification to: ${email}`);
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "Verify your email address",
-    html: `
-      <h1>Email Verification</h1>
-      <p>Click the link below to verify your email address:</p>
-      <a href="${verificationLink}">Verify Email</a>
-      <p>This link will expire in 24 hours.</p>
-    `,
-  };
-
-  await transporter.sendMail(mailOptions);
-  logger.info(`[INFO] Verification email sent to: ${email}`);
 };
-
 // שליחת שגיאה
 export const sendError = (
   res: Response,
@@ -241,9 +246,13 @@ export const login = async (req: Request, res: Response) => {
     }
 
     if (!user.isVerified) {
-      return sendError(res, "Email not verified. Please check your inbox.");
+      const verificationToken = generateVerificationToken(user._id.toString());
+      await sendVerificationEmail(user.email, verificationToken);
+      return sendError(
+        res,
+        "Email not verified. A new verification email has been sent."
+      );
     }
-
     const tokens = await generateTokens(user._id.toString(), user.role);
     logger.info(`[INFO] Generated tokens for user: ${email}`);
 
@@ -325,7 +334,9 @@ export const logout = async (req: Request, res: Response) => {
     }
 
     // Remove ALL refresh tokens for the user
-    user.refresh_tokens = [];
+    user.refresh_tokens = user.refresh_tokens.filter(
+      (token) => token !== refreshToken
+    );
     await user.save();
 
     logger.info(`[INFO] User logged out successfully: ${user._id}`);
@@ -349,35 +360,172 @@ export const logout = async (req: Request, res: Response) => {
 export const verifyEmail = async (req: Request, res: Response) => {
   const { token } = req.query;
 
-  logger.info("[INFO] Email verification process started");
-  if (!token) {
-    return sendError(res, "Token is required", 400);
+  if (!token || !process.env.EMAIL_SECRET) {
+    return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email Verification</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+
+          body {
+            background: radial-gradient(circle, #ff9966, #ff5e62);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            text-align: center;
+          }
+
+          .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            text-align: center;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+          }
+
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+          }
+
+          .error { color: #e74c3c; }
+          .success { color: #27ae60; }
+
+          .title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+          }
+
+          .message {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 20px;
+          }
+
+          .glow {
+            animation: glowEffect 1.5s infinite alternate;
+          }
+
+          @keyframes glowEffect {
+            from { text-shadow: 0 0 10px rgba(255, 94, 98, 0.8); }
+            to { text-shadow: 0 0 20px rgba(255, 94, 98, 1); }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="icon">❌</div>
+          <div class="title error glow">Verification Error</div>
+          <div class="message">Please check your email and try again.</div>
+        </div>
+      </body>
+      </html>
+    `);
   }
 
   try {
     const decoded = jwt.verify(
       token as string,
-      process.env.EMAIL_SECRET!
+      process.env.EMAIL_SECRET
     ) as TokenPayload;
-
     const user = await User.findById(decoded.userId);
+
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return res.status(404).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Email Verification</title>
+        </head>
+        <body>
+          <div class="container">
+            <div class="icon">❌</div>
+            <div class="title error glow">User Not Found</div>
+            <div class="message">Please ensure you are registered.</div>
+          </div>
+        </body>
+        </html>
+      `);
     }
 
     if (user.isVerified) {
-      logger.info(`[INFO] Email already verified for user: ${user.email}`);
-      return res.status(200).json({ message: "Email already verified" });
+      return res.status(200).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Email Verified</title>
+        </head>
+        <body>
+          <div class="container">
+            <div class="icon">✅</div>
+            <div class="title success glow">Email Already Verified</div>
+            <div class="message">Your email has already been verified.</div>
+          </div>
+        </body>
+        </html>
+      `);
     }
 
     user.isVerified = true;
     await user.save();
 
-    logger.info(`[INFO] Email verification successful for user: ${user.email}`);
-    res.status(200).json({ message: "Email verified successfully" });
-  } catch (err) {
-    logger.error(`[ERROR] Email verification error: ${(err as Error).message}`);
-    sendError(res, "Invalid or expired token", 400);
+    return res.status(200).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email Verified</title>
+      </head>
+      <body>
+        <div class="container">
+          <div class="icon">🎉</div>
+          <div class="title success glow">Thank You!</div>
+          <div class="message">Your email has been successfully verified!</div>
+        </div>
+      </body>
+      </html>
+    `);
+  } catch (error) {
+    return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email Verification</title>
+      </head>
+      <body>
+        <div class="container">
+          <div class="icon">⚠️</div>
+          <div class="title error glow">Invalid or Expired Token</div>
+          <div class="message">Please request a new verification email.</div>
+        </div>
+      </body>
+      </html>
+    `);
   }
 };
 const resetPasswordTokens = new Map<
@@ -402,7 +550,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const expiresAt = Date.now() + 15 * 60 * 1000; // תוקף ל-15 דקות
 
     // שמירת הקוד בזיכרון (אפשר להשתמש גם בבסיס נתונים)
-    resetPasswordTokens.set(user.email, { code: resetCode, expiresAt });
+    setTimeout(() => {
+      resetPasswordTokens.delete(user.email);
+    }, 15 * 60 * 1000);
 
     // שליחת אימייל למשתמש
     await sendResetEmail(user.email, resetCode);

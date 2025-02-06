@@ -68,35 +68,42 @@ const generateTokens = (userId, role) => __awaiter(void 0, void 0, void 0, funct
     return { accessToken, refreshToken };
 });
 const generateVerificationToken = (userId) => {
-    logger_1.default.info(`[INFO] Generating email verification token for userId: ${userId}`);
+    if (!process.env.EMAIL_SECRET) {
+        throw new Error("EMAIL_SECRET is missing in .env file");
+    }
     return jsonwebtoken_1.default.sign({ userId }, process.env.EMAIL_SECRET, { expiresIn: "1d" });
 };
 const sendVerificationEmail = (email, token) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-        throw new Error("Email credentials are not configured");
+    try {
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+            throw new Error("Email credentials are missing in .env file");
+        }
+        const transporter = nodemailer_1.default.createTransport({
+            service: "Gmail",
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+            secure: true,
+        });
+        const verificationLink = `${process.env.FRONTEND_URL}/EmailVerificationScreen?token=${token}`;
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Verify your email address",
+            html: `
+        <h1>Email Verification</h1>
+        <p>Click the link below to verify your email address:</p>
+        <a href="${verificationLink}">Verify Email</a>
+        <p>This link will expire in 24 hours.</p>
+      `,
+        };
+        yield transporter.sendMail(mailOptions);
+        logger_1.default.info(`[INFO] Verification email sent to: ${email}`);
     }
-    logger_1.default.info(`[INFO] Sending email verification to: ${email}`);
-    const transporter = nodemailer_1.default.createTransport({
-        service: "Gmail",
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD,
-        },
-    });
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: "Verify your email address",
-        html: `
-      <h1>Email Verification</h1>
-      <p>Click the link below to verify your email address:</p>
-      <a href="${verificationLink}">Verify Email</a>
-      <p>This link will expire in 24 hours.</p>
-    `,
-    };
-    yield transporter.sendMail(mailOptions);
-    logger_1.default.info(`[INFO] Verification email sent to: ${email}`);
+    catch (error) {
+        logger_1.default.error(`[ERROR] Failed to send verification email: ${error.message}`);
+    }
 });
 exports.sendVerificationEmail = sendVerificationEmail;
 const sendError = (res, message, statusCode = 400) => {
@@ -192,7 +199,9 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return (0, exports.sendError)(res, "Invalid email or password");
         }
         if (!user.isVerified) {
-            return (0, exports.sendError)(res, "Email not verified. Please check your inbox.");
+            const verificationToken = generateVerificationToken(user._id.toString());
+            yield (0, exports.sendVerificationEmail)(user.email, verificationToken);
+            return (0, exports.sendError)(res, "Email not verified. A new verification email has been sent.");
         }
         const tokens = yield generateTokens(user._id.toString(), user.role);
         logger_1.default.info(`[INFO] Generated tokens for user: ${email}`);
@@ -250,7 +259,7 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             logger_1.default.warn("[WARN] User not found during logout");
             return (0, exports.sendError)(res, "User not found", 404);
         }
-        user.refresh_tokens = [];
+        user.refresh_tokens = user.refresh_tokens.filter((token) => token !== refreshToken);
         yield user.save();
         logger_1.default.info(`[INFO] User logged out successfully: ${user._id}`);
         res.status(200).json({ message: "Logged out successfully" });
@@ -271,28 +280,27 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.logout = logout;
 const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { token } = req.query;
-    logger_1.default.info("[INFO] Email verification process started");
-    if (!token) {
-        return (0, exports.sendError)(res, "Token is required", 400);
+    if (!token || !process.env.EMAIL_SECRET) {
+        return res
+            .status(400)
+            .json({ message: "Invalid or missing verification token" });
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.EMAIL_SECRET);
         const user = yield userModel_1.default.findById(decoded.userId);
         if (!user) {
-            return (0, exports.sendError)(res, "User not found", 404);
+            return res.status(404).json({ message: "User not found" });
         }
         if (user.isVerified) {
-            logger_1.default.info(`[INFO] Email already verified for user: ${user.email}`);
-            return res.status(200).json({ message: "Email already verified" });
+            return res.status(200).json({ message: "User already verified" });
         }
         user.isVerified = true;
         yield user.save();
-        logger_1.default.info(`[INFO] Email verification successful for user: ${user.email}`);
-        res.status(200).json({ message: "Email verified successfully" });
+        return res.status(200).json({ message: "Email verified successfully!" });
     }
-    catch (err) {
-        logger_1.default.error(`[ERROR] Email verification error: ${err.message}`);
-        (0, exports.sendError)(res, "Invalid or expired token", 400);
+    catch (error) {
+        logger_1.default.error(`[ERROR] Email verification error: ${error}`);
+        return res.status(400).json({ message: "Invalid or expired token" });
     }
 });
 exports.verifyEmail = verifyEmail;
@@ -309,7 +317,9 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
         const expiresAt = Date.now() + 15 * 60 * 1000;
-        resetPasswordTokens.set(user.email, { code: resetCode, expiresAt });
+        setTimeout(() => {
+            resetPasswordTokens.delete(user.email);
+        }, 15 * 60 * 1000);
         yield sendResetEmail(user.email, resetCode);
         res.status(200).json({ message: "Reset code sent to email" });
     }
