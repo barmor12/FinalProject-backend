@@ -6244,3 +6244,260 @@
 2025-02-06T03:02:46.365Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
 2025-02-06T03:02:46.366Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
 2025-02-06T03:02:46.366Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-02-10T13:47:54.799Z [INFO]: [INFO] Login attempt for email: Aa@gmail.com
+2025-02-10T13:47:54.943Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('679fdcf6a9734c2e7870459a'),
+  email: 'Aa@gmail.com',
+  password: '$2a$10$wbndBWTghiro7d14NP6EQe01x8s84eSkEZfQ4U8YsQhrNc3Oid0YK',
+  firstName: 'As',
+  lastName: 'll',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE1MDMsImV4cCI6MTczOTEzNjMwM30.cPHIzsdOUbhdaYL5L5vw23gpd_2jIdebnb_662-GAdg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE4MjEsImV4cCI6MTczOTEzNjYyMX0.vJqFwz3OBUM7dMrqp4-0vWz3cEsn1LDma2V2RYb_ns0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIwMzgsImV4cCI6MTczOTEzNjgzOH0.y_gns0TzX9ze-yMGSljdHRUlBhXyjEK7hD7bPQmqkBw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIxNzYsImV4cCI6MTczOTEzNjk3Nn0.yFMTl1m8B8XUFBqCkfpaCjVJGjFcLsFXxH6WUntD6Ac',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyMjgsImV4cCI6MTczOTEzNzAyOH0.sUxQlZ9fbYilkJbwphoOngIm7Mst8HCpNhuXvB_bQkY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyNjgsImV4cCI6MTczOTEzNzA2OH0.qneb4XNHBomnPa7ipvqmjJ11h-KrUEhEotuR3uxS7jc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzM1MjgsImV4cCI6MTczOTEzODMyOH0.ynpVuc37aYjhnIXTjCRLHyzfzPNe7q5JKK-4fASR1So',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQzOTEsImV4cCI6MTczOTEzOTE5MX0.TG-uFA4GlEPXZJfGwyc6vgLqi8on58IX0JSeji_does',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQ3NDcsImV4cCI6MTczOTEzOTU0N30.kQmKCrAK5P82wHWnOPLM9LJKn8ltpv14NIqE3Yq9xy4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMDIsImV4cCI6MTczOTEzOTkwMn0.kkOBpbbE9kXgOIMtVs2UJflIuJTfo3ti6wPqixH12WM',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMzcsImV4cCI6MTczOTEzOTkzN30.PRUaQ4KrzyD4eIQb00Ka5O1KJ6_S-548Ij3LeE8T5J8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUzMjcsImV4cCI6MTczOTE0MDEyN30.HKgSrVGek5kdFiIszjhAN9TV-0j7fIcLw97pwXP_ar0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTc5OTksImV4cCI6MTczOTIwMjc5OX0.L69ssiV_NRac_305Co0Q99uJuJSXQyvfxCRCEyLhQSo',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTgwMzAsImV4cCI6MTczOTIwMjgzMH0.iSLxiRSvo_IZXIeEIcJHgsn-rPMAhpqBhsWAP2UIFK0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTg2MzEsImV4cCI6MTczOTIwMzQzMX0.WDIaz21IObfMS-6M4IRv6N7bzJiSAdPLpKGQ2EaQpos',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTkwMDAsImV4cCI6MTczOTIwMzgwMH0.0WDLC80BT3_PpKbfKJNtmB2C0MQ5STWzU0RxFam4S2E'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-02T21:00:38.203Z,
+  updatedAt: 2025-02-03T16:10:00.360Z,
+  __v: 23
+}
+2025-02-10T13:47:55.014Z [INFO]: [INFO] Generating tokens for userId: 679fdcf6a9734c2e7870459a, role: user
+2025-02-10T13:47:55.020Z [INFO]: [INFO] Tokens generated successfully for userId: 679fdcf6a9734c2e7870459a
+2025-02-10T13:47:55.021Z [INFO]: [INFO] Generated tokens for user: Aa@gmail.com
+2025-02-10T13:50:29.633Z [INFO]: [INFO] Login attempt for email: Aa@gmail.com
+2025-02-10T13:50:29.759Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('679fdcf6a9734c2e7870459a'),
+  email: 'Aa@gmail.com',
+  password: '$2a$10$wbndBWTghiro7d14NP6EQe01x8s84eSkEZfQ4U8YsQhrNc3Oid0YK',
+  firstName: 'As',
+  lastName: 'll',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE1MDMsImV4cCI6MTczOTEzNjMwM30.cPHIzsdOUbhdaYL5L5vw23gpd_2jIdebnb_662-GAdg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE4MjEsImV4cCI6MTczOTEzNjYyMX0.vJqFwz3OBUM7dMrqp4-0vWz3cEsn1LDma2V2RYb_ns0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIwMzgsImV4cCI6MTczOTEzNjgzOH0.y_gns0TzX9ze-yMGSljdHRUlBhXyjEK7hD7bPQmqkBw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIxNzYsImV4cCI6MTczOTEzNjk3Nn0.yFMTl1m8B8XUFBqCkfpaCjVJGjFcLsFXxH6WUntD6Ac',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyMjgsImV4cCI6MTczOTEzNzAyOH0.sUxQlZ9fbYilkJbwphoOngIm7Mst8HCpNhuXvB_bQkY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyNjgsImV4cCI6MTczOTEzNzA2OH0.qneb4XNHBomnPa7ipvqmjJ11h-KrUEhEotuR3uxS7jc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzM1MjgsImV4cCI6MTczOTEzODMyOH0.ynpVuc37aYjhnIXTjCRLHyzfzPNe7q5JKK-4fASR1So',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQzOTEsImV4cCI6MTczOTEzOTE5MX0.TG-uFA4GlEPXZJfGwyc6vgLqi8on58IX0JSeji_does',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQ3NDcsImV4cCI6MTczOTEzOTU0N30.kQmKCrAK5P82wHWnOPLM9LJKn8ltpv14NIqE3Yq9xy4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMDIsImV4cCI6MTczOTEzOTkwMn0.kkOBpbbE9kXgOIMtVs2UJflIuJTfo3ti6wPqixH12WM',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMzcsImV4cCI6MTczOTEzOTkzN30.PRUaQ4KrzyD4eIQb00Ka5O1KJ6_S-548Ij3LeE8T5J8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUzMjcsImV4cCI6MTczOTE0MDEyN30.HKgSrVGek5kdFiIszjhAN9TV-0j7fIcLw97pwXP_ar0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTc5OTksImV4cCI6MTczOTIwMjc5OX0.L69ssiV_NRac_305Co0Q99uJuJSXQyvfxCRCEyLhQSo',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTgwMzAsImV4cCI6MTczOTIwMjgzMH0.iSLxiRSvo_IZXIeEIcJHgsn-rPMAhpqBhsWAP2UIFK0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTg2MzEsImV4cCI6MTczOTIwMzQzMX0.WDIaz21IObfMS-6M4IRv6N7bzJiSAdPLpKGQ2EaQpos',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTkwMDAsImV4cCI6MTczOTIwMzgwMH0.0WDLC80BT3_PpKbfKJNtmB2C0MQ5STWzU0RxFam4S2E',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3MzkxOTUyNzUsImV4cCI6MTczOTgwMDA3NX0.LA_lABOchjkPOZKd2fAmH9GFM1Yj2rsxz6Nmzw-jqnw'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-02T21:00:38.203Z,
+  updatedAt: 2025-02-10T13:47:55.026Z,
+  __v: 24
+}
+2025-02-10T13:50:29.827Z [INFO]: [INFO] Generating tokens for userId: 679fdcf6a9734c2e7870459a, role: user
+2025-02-10T13:50:29.829Z [INFO]: [INFO] Tokens generated successfully for userId: 679fdcf6a9734c2e7870459a
+2025-02-10T13:50:29.829Z [INFO]: [INFO] Generated tokens for user: Aa@gmail.com
+2025-02-10T13:50:43.698Z [INFO]: [INFO] Logout process started
+2025-02-10T13:50:43.950Z [INFO]: [INFO] User logged out successfully: 679fdcf6a9734c2e7870459a
+2025-02-10T13:51:13.182Z [INFO]: [INFO] Login attempt for email: Aa@gmail.com
+2025-02-10T13:51:13.308Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('679fdcf6a9734c2e7870459a'),
+  email: 'Aa@gmail.com',
+  password: '$2a$10$wbndBWTghiro7d14NP6EQe01x8s84eSkEZfQ4U8YsQhrNc3Oid0YK',
+  firstName: 'As',
+  lastName: 'll',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE1MDMsImV4cCI6MTczOTEzNjMwM30.cPHIzsdOUbhdaYL5L5vw23gpd_2jIdebnb_662-GAdg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE4MjEsImV4cCI6MTczOTEzNjYyMX0.vJqFwz3OBUM7dMrqp4-0vWz3cEsn1LDma2V2RYb_ns0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIwMzgsImV4cCI6MTczOTEzNjgzOH0.y_gns0TzX9ze-yMGSljdHRUlBhXyjEK7hD7bPQmqkBw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIxNzYsImV4cCI6MTczOTEzNjk3Nn0.yFMTl1m8B8XUFBqCkfpaCjVJGjFcLsFXxH6WUntD6Ac',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyMjgsImV4cCI6MTczOTEzNzAyOH0.sUxQlZ9fbYilkJbwphoOngIm7Mst8HCpNhuXvB_bQkY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyNjgsImV4cCI6MTczOTEzNzA2OH0.qneb4XNHBomnPa7ipvqmjJ11h-KrUEhEotuR3uxS7jc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzM1MjgsImV4cCI6MTczOTEzODMyOH0.ynpVuc37aYjhnIXTjCRLHyzfzPNe7q5JKK-4fASR1So',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQzOTEsImV4cCI6MTczOTEzOTE5MX0.TG-uFA4GlEPXZJfGwyc6vgLqi8on58IX0JSeji_does',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQ3NDcsImV4cCI6MTczOTEzOTU0N30.kQmKCrAK5P82wHWnOPLM9LJKn8ltpv14NIqE3Yq9xy4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMDIsImV4cCI6MTczOTEzOTkwMn0.kkOBpbbE9kXgOIMtVs2UJflIuJTfo3ti6wPqixH12WM',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMzcsImV4cCI6MTczOTEzOTkzN30.PRUaQ4KrzyD4eIQb00Ka5O1KJ6_S-548Ij3LeE8T5J8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUzMjcsImV4cCI6MTczOTE0MDEyN30.HKgSrVGek5kdFiIszjhAN9TV-0j7fIcLw97pwXP_ar0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTc5OTksImV4cCI6MTczOTIwMjc5OX0.L69ssiV_NRac_305Co0Q99uJuJSXQyvfxCRCEyLhQSo',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTgwMzAsImV4cCI6MTczOTIwMjgzMH0.iSLxiRSvo_IZXIeEIcJHgsn-rPMAhpqBhsWAP2UIFK0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTg2MzEsImV4cCI6MTczOTIwMzQzMX0.WDIaz21IObfMS-6M4IRv6N7bzJiSAdPLpKGQ2EaQpos',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTkwMDAsImV4cCI6MTczOTIwMzgwMH0.0WDLC80BT3_PpKbfKJNtmB2C0MQ5STWzU0RxFam4S2E',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3MzkxOTUyNzUsImV4cCI6MTczOTgwMDA3NX0.LA_lABOchjkPOZKd2fAmH9GFM1Yj2rsxz6Nmzw-jqnw'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-02T21:00:38.203Z,
+  updatedAt: 2025-02-10T13:50:43.822Z,
+  __v: 26
+}
+2025-02-10T13:51:13.371Z [INFO]: [INFO] Generating tokens for userId: 679fdcf6a9734c2e7870459a, role: user
+2025-02-10T13:51:13.373Z [INFO]: [INFO] Tokens generated successfully for userId: 679fdcf6a9734c2e7870459a
+2025-02-10T13:51:13.373Z [INFO]: [INFO] Generated tokens for user: Aa@gmail.com
+2025-02-10T13:55:49.186Z [INFO]: [INFO] Logout process started
+2025-02-10T13:55:49.442Z [INFO]: [INFO] User logged out successfully: 679fdcf6a9734c2e7870459a
+2025-02-10T13:55:55.306Z [INFO]: [INFO] Login attempt for email: Aa@gmail.com
+2025-02-10T13:55:55.435Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('679fdcf6a9734c2e7870459a'),
+  email: 'Aa@gmail.com',
+  password: '$2a$10$wbndBWTghiro7d14NP6EQe01x8s84eSkEZfQ4U8YsQhrNc3Oid0YK',
+  firstName: 'As',
+  lastName: 'll',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE1MDMsImV4cCI6MTczOTEzNjMwM30.cPHIzsdOUbhdaYL5L5vw23gpd_2jIdebnb_662-GAdg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzE4MjEsImV4cCI6MTczOTEzNjYyMX0.vJqFwz3OBUM7dMrqp4-0vWz3cEsn1LDma2V2RYb_ns0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIwMzgsImV4cCI6MTczOTEzNjgzOH0.y_gns0TzX9ze-yMGSljdHRUlBhXyjEK7hD7bPQmqkBw',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIxNzYsImV4cCI6MTczOTEzNjk3Nn0.yFMTl1m8B8XUFBqCkfpaCjVJGjFcLsFXxH6WUntD6Ac',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyMjgsImV4cCI6MTczOTEzNzAyOH0.sUxQlZ9fbYilkJbwphoOngIm7Mst8HCpNhuXvB_bQkY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzIyNjgsImV4cCI6MTczOTEzNzA2OH0.qneb4XNHBomnPa7ipvqmjJ11h-KrUEhEotuR3uxS7jc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzM1MjgsImV4cCI6MTczOTEzODMyOH0.ynpVuc37aYjhnIXTjCRLHyzfzPNe7q5JKK-4fASR1So',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQzOTEsImV4cCI6MTczOTEzOTE5MX0.TG-uFA4GlEPXZJfGwyc6vgLqi8on58IX0JSeji_does',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzQ3NDcsImV4cCI6MTczOTEzOTU0N30.kQmKCrAK5P82wHWnOPLM9LJKn8ltpv14NIqE3Yq9xy4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMDIsImV4cCI6MTczOTEzOTkwMn0.kkOBpbbE9kXgOIMtVs2UJflIuJTfo3ti6wPqixH12WM',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUxMzcsImV4cCI6MTczOTEzOTkzN30.PRUaQ4KrzyD4eIQb00Ka5O1KJ6_S-548Ij3LeE8T5J8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1MzUzMjcsImV4cCI6MTczOTE0MDEyN30.HKgSrVGek5kdFiIszjhAN9TV-0j7fIcLw97pwXP_ar0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTc5OTksImV4cCI6MTczOTIwMjc5OX0.L69ssiV_NRac_305Co0Q99uJuJSXQyvfxCRCEyLhQSo',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTgwMzAsImV4cCI6MTczOTIwMjgzMH0.iSLxiRSvo_IZXIeEIcJHgsn-rPMAhpqBhsWAP2UIFK0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTg2MzEsImV4cCI6MTczOTIwMzQzMX0.WDIaz21IObfMS-6M4IRv6N7bzJiSAdPLpKGQ2EaQpos',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3Mzg1OTkwMDAsImV4cCI6MTczOTIwMzgwMH0.0WDLC80BT3_PpKbfKJNtmB2C0MQ5STWzU0RxFam4S2E',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlmZGNmNmE5NzM0YzJlNzg3MDQ1OWEiLCJpYXQiOjE3MzkxOTUyNzUsImV4cCI6MTczOTgwMDA3NX0.LA_lABOchjkPOZKd2fAmH9GFM1Yj2rsxz6Nmzw-jqnw'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-02T21:00:38.203Z,
+  updatedAt: 2025-02-10T13:55:49.310Z,
+  __v: 28
+}
+2025-02-10T13:55:55.505Z [INFO]: [INFO] Generating tokens for userId: 679fdcf6a9734c2e7870459a, role: user
+2025-02-10T13:55:55.507Z [INFO]: [INFO] Tokens generated successfully for userId: 679fdcf6a9734c2e7870459a
+2025-02-10T13:55:55.507Z [INFO]: [INFO] Generated tokens for user: Aa@gmail.com
+2025-03-05T00:11:33.383Z [INFO]: [INFO] Refresh token process started
+2025-03-05T00:11:33.390Z [ERROR]: [ERROR] Refresh token error: jwt expired
+2025-03-05T00:11:33.390Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-03-05T00:12:36.549Z [INFO]: [INFO] Login attempt for email: Aa@gmail.com
+2025-03-05T00:12:38.372Z [INFO]: [INFO] User fetched during login: null
+2025-03-05T00:12:38.373Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:12:48.337Z [INFO]: [INFO] Login attempt for email: Avieles100@gmail.com
+2025-03-05T00:12:48.779Z [INFO]: [INFO] User fetched during login: null
+2025-03-05T00:12:48.780Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:12:57.816Z [INFO]: [INFO] Login attempt for email: Avieles100@gmail.com
+2025-03-05T00:12:58.012Z [INFO]: [INFO] User fetched during login: null
+2025-03-05T00:12:58.013Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:13:05.755Z [INFO]: [INFO] Login attempt for email: Avieles100@gmail.com
+2025-03-05T00:13:05.954Z [INFO]: [INFO] User fetched during login: null
+2025-03-05T00:13:05.954Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:13:35.726Z [INFO]: [INFO] Attempting to register user: avieles100@gmail.com
+2025-03-05T00:13:38.689Z [INFO]: [INFO] Verification email sent to: avieles100@gmail.com
+2025-03-05T00:13:38.690Z [INFO]: [INFO] User registered successfully: avieles100@gmail.com
+2025-03-05T00:18:23.257Z [INFO]: [INFO] Login attempt for email: Avieles100@gmail.com
+2025-03-05T00:18:23.465Z [INFO]: [INFO] User fetched during login: null
+2025-03-05T00:18:23.466Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:18:31.372Z [INFO]: [INFO] Login attempt for email: Avieles100@gmail.com
+2025-03-05T00:18:31.575Z [INFO]: [INFO] User fetched during login: null
+2025-03-05T00:18:31.576Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:18:48.063Z [ERROR]: [ERROR] User not found (Status: 404)
+2025-03-05T00:22:02.235Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-03-05T00:22:02.434Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67c797307cfbf8e6aaffcab2'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$XTdZZsrs/gmdU3/X1aom1emkATG/dIRVc2YdyiiG2iK43HzLag60q',
+  firstName: 'Aviel',
+  lastName: 'Esperansa ',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  createdAt: 2025-03-05T00:13:36.013Z,
+  updatedAt: 2025-03-05T00:17:45.161Z,
+  __v: 0
+}
+2025-03-05T00:22:02.574Z [INFO]: [INFO] Generating tokens for userId: 67c797307cfbf8e6aaffcab2, role: user
+2025-03-05T00:22:02.577Z [INFO]: [INFO] Tokens generated successfully for userId: 67c797307cfbf8e6aaffcab2
+2025-03-05T00:22:02.577Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-03-05T00:22:50.106Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-03-05T00:22:50.298Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67c797307cfbf8e6aaffcab2'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$XTdZZsrs/gmdU3/X1aom1emkATG/dIRVc2YdyiiG2iK43HzLag60q',
+  firstName: 'Aviel',
+  lastName: 'Esperansa ',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M3OTczMDdjZmJmOGU2YWFmZmNhYjIiLCJpYXQiOjE3NDExMzQxMjIsImV4cCI6MTc0MTczODkyMn0.mH1rddjdKt_vQ4jKuquv8qYB7gpFDJzkJ74Bo2UH0q4'
+  ],
+  isVerified: true,
+  createdAt: 2025-03-05T00:13:36.013Z,
+  updatedAt: 2025-03-05T00:22:02.579Z,
+  __v: 1
+}
+2025-03-05T00:22:50.472Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-05T00:22:58.043Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-03-05T00:22:58.232Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67c797307cfbf8e6aaffcab2'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$XTdZZsrs/gmdU3/X1aom1emkATG/dIRVc2YdyiiG2iK43HzLag60q',
+  firstName: 'Aviel',
+  lastName: 'Esperansa ',
+  profilePic: '',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M3OTczMDdjZmJmOGU2YWFmZmNhYjIiLCJpYXQiOjE3NDExMzQxMjIsImV4cCI6MTc0MTczODkyMn0.mH1rddjdKt_vQ4jKuquv8qYB7gpFDJzkJ74Bo2UH0q4'
+  ],
+  isVerified: true,
+  createdAt: 2025-03-05T00:13:36.013Z,
+  updatedAt: 2025-03-05T00:22:02.579Z,
+  __v: 1
+}
+2025-03-05T00:22:58.332Z [INFO]: [INFO] Generating tokens for userId: 67c797307cfbf8e6aaffcab2, role: user
+2025-03-05T00:22:58.335Z [INFO]: [INFO] Tokens generated successfully for userId: 67c797307cfbf8e6aaffcab2
+2025-03-05T00:22:58.335Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-03-05T00:24:00.693Z [INFO]: [INFO] Login attempt for email: avieles100@gmail.com
+2025-03-05T00:24:00.863Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67c797307cfbf8e6aaffcab2'),
+  email: 'avieles100@gmail.com',
+  password: '$2a$10$XTdZZsrs/gmdU3/X1aom1emkATG/dIRVc2YdyiiG2iK43HzLag60q',
+  firstName: 'Aviel',
+  lastName: 'Esperansa ',
+  profilePic: '',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M3OTczMDdjZmJmOGU2YWFmZmNhYjIiLCJpYXQiOjE3NDExMzQxMjIsImV4cCI6MTc0MTczODkyMn0.mH1rddjdKt_vQ4jKuquv8qYB7gpFDJzkJ74Bo2UH0q4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2M3OTczMDdjZmJmOGU2YWFmZmNhYjIiLCJpYXQiOjE3NDExMzQxNzgsImV4cCI6MTc0MTczODk3OH0.pQ8mE6CM3MSy2nMdlctgzEB7EhBeY8TZzzJXbD0dgu8'
+  ],
+  isVerified: true,
+  createdAt: 2025-03-05T00:13:36.013Z,
+  updatedAt: 2025-03-05T00:22:58.336Z,
+  __v: 2
+}
+2025-03-05T00:24:01.003Z [INFO]: [INFO] Generating tokens for userId: 67c797307cfbf8e6aaffcab2, role: admin
+2025-03-05T00:24:01.007Z [INFO]: [INFO] Tokens generated successfully for userId: 67c797307cfbf8e6aaffcab2
+2025-03-05T00:24:01.007Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
