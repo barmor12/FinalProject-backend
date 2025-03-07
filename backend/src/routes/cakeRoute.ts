@@ -1,12 +1,6 @@
 import express from "express";
-import {
-  addCake,
-  updateCake,
-  getAllCakes,
-  deleteCake,
-  addToFavorites,
-  removeFromFavorites,
-} from "../controllers/cakeController";
+import { addCake, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites } from "../controllers/cakeController";
+
 import multer from "multer";
 import path from "path";
 import authenticateAdminMiddleware from "../common/authAdminMiddleware";
@@ -27,13 +21,13 @@ router.post(
   addCake
 );
 router.put(
-  "/cakes/:id",
+  "/:id",
   authenticateMiddleware,
   upload.single("image"),
   updateCake
 );
 router.get("/", getAllCakes);
-router.delete("/cakes/:id", authenticateMiddleware, deleteCake);
+router.delete("/:id", authenticateMiddleware, deleteCake);
 
 // הוספת עוגה למועדפים
 router.post("/favorites", authenticateMiddleware, addToFavorites);

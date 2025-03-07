@@ -13,6 +13,7 @@ import cakeRoute from "./routes/cakeRoute";
 import userRoute from "./routes/userRoute";
 import cartRoute from "./routes/cartRoute";
 import inventoryRoute from "./routes/inventoryRoutes";
+import adminRoute from "./routes/adminRoute";
 
 import "./passport";
 import path from "path";
@@ -42,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
+app.use("/admin", adminRoute);
 app.use("/auth", authRoute);
 app.use("/recipes", recipeRoute);
 app.use("/cakes", cakeRoute);
