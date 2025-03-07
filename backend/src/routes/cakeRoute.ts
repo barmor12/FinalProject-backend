@@ -1,5 +1,5 @@
 import express from "express";
-import { addCake, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites } from "../controllers/cakeController";
+import { addCake, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites, deleteCakes } from "../controllers/cakeController";
 
 import multer from "multer";
 import path from "path";
@@ -28,6 +28,7 @@ router.put(
 );
 router.get("/", getAllCakes);
 router.delete("/:id", authenticateMiddleware, deleteCake);
+router.delete("/deletecakeד", deleteCakes);
 
 // הוספת עוגה למועדפים
 router.post("/favorites", authenticateMiddleware, addToFavorites);
