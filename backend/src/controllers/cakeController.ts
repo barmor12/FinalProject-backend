@@ -3,7 +3,11 @@ import Cake from '../models/cakeModel';
 import User from "../models/userModel";
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
+<<<<<<< HEAD
   const { name, description, price, ingredients, image } = req.body;
+=======
+  const { name, description, price, ingredients, imagePath } = req.body;
+>>>>>>> 64aa23f69db82b76117c0eef0b9fb2f85d3daa3e
 
   if (!name || !description || !price || !ingredients || !image) {
     res.status(400).json({ error: 'All fields are required' });
@@ -16,7 +20,11 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
       description,
       price,
       ingredients,
+<<<<<<< HEAD
       image
+=======
+      imagePath
+>>>>>>> 64aa23f69db82b76117c0eef0b9fb2f85d3daa3e
     });
     console.log(image);
     const savedCake = await cake.save();
@@ -29,7 +37,11 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const updateCake = async (req: Request, res: Response): Promise<void> => {
+<<<<<<< HEAD
   const { name, description, price, ingredients, image } = req.body;
+=======
+  const { name, description, price, ingredients } = req.body;
+>>>>>>> 64aa23f69db82b76117c0eef0b9fb2f85d3daa3e
   const cakeId = req.params.id;
 
   try {
@@ -40,7 +52,11 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
         description,
         price,
         ingredients,
+<<<<<<< HEAD
         image,
+=======
+        image: req.file ? `/uploads/${req.file.filename}` : undefined,
+>>>>>>> 64aa23f69db82b76117c0eef0b9fb2f85d3daa3e
       },
       { new: true }
     );
@@ -60,9 +76,13 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
 export const getAllCakes = async (req: Request, res: Response): Promise<void> => {
   try {
     const cakes = await Cake.find();
+<<<<<<< HEAD
     console.log("Fetched cakes:", cakes); // בדיקה אם השדה image קיים
     res.status(200).json(cakes);
 
+=======
+    res.status(200).json(cakes);
+>>>>>>> 64aa23f69db82b76117c0eef0b9fb2f85d3daa3e
   } catch (err) {
     console.error('Failed to fetch cakes:', err);
     res.status(500).json({ error: 'Failed to fetch cakes' });

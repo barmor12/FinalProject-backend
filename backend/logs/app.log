@@ -6501,6 +6501,7 @@
 2025-03-05T00:24:01.003Z [INFO]: [INFO] Generating tokens for userId: 67c797307cfbf8e6aaffcab2, role: admin
 2025-03-05T00:24:01.007Z [INFO]: [INFO] Tokens generated successfully for userId: 67c797307cfbf8e6aaffcab2
 2025-03-05T00:24:01.007Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+<<<<<<< HEAD
 2025-03-06T15:47:19.896Z [INFO]: [INFO] Refresh token process started
 2025-03-06T15:47:19.899Z [INFO]: [INFO] Refresh token verified for userId: 67c797307cfbf8e6aaffcab2
 2025-03-06T15:47:20.020Z [INFO]: [INFO] Generating tokens for userId: 67c797307cfbf8e6aaffcab2, role: admin
@@ -7031,3 +7032,5 @@
 2025-03-07T17:04:49.881Z [ERROR]: [ERROR] Authorization token is required (Status: 401)
 2025-03-07T17:10:16.800Z [WARN]: [WARN] Authorization header missing
 2025-03-07T17:10:16.801Z [ERROR]: [ERROR] Authorization token is required (Status: 401)
+=======
+>>>>>>> 64aa23f69db82b76117c0eef0b9fb2f85d3daa3e
