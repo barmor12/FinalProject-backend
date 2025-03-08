@@ -3,9 +3,9 @@ import Cake from '../models/cakeModel';
 import User from "../models/userModel";
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients, imagePath } = req.body;
+  const { name, description, price, ingredients, image } = req.body;
 
-  if (!name || !description || !price || !ingredients) {
+  if (!name || !description || !price || !ingredients || !image) {
     res.status(400).json({ error: 'All fields are required' });
     return;
   }
@@ -16,7 +16,7 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
       description,
       price,
       ingredients,
-      imagePath
+      image
     });
 
     const savedCake = await cake.save();
@@ -28,7 +28,7 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const updateCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients } = req.body;
+  const { name, description, price, ingredients, image } = req.body;
   const cakeId = req.params.id;
 
   try {
@@ -39,7 +39,7 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
         description,
         price,
         ingredients,
-        image: req.file ? `/uploads/${req.file.filename}` : undefined,
+        image
       },
       { new: true }
     );
