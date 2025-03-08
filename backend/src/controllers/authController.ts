@@ -56,7 +56,7 @@ export const getTokenFromRequest = (req: Request): string | null => {
   }
   return authHeader.split(" ")[1];
 };
-
+//test
 // יצירת טוקן גישה וטוקן רענון
 const generateTokens = async (userId: string, role: string) => {
   if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
@@ -71,6 +71,7 @@ const generateTokens = async (userId: string, role: string) => {
       expiresIn: process.env.JWT_TOKEN_EXPIRATION || "1h",
     }
   );
+
 
   const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET!, {
     expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d",
