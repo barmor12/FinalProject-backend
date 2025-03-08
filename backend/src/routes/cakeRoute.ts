@@ -8,22 +8,16 @@ import authenticateMiddleware from "../common/authMiddleware";
 
 const router = express.Router();
 
-// הגדרת המיקום בו נשמור את התמונות
-const upload = multer({
-  dest: path.join(__dirname, "..", "uploads"),
-});
 
 // רוטים לניהול עוגות
 router.post(
   "/addcake",
   authenticateMiddleware,
-  upload.single("image"),
   addCake
 );
 router.put(
   "/:id",
   authenticateMiddleware,
-  upload.single("image"),
   updateCake
 );
 router.get("/", getAllCakes);
