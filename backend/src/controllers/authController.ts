@@ -56,7 +56,6 @@ export const getTokenFromRequest = (req: Request): string | null => {
   }
   return authHeader.split(" ")[1];
 };
-//test
 // יצירת טוקן גישה וטוקן רענון
 const generateTokens = async (userId: string, role: string) => {
   if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
