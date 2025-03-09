@@ -9,51 +9,42 @@ export const placeOrder = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { userId, cakeId, quantity, decoration } = req.body; // נוסיף שדה decoration
-
-  // בדיקות תקינות להזמנה
-  if (!userId || !cakeId || !quantity) {
-    res
-      .status(400)
-      .json({ error: "User ID, Cake ID, and quantity are required" });
-    return;
+  const { userId, items, paymentMethod, decoration } = req.body;
+  if (!userId || !items || items.length === 0) {
+    res.status(400).json({ error: "User ID and items are required" });
   }
 
-  try {
-    // בדיקה אם ה-ID תקין
-    if (
-      !mongoose.Types.ObjectId.isValid(userId) ||
-      !mongoose.Types.ObjectId.isValid(cakeId)
-    ) {
-      res.status(400).json({ error: "Invalid ID format" });
-      return;
-    }
-
-    // בדיקה אם העוגה קיימת
-    const cake = await Cake.findById(cakeId);
-    if (!cake) {
-      res.status(404).json({ error: "Cake not found" });
-      return;
-    }
-
-    const totalPrice = cake.price * quantity; // חישוב המחיר הכולל
-
-    // יצירת אובייקט הזמנה
-    const order = new Order({
-      user: userId,
-      cake: cakeId,
-      quantity,
-      totalPrice,
-      decoration: decoration || null, // שמירת הקישוט אם נשלח
-    });
-
-    // שמירת ההזמנה ושליחת תגובה
-    const savedOrder = await order.save();
-    res.status(201).json(savedOrder);
-  } catch (err) {
-    console.error("Failed to place order:", err);
-    res.status(500).json({ error: "Failed to place order" });
+  // בדיקת cakeIds
+  const cakeIds = items.map((i: any) => i.cakeId);
+  const cakes = await Cake.find({ _id: { $in: cakeIds } });
+  if (cakes.length !== items.length) {
+    res.status(404).json({ error: "One or more cakes not found" });
   }
+
+  // חישוב מחיר כולל
+  let totalPrice = 0;
+  items.forEach((i: any) => {
+    const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
+    if (foundCake) totalPrice += foundCake.price * i.quantity;
+  });
+
+  // בניית items בפורמט שהסכמה דורשת:
+  const mappedItems = items.map((i: any) => ({
+    cake: i.cakeId,
+    quantity: i.quantity,
+  }));
+
+  const order = new Order({
+    user: userId,
+    items: mappedItems,
+    totalPrice,
+    decoration: decoration || "",
+    paymentMethod,
+    status: "pending",
+  });
+
+  const saved = await order.save();
+  res.status(201).json(saved);
 };
 
 export const getAllOrders = async (

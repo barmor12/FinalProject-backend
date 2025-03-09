@@ -16,6 +16,8 @@ const userSchema = new mongoose_1.default.Schema({
     favorites: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Cake" }],
     refresh_tokens: [String],
     isVerified: { type: Boolean, default: false },
+    resetToken: { type: String },
+    resetExpires: { type: Date },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("User", userSchema);
 //# sourceMappingURL=userModel.js.map

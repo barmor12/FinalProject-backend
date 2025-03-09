@@ -30,39 +30,35 @@ const userModel_1 = __importDefault(require("../models/userModel"));
 const discountCodeModel_1 = __importDefault(require("../models/discountCodeModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, cakeId, quantity, decoration } = req.body;
-    if (!userId || !cakeId || !quantity) {
-        res
-            .status(400)
-            .json({ error: "User ID, Cake ID, and quantity are required" });
-        return;
+    const { userId, items, paymentMethod, decoration } = req.body;
+    if (!userId || !items || items.length === 0) {
+        res.status(400).json({ error: "User ID and items are required" });
     }
-    try {
-        if (!mongoose_1.default.Types.ObjectId.isValid(userId) ||
-            !mongoose_1.default.Types.ObjectId.isValid(cakeId)) {
-            res.status(400).json({ error: "Invalid ID format" });
-            return;
-        }
-        const cake = yield cakeModel_1.default.findById(cakeId);
-        if (!cake) {
-            res.status(404).json({ error: "Cake not found" });
-            return;
-        }
-        const totalPrice = cake.price * quantity;
-        const order = new orderModel_1.default({
-            user: userId,
-            cake: cakeId,
-            quantity,
-            totalPrice,
-            decoration: decoration || null,
-        });
-        const savedOrder = yield order.save();
-        res.status(201).json(savedOrder);
+    const cakeIds = items.map((i) => i.cakeId);
+    const cakes = yield cakeModel_1.default.find({ _id: { $in: cakeIds } });
+    if (cakes.length !== items.length) {
+        res.status(404).json({ error: "One or more cakes not found" });
     }
-    catch (err) {
-        console.error("Failed to place order:", err);
-        res.status(500).json({ error: "Failed to place order" });
-    }
+    let totalPrice = 0;
+    items.forEach((i) => {
+        const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
+        if (foundCake)
+            totalPrice += foundCake.price * i.quantity;
+    });
+    const mappedItems = items.map((i) => ({
+        cake: i.cakeId,
+        quantity: i.quantity,
+    }));
+    const order = new orderModel_1.default({
+        user: userId,
+        items: mappedItems,
+        totalPrice,
+        decoration: decoration || "",
+        paymentMethod,
+        status: "pending",
+    });
+    const saved = yield order.save();
+    res.status(201).json(saved);
 });
 exports.placeOrder = placeOrder;
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

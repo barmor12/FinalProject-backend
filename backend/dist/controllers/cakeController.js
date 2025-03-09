@@ -16,9 +16,8 @@ exports.removeFromFavorites = exports.addToFavorites = exports.deleteCake = expo
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, price, ingredients } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : undefined;
-    if (!name || !description || !price || !ingredients) {
+    const { name, description, price, ingredients, image } = req.body;
+    if (!name || !description || !price || !ingredients || !image) {
         res.status(400).json({ error: 'All fields are required' });
         return;
     }
@@ -27,8 +26,8 @@ const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name,
             description,
             price,
-            image,
             ingredients,
+            image
         });
         const savedCake = yield cake.save();
         res.status(201).json(savedCake);
@@ -40,7 +39,7 @@ const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addCake = addCake;
 const updateCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, price, ingredients } = req.body;
+    const { name, description, price, ingredients, image } = req.body;
     const cakeId = req.params.id;
     try {
         const updatedCake = yield cakeModel_1.default.findByIdAndUpdate(cakeId, {
@@ -48,7 +47,7 @@ const updateCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             description,
             price,
             ingredients,
-            image: req.file ? `/uploads/${req.file.filename}` : undefined,
+            image
         }, { new: true });
         if (!updatedCake) {
             res.status(404).json({ error: 'Cake not found' });

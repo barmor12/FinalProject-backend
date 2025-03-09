@@ -13,9 +13,9 @@ const upload = (0, multer_1.default)({
     dest: path_1.default.join(__dirname, "..", "uploads"),
 });
 router.post("/addcake", authMiddleware_1.default, upload.single("image"), cakeController_1.addCake);
-router.put("/cakes/:id", authMiddleware_1.default, upload.single("image"), cakeController_1.updateCake);
+router.put("/:id", authMiddleware_1.default, upload.single("image"), cakeController_1.updateCake);
 router.get("/", cakeController_1.getAllCakes);
-router.delete("/cakes/:id", authMiddleware_1.default, cakeController_1.deleteCake);
+router.delete("/:id", authMiddleware_1.default, cakeController_1.deleteCake);
 router.post("/favorites", authMiddleware_1.default, cakeController_1.addToFavorites);
 router.delete("/favorites", authMiddleware_1.default, cakeController_1.removeFromFavorites);
 exports.default = router;

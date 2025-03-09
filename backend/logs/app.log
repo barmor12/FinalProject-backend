@@ -6764,3 +6764,619 @@
 2025-03-06T01:13:56.655Z [INFO]: [INFO] Generating tokens for userId: 67c797307cfbf8e6aaffcab2, role: admin
 2025-03-06T01:13:56.660Z [INFO]: [INFO] Tokens generated successfully for userId: 67c797307cfbf8e6aaffcab2
 2025-03-06T01:13:56.661Z [INFO]: [INFO] Generated tokens for user: avieles100@gmail.com
+2025-03-09T14:31:17.842Z [INFO]: [INFO] Refresh token process started
+2025-03-09T14:31:17.846Z [ERROR]: [ERROR] Refresh token error: jwt expired
+2025-03-09T14:31:17.847Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-03-09T14:31:30.387Z [INFO]: [INFO] Login attempt for email: barm5@gmail.com
+2025-03-09T14:31:30.516Z [INFO]: [INFO] User fetched during login: null
+2025-03-09T14:31:30.517Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-03-09T14:31:51.012Z [ERROR]: [ERROR] User not found (Status: 404)
+2025-03-09T14:32:22.746Z [INFO]: [INFO] Attempting to register user: barmor123456@gmail.com
+2025-03-09T14:32:22.871Z [WARN]: [WARN] Registration failed: Email barmor123456@gmail.com already exists
+2025-03-09T14:32:22.872Z [ERROR]: [ERROR] User with this email already exists (Status: 400)
+2025-03-09T14:32:51.574Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-03-09T14:33:47.117Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-03-09T14:33:53.602Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-03-09T14:34:23.972Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-03-09T14:34:51.670Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-03-09T14:41:45.713Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-03-09T14:42:26.928Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-03-09T14:47:42.417Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-03-09T14:49:57.507Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-03-09T14:50:31.505Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-03-09T15:00:23.682Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-03-09T15:01:48.165Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:01:48.286Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1738845329826-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:00:59.030Z,
+  __v: 5
+}
+2025-03-09T15:01:48.400Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:01:48.402Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:01:48.402Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:05:04.744Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:05:04.746Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:05:04.864Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:05:04.866Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:05:04.991Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:17:21.601Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:17:21.721Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:15:22.155Z,
+  __v: 7
+}
+2025-03-09T15:17:21.852Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: admin
+2025-03-09T15:17:21.854Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:17:21.854Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:19:31.982Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:19:32.100Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:17:21.855Z,
+  __v: 8
+}
+2025-03-09T15:19:32.218Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: admin
+2025-03-09T15:19:32.219Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:19:32.219Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:21:52.636Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:21:52.756Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM1NzIsImV4cCI6MTc0MjEzODM3Mn0.SJXde9ULwNRrihii1h2EBVCfFVblFD0KMovokmNcHxg'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:19:32.220Z,
+  __v: 9
+}
+2025-03-09T15:21:52.957Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: admin
+2025-03-09T15:21:52.959Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:21:52.960Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:23:24.188Z [INFO]: [INFO] Logout process started
+2025-03-09T15:23:24.433Z [INFO]: [INFO] User logged out successfully: 67a4248449deb4dcfeca75e5
+2025-03-09T15:23:40.334Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:23:40.449Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM1NzIsImV4cCI6MTc0MjEzODM3Mn0.SJXde9ULwNRrihii1h2EBVCfFVblFD0KMovokmNcHxg'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:23:24.309Z,
+  __v: 11
+}
+2025-03-09T15:23:40.566Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: admin
+2025-03-09T15:23:40.569Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:23:40.569Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:24:05.971Z [INFO]: [INFO] Logout process started
+2025-03-09T15:24:06.227Z [INFO]: [INFO] User logged out successfully: 67a4248449deb4dcfeca75e5
+2025-03-09T15:24:22.633Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:24:22.749Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM1NzIsImV4cCI6MTc0MjEzODM3Mn0.SJXde9ULwNRrihii1h2EBVCfFVblFD0KMovokmNcHxg'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:24:06.101Z,
+  __v: 13
+}
+2025-03-09T15:24:22.867Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:24:22.868Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:24:22.868Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:26:01.263Z [INFO]: [INFO] Logout process started
+2025-03-09T15:26:01.511Z [INFO]: [INFO] User logged out successfully: 67a4248449deb4dcfeca75e5
+2025-03-09T15:27:46.251Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:27:46.372Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM4NjIsImV4cCI6MTc0MjEzODY2Mn0.Bku-5479RHk_KmK0-uEZtDJCaHmQA9tRfEf5gleZ8Uw'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:26:01.388Z,
+  __v: 15
+}
+2025-03-09T15:27:46.489Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:27:46.490Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:27:46.490Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:34:45.556Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:34:45.557Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:34:45.700Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:34:45.700Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:34:45.934Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:34:46.276Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:34:46.276Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:34:46.406Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:34:46.406Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:34:46.525Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:35:13.161Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:35:13.162Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:35:13.311Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T15:35:13.787Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:35:13.787Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:35:13.966Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T15:35:32.053Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:35:32.173Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741533321455-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:34:46.407Z,
+  __v: 18
+}
+2025-03-09T15:35:32.292Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:35:32.292Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:35:32.292Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:48:13.911Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:48:13.912Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:48:14.029Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:48:14.030Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:48:14.151Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:50:55.397Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:50:55.398Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:50:55.518Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T15:51:06.251Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T15:51:06.370Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:48:14.032Z,
+  __v: 20
+}
+2025-03-09T15:51:06.489Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:51:06.490Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:51:06.490Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T15:57:28.015Z [INFO]: [INFO] Refresh token process started
+2025-03-09T15:57:28.016Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:57:28.135Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T15:57:28.136Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T15:57:28.256Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:00:36.835Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:00:36.835Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:00:36.954Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:00:46.732Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:00:46.853Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T15:57:28.137Z,
+  __v: 22
+}
+2025-03-09T16:00:46.967Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:00:46.968Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:00:46.968Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T16:01:28.949Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:01:28.949Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:01:29.153Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:01:29.154Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:01:29.455Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:10:47.308Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:10:47.309Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:10:47.426Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:10:59.065Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:10:59.182Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T16:01:29.155Z,
+  __v: 24
+}
+2025-03-09T16:10:59.299Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:10:59.299Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:10:59.300Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T16:11:50.500Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:11:50.501Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:11:50.635Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:11:50.636Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:11:50.809Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:16:07.157Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:16:07.158Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:16:07.364Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:16:17.451Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:16:17.569Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzY3MTAsImV4cCI6MTc0MjE0MTUxMH0.6Afa5prFI8H4rBfbed921Ozv6383IuPYAMt77D9J2tc'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T16:11:50.636Z,
+  __v: 26
+}
+2025-03-09T16:16:17.690Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:16:17.690Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:16:17.690Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T16:17:48.440Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:17:48.441Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:17:48.578Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:17:48.578Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:17:48.780Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:20:53.524Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:20:53.525Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:20:53.710Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:21:06.441Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:21:06.560Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzY3MTAsImV4cCI6MTc0MjE0MTUxMH0.6Afa5prFI8H4rBfbed921Ozv6383IuPYAMt77D9J2tc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzcwNjgsImV4cCI6MTc0MjE0MTg2OH0.XQZqf7j8B-M-G6CpdffECj_QXxUGz4dOxF9aNg9F17s'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T16:17:48.579Z,
+  __v: 28
+}
+2025-03-09T16:21:06.681Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:21:06.682Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:21:06.682Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T16:21:59.790Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:21:59.791Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:21:59.907Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:21:59.908Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:22:00.028Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:24:23.701Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:24:23.703Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:24:23.819Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:24:32.121Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:24:32.239Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzY3MTAsImV4cCI6MTc0MjE0MTUxMH0.6Afa5prFI8H4rBfbed921Ozv6383IuPYAMt77D9J2tc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzcwNjgsImV4cCI6MTc0MjE0MTg2OH0.XQZqf7j8B-M-G6CpdffECj_QXxUGz4dOxF9aNg9F17s',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzczMTksImV4cCI6MTc0MjE0MjExOX0.TWLuI0XJH6oJMZJcLUTgXqw3vYX32htOUsiUoDh1QwE'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T16:21:59.908Z,
+  __v: 30
+}
+2025-03-09T16:24:32.356Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:24:32.356Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:24:32.356Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T16:29:43.716Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:29:43.716Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:29:43.898Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:29:43.900Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:29:44.119Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:32:03.718Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:32:03.718Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:32:03.994Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:32:16.125Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:32:16.243Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzY3MTAsImV4cCI6MTc0MjE0MTUxMH0.6Afa5prFI8H4rBfbed921Ozv6383IuPYAMt77D9J2tc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzcwNjgsImV4cCI6MTc0MjE0MTg2OH0.XQZqf7j8B-M-G6CpdffECj_QXxUGz4dOxF9aNg9F17s',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzczMTksImV4cCI6MTc0MjE0MjExOX0.TWLuI0XJH6oJMZJcLUTgXqw3vYX32htOUsiUoDh1QwE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1Mzc3ODMsImV4cCI6MTc0MjE0MjU4M30.x_ZAfmKOlgcpPK7JGfqvgXQVxBWMDwhDYihzNzwxJFI'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T16:29:43.901Z,
+  __v: 32
+}
+2025-03-09T16:32:16.364Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:32:16.364Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:32:16.364Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T16:34:38.204Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:34:38.205Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:34:38.322Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:34:38.323Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:34:38.443Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:56:25.365Z [INFO]: [INFO] Refresh token process started
+2025-03-09T16:56:25.368Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:56:26.344Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T16:56:34.621Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T16:56:34.745Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzY3MTAsImV4cCI6MTc0MjE0MTUxMH0.6Afa5prFI8H4rBfbed921Ozv6383IuPYAMt77D9J2tc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzcwNjgsImV4cCI6MTc0MjE0MTg2OH0.XQZqf7j8B-M-G6CpdffECj_QXxUGz4dOxF9aNg9F17s',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzczMTksImV4cCI6MTc0MjE0MjExOX0.TWLuI0XJH6oJMZJcLUTgXqw3vYX32htOUsiUoDh1QwE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1Mzc3ODMsImV4cCI6MTc0MjE0MjU4M30.x_ZAfmKOlgcpPK7JGfqvgXQVxBWMDwhDYihzNzwxJFI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzgwNzgsImV4cCI6MTc0MjE0Mjg3OH0.f8yAX-2WGPgDHZUK0705m0pVP8RRl5FmXewldg-_dX0'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T16:34:38.323Z,
+  __v: 34
+}
+2025-03-09T16:56:34.875Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T16:56:34.876Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T16:56:34.877Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T18:09:21.053Z [INFO]: [INFO] Refresh token process started
+2025-03-09T18:09:21.059Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:09:27.027Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T18:09:27.031Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:09:28.613Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:10:56.810Z [INFO]: [INFO] Refresh token process started
+2025-03-09T18:10:56.812Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:10:56.932Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-03-09T18:11:04.439Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-03-09T18:11:04.561Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67a4248449deb4dcfeca75e5'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cQAvaSbW36osHk8kzTGmvO3d6HSR.CR5UMxHek0dnTpMavRT.ki.a',
+  firstName: 'bar',
+  lastName: 'mor',
+  profilePic: '/uploads/1741535193314-profile.jpg',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4MTA5NjYsImV4cCI6MTczOTQxNTc2Nn0.q5-TbMv03Rl7QCWMb-ZgKPgD7fx6tO_MGMVt3cDqApY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc1NjksImV4cCI6MTczOTQ4MjM2OX0.AFN9-Vd2XlwfWMbeOM9TgmlyVpZHymheOouuq-JlzP4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3Mzg4Nzc2MDMsImV4cCI6MTczOTQ4MjQwM30.ouVdbNkyMF-gmZcyZGNE1iE43FnIcWjuOIv-HI2GXJQ',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzI3MDQsImV4cCI6MTc0MjEzNzUwNH0.L-nE3wrHjhDbXqGlVLDErNinovr5nAO3VO4BQJKIU2Y',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzM0NDEsImV4cCI6MTc0MjEzODI0MX0.vdRB21o1eu0zdmS5e_kdYB1Jf-rqMitLfOcRDQqEfPI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODUsImV4cCI6MTc0MjEzOTI4NX0.eF2i6UF8-HxpeEZ7Uov1jdoHLJ7IrpvKPYu6JKeaxWY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzQ0ODYsImV4cCI6MTc0MjEzOTI4Nn0.Hu_yCNNo547TjsPM51pQTQV0UfK8y2rsmUttEr8kEa8',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzUyOTQsImV4cCI6MTc0MjE0MDA5NH0.3R3AnIfq6ltPOMtZXowKty6xtRnD24wrGoEgewkukLc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzU4NDgsImV4cCI6MTc0MjE0MDY0OH0.RgaJCRKpNfdFSHakaU5NXm0gxbZqpN3GD5Q_Eed1Jr4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzYwODksImV4cCI6MTc0MjE0MDg4OX0.inrNJSf3SwiJqvH_X5-ucknk4OPV3mGay273m_QWg5c',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzY3MTAsImV4cCI6MTc0MjE0MTUxMH0.6Afa5prFI8H4rBfbed921Ozv6383IuPYAMt77D9J2tc',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzcwNjgsImV4cCI6MTc0MjE0MTg2OH0.XQZqf7j8B-M-G6CpdffECj_QXxUGz4dOxF9aNg9F17s',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzczMTksImV4cCI6MTc0MjE0MjExOX0.TWLuI0XJH6oJMZJcLUTgXqw3vYX32htOUsiUoDh1QwE',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1Mzc3ODMsImV4cCI6MTc0MjE0MjU4M30.x_ZAfmKOlgcpPK7JGfqvgXQVxBWMDwhDYihzNzwxJFI',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1MzgwNzgsImV4cCI6MTc0MjE0Mjg3OH0.f8yAX-2WGPgDHZUK0705m0pVP8RRl5FmXewldg-_dX0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2E0MjQ4NDQ5ZGViNGRjZmVjYTc1ZTUiLCJpYXQiOjE3NDE1NDM3NjcsImV4cCI6MTc0MjE0ODU2N30.MaKdcOl8ksqtjkdz4AhO7S_8YP25TBVaYeYFv--STwA'
+  ],
+  isVerified: true,
+  createdAt: 2025-02-06T02:55:00.067Z,
+  updatedAt: 2025-03-09T18:09:27.038Z,
+  __v: 36
+}
+2025-03-09T18:11:04.697Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T18:11:04.698Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:11:04.698Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-03-09T18:25:06.439Z [INFO]: [INFO] Refresh token process started
+2025-03-09T18:25:06.442Z [INFO]: [INFO] Refresh token verified for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:25:06.562Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
+2025-03-09T18:25:06.563Z [INFO]: [INFO] Tokens generated successfully for userId: 67a4248449deb4dcfeca75e5
+2025-03-09T18:25:06.688Z [INFO]: [INFO] Refresh token process completed for userId: 67a4248449deb4dcfeca75e5

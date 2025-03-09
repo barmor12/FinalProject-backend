@@ -1,31 +1,34 @@
+// models/orderModel.ts
 import mongoose from "mongoose";
+
+const orderItemSchema = new mongoose.Schema({
+  cake: { type: mongoose.Schema.Types.ObjectId, ref: "Cake", required: true },
+  quantity: { type: Number, required: true },
+});
 
 const orderSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  cake: { type: mongoose.Schema.Types.ObjectId, ref: "Cake", required: true }, // הקשר לעוגה
-  quantity: { type: Number, required: true }, // כמות עוגות בהזמנה
+  items: [orderItemSchema], // <== מערך פריטים
   totalPrice: { type: Number, required: true },
   decoration: { type: String, default: "" },
   status: {
     type: String,
     enum: ["draft", "pending", "confirmed", "delivered"],
-    default: "draft", // מצב טיוטה
+    default: "draft",
   },
-  discountCode: { type: String }, // קוד הנחה
-  deliveryDate: { type: Date }, // תאריך משלוח
+  discountCode: { type: String },
+  deliveryDate: { type: Date },
   expiresAt: {
     type: Date,
     default: () => Date.now() + 30 * 24 * 60 * 60 * 1000,
-  }, // 30 יום
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
-// לפני שמירת הזמנה, לעדכן את זמן ה-`updatedAt`
 orderSchema.pre("save", function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-const Order = mongoose.model("Order", orderSchema);
-export default Order;
+export default mongoose.model("Order", orderSchema);

@@ -34,8 +34,6 @@ router.get("/google/callback", passport_1.default.authenticate("google", { failu
 router.post("/forgot-password", authController_1.forgotPassword);
 router.post("/reset-password", authController_1.resetPassword);
 router.post("/refresh", authController_1.refresh);
-router.get("/EmailVerificationScreen", (req, res) => {
-    res.redirect(`${process.env.FRONTEND_URL}/auth/verify-email?token=${req.query.token}`);
-});
+router.post("/upload-profile-pic", authController_1.upload.single("profilePic"), authController_1.uploadProfilePic);
 exports.default = router;
 //# sourceMappingURL=authRoute.js.map
