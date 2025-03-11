@@ -14,6 +14,8 @@ declare const _default: mongoose.Model<{
     profilePic?: string | null | undefined;
     phone?: string | null | undefined;
     address?: string | null | undefined;
+    resetToken?: string | null | undefined;
+    resetExpires?: NativeDate | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -29,6 +31,8 @@ declare const _default: mongoose.Model<{
     profilePic?: string | null | undefined;
     phone?: string | null | undefined;
     address?: string | null | undefined;
+    resetToken?: string | null | undefined;
+    resetExpires?: NativeDate | null | undefined;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -44,6 +48,8 @@ declare const _default: mongoose.Model<{
     profilePic?: string | null | undefined;
     phone?: string | null | undefined;
     address?: string | null | undefined;
+    resetToken?: string | null | undefined;
+    resetExpires?: NativeDate | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -65,6 +71,8 @@ declare const _default: mongoose.Model<{
     profilePic?: string | null | undefined;
     phone?: string | null | undefined;
     address?: string | null | undefined;
+    resetToken?: string | null | undefined;
+    resetExpires?: NativeDate | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -80,6 +88,8 @@ declare const _default: mongoose.Model<{
     profilePic?: string | null | undefined;
     phone?: string | null | undefined;
     address?: string | null | undefined;
+    resetToken?: string | null | undefined;
+    resetExpires?: NativeDate | null | undefined;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -95,6 +105,8 @@ declare const _default: mongoose.Model<{
     profilePic?: string | null | undefined;
     phone?: string | null | undefined;
     address?: string | null | undefined;
+    resetToken?: string | null | undefined;
+    resetExpires?: NativeDate | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

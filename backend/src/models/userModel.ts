@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema(
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cake" }],
     refresh_tokens: [String],
     isVerified: { type: Boolean, default: false }, // שדה לאימות דוא"ל
+    resetToken: { type: String },
+    resetExpires: { type: Date },
   },
   { timestamps: true }
 );

@@ -13,6 +13,7 @@ export declare const logout: (req: Request, res: Response) => Promise<void>;
 export declare const verifyEmail: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>>>;
 export declare const forgotPassword: (req: Request, res: Response) => Promise<void>;
 export declare const resetPassword: (req: Request, res: Response) => Promise<void>;
+export declare const uploadProfilePic: (req: Request, res: Response) => Promise<void>;
 declare const _default: {
     enforceHttps: (req: Request, res: Response, next: NextFunction) => express.Response<any, Record<string, any>> | undefined;
     register: (req: Request, res: Response) => Promise<void>;
@@ -24,5 +25,8 @@ declare const _default: {
     getTokenFromRequest: (req: Request) => string | null;
     verifyEmail: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>>>;
     updatePassword: (req: Request, res: Response) => Promise<void>;
+    forgotPassword: (req: Request, res: Response) => Promise<void>;
+    resetPassword: (req: Request, res: Response) => Promise<void>;
+    uploadProfilePic: (req: Request, res: Response) => Promise<void>;
 };
 export default _default;
