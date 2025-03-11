@@ -29,48 +29,69 @@ const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const discountCodeModel_1 = __importDefault(require("../models/discountCodeModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const cartModel_1 = __importDefault(require("../models/cartModel"));
 const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, items, paymentMethod, decoration } = req.body;
+    console.log("📨 Received Order Request:", req.body);
     if (!userId || !items || items.length === 0) {
         res.status(400).json({ error: "User ID and items are required" });
+        return;
     }
-    const cakeIds = items.map((i) => i.cakeId);
-    const cakes = yield cakeModel_1.default.find({ _id: { $in: cakeIds } });
-    if (cakes.length !== items.length) {
-        res.status(404).json({ error: "One or more cakes not found" });
-    }
-    let totalPrice = 0;
-    items.forEach((i) => {
-        const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
-        if (foundCake)
+    try {
+        const cakeIds = items.map((i) => i.cakeId);
+        const cakes = yield cakeModel_1.default.find({ _id: { $in: cakeIds } });
+        if (cakes.length !== items.length) {
+            res.status(404).json({ error: "One or more cakes not found" });
+            return;
+        }
+        let totalPrice = 0;
+        const mappedItems = items
+            .map((i) => {
+            const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
+            if (!foundCake)
+                return null;
             totalPrice += foundCake.price * i.quantity;
-    });
-    const mappedItems = items.map((i) => ({
-        cake: i.cakeId,
-        quantity: i.quantity,
-    }));
-    const order = new orderModel_1.default({
-        user: userId,
-        items: mappedItems,
-        totalPrice,
-        decoration: decoration || "",
-        paymentMethod,
-        status: "pending",
-    });
-    const saved = yield order.save();
-    res.status(201).json(saved);
+            return { cake: i.cakeId, quantity: i.quantity };
+        })
+            .filter(Boolean);
+        const order = new orderModel_1.default({
+            user: userId,
+            items: mappedItems,
+            totalPrice,
+            decoration: decoration || "",
+            paymentMethod,
+            status: "pending",
+        });
+        const savedOrder = yield order.save();
+        console.log("✅ Order Saved:", savedOrder);
+        yield cartModel_1.default.deleteOne({ user: userId });
+        res.status(201).json(savedOrder);
+    }
+    catch (error) {
+        console.error("❌ Error placing order:", error);
+        res.status(500).json({ error: "Failed to place order" });
+    }
 });
 exports.placeOrder = placeOrder;
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("🔍 Fetching all orders...");
         const orders = yield orderModel_1.default.find()
             .populate("user", "nickname email")
-            .populate("cake", "name price");
+            .populate({
+            path: "items.cake",
+            select: "name price image",
+            strictPopulate: false,
+        });
+        console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
         res.status(200).json(orders);
     }
     catch (err) {
-        console.error("Error fetching orders:", err);
-        res.status(500).json({ error: "Failed to fetch orders" });
+        console.error("❌ Error fetching orders:", err);
+        res.status(500).json({
+            error: "Failed to fetch orders",
+            details: err.message,
+        });
     }
 });
 exports.getAllOrders = getAllOrders;
