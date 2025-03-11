@@ -13,6 +13,9 @@ router.post("/new-order", authMiddleware_1.default, multerMiddleware_1.default.s
 router.get("/orders", authMiddleware_1.default, ordersController_1.getAllOrders);
 router.post("/create", authMiddleware_1.default, ordersController_1.placeOrder);
 router.post("/draft", authMiddleware_1.default, multerMiddleware_1.default.single("image"), ordersController_1.saveDraftOrder);
+router.put("/:orderId/status", ordersController_1.updateOrderStatus);
+router.delete("/:orderId", ordersController_1.deleteOrder);
+router.get("/:orderId", ordersController_1.getOrderById);
 router.post("/duplicate", authMiddleware_1.default, ordersController_1.duplicateOrder);
 router.post("/apply-discount", authMiddleware_1.default, ordersController_1.applyDiscountCode);
 router.post("/check-date", authMiddleware_1.default, ordersController_1.checkDeliveryDate);

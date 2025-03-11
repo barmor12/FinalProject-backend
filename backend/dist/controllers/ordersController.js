@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
+exports.getOrderById = exports.deleteOrder = exports.updateOrderStatus = exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
@@ -244,6 +244,70 @@ const getDecorations = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getDecorations = getDecorations;
+const updateOrderStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const { status } = req.body;
+        if (!["draft", "pending", "confirmed", "delivered"].includes(status)) {
+            res.status(400).json({ error: "Invalid status value" });
+            return;
+        }
+        const order = yield orderModel_1.default.findByIdAndUpdate(orderId, { status }, { new: true });
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.json({ message: "Order status updated successfully", order });
+    }
+    catch (error) {
+        console.error("❌ Error updating order:", error);
+        res.status(500).json({ error: "Failed to update order status" });
+    }
+});
+exports.updateOrderStatus = updateOrderStatus;
+const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const order = yield orderModel_1.default.findByIdAndDelete(orderId);
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.json({ message: "Order deleted successfully" });
+    }
+    catch (error) {
+        console.error("❌ Error deleting order:", error);
+        res.status(500).json({ error: "Failed to delete order" });
+    }
+});
+exports.deleteOrder = deleteOrder;
+const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        if (!orderId) {
+            res.status(400).json({ error: "Order ID is required" });
+            return;
+        }
+        const order = yield orderModel_1.default.findById(orderId)
+            .populate("user", "email")
+            .populate("cake");
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.json(order);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            console.error("❌ Error fetching order:", error);
+            res.status(500).json({ error: "Failed to fetch order", details: error.message });
+        }
+        else {
+            res.status(500).json({ error: "Unknown error occurred" });
+        }
+    }
+});
+exports.getOrderById = getOrderById;
 exports.default = {
     placeOrder: exports.placeOrder,
     getAllOrders: exports.getAllOrders,

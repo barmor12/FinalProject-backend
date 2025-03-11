@@ -5,3 +5,4 @@ export declare const getAllCakes: (req: Request, res: Response) => Promise<void>
 export declare const deleteCake: (req: Request, res: Response) => Promise<void>;
 export declare const addToFavorites: (req: Request, res: Response) => Promise<void>;
 export declare const removeFromFavorites: (req: Request, res: Response) => Promise<void>;
+export declare const deleteProduct: (req: Request, res: Response) => Promise<void>;
