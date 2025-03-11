@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
+import "./config/firebaseConfig"; // ✅ מוודאים שה-Firebase מאותחל
 
 import authRoute from "./routes/authRoute";
 import recipeRoute from "./routes/recipeRoute";
@@ -24,6 +25,7 @@ console.log(
   path.join(__dirname, "../src/uploads")
 );
 const app = express();
+app.enable("strict routing");
 const port = process.env.PORT || 3000;
 
 // Middleware
@@ -41,7 +43,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 // Routes
 app.use("/admin", adminRoute);
 app.use("/auth", authRoute);
