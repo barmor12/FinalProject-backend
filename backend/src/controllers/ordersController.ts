@@ -4,47 +4,58 @@ import Cake from "../models/cakeModel";
 import User from "../models/userModel";
 import DiscountCode from "../models/discountCodeModel";
 import mongoose from "mongoose";
+import Cart from "../models/cartModel";
 
 export const placeOrder = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const { userId, items, paymentMethod, decoration } = req.body;
+  console.log("📨 Received Order Request:", req.body); // ✅ בדוק שהבקשה מתקבלת
+
   if (!userId || !items || items.length === 0) {
     res.status(400).json({ error: "User ID and items are required" });
+    return;
   }
 
-  // בדיקת cakeIds
-  const cakeIds = items.map((i: any) => i.cakeId);
-  const cakes = await Cake.find({ _id: { $in: cakeIds } });
-  if (cakes.length !== items.length) {
-    res.status(404).json({ error: "One or more cakes not found" });
+  try {
+    const cakeIds = items.map((i: any) => i.cakeId);
+    const cakes = await Cake.find({ _id: { $in: cakeIds } });
+
+    if (cakes.length !== items.length) {
+      res.status(404).json({ error: "One or more cakes not found" });
+      return;
+    }
+
+    let totalPrice = 0;
+    const mappedItems = items
+      .map((i: any) => {
+        const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
+        if (!foundCake) return null;
+        totalPrice += foundCake.price * i.quantity;
+        return { cake: i.cakeId, quantity: i.quantity };
+      })
+      .filter(Boolean);
+
+    const order = new Order({
+      user: userId,
+      items: mappedItems,
+      totalPrice,
+      decoration: decoration || "",
+      paymentMethod,
+      status: "pending",
+    });
+
+    const savedOrder = await order.save();
+    console.log("✅ Order Saved:", savedOrder); // ✅ וודא שההזמנה נשמרת
+
+    await Cart.deleteOne({ user: userId });
+
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error("❌ Error placing order:", error);
+    res.status(500).json({ error: "Failed to place order" });
   }
-
-  // חישוב מחיר כולל
-  let totalPrice = 0;
-  items.forEach((i: any) => {
-    const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
-    if (foundCake) totalPrice += foundCake.price * i.quantity;
-  });
-
-  // בניית items בפורמט שהסכמה דורשת:
-  const mappedItems = items.map((i: any) => ({
-    cake: i.cakeId,
-    quantity: i.quantity,
-  }));
-
-  const order = new Order({
-    user: userId,
-    items: mappedItems,
-    totalPrice,
-    decoration: decoration || "",
-    paymentMethod,
-    status: "pending",
-  });
-
-  const saved = await order.save();
-  res.status(201).json(saved);
 };
 
 export const getAllOrders = async (
@@ -52,17 +63,25 @@ export const getAllOrders = async (
   res: Response
 ): Promise<void> => {
   try {
+    console.log("🔍 Fetching all orders...");
     const orders = await Order.find()
       .populate("user", "nickname email")
-      .populate("cake", "name price");
+      .populate({
+        path: "items.cake",
+        select: "name price image",
+        strictPopulate: false, // מבטיח שהנתונים יחזרו גם אם cake לא קיים
+      });
 
+    console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
     res.status(200).json(orders);
   } catch (err) {
-    console.error("Error fetching orders:", err);
-    res.status(500).json({ error: "Failed to fetch orders" });
+    console.error("❌ Error fetching orders:", err);
+    res.status(500).json({
+      error: "Failed to fetch orders",
+      details: (err as Error).message,
+    });
   }
 };
-
 export const saveDraftOrder = async (req: Request, res: Response) => {
   const { userId, cakeId, quantity } = req.body;
 
