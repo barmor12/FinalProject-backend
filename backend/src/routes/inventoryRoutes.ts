@@ -3,12 +3,15 @@ import {
   getAllProducts,
   updateProduct,
   deleteProduct,
-} from "../controllers/inventoryController";
+  deleteProducts,
+} from "../controllers/inventoryController"; // ✅ וידוא שהנתיב מדויק
 
 const router = express.Router();
 
 router.get("/", getAllProducts);
 router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.delete("/bulk-delete", deleteProducts); // 🛠️ נתיב ייחודי כדי למנוע התנגשות
+router.delete("/:cakeId", deleteProduct);
+
 
 export default router;

@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import Cake from '../models/cakeModel';
 import User from "../models/userModel";
 
+const admin = require("firebase-admin");
+
 export const addCake = async (req: Request, res: Response): Promise<void> => {
   const { name, description, price, ingredients, image } = req.body;
 
@@ -144,6 +146,30 @@ export const removeFromFavorites = async (req: Request, res: Response): Promise<
   } catch (err) {
     console.error('Failed to remove cake from favorites:', err);
     res.status(500).json({ error: 'Failed to remove cake from favorites' });
+  }
+};
+
+
+// const bucket = admin.storage().bucket(); // Firebase Storage bucket
+
+export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { cakeId } = req.params;
+
+    // חיפוש המוצר במסד הנתונים
+    const cake = await Cake.findById(cakeId);
+    if (!cake) {
+      res.status(404).json({ error: "Product not found" });
+      return; // ✅ עוצר את הביצוע במקרה של מוצר לא קיים
+    }
+
+    // מחיקת המוצר מהמסד נתונים
+    await Cake.findByIdAndDelete(cakeId);
+
+    res.json({ success: true, message: "Product deleted successfully" }); // ✅ אין `return`
+  } catch (error) {
+    console.error("❌ Error deleting product:", error);
+    res.status(500).json({ error: "Failed to delete product" });
   }
 };
 

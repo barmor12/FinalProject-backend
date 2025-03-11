@@ -7,6 +7,9 @@ import {
   applyDiscountCode,
   checkDeliveryDate,
   validateOrderInput,
+  updateOrderStatus,
+  deleteOrder,
+  getOrderById,
 } from "../controllers/ordersController";
 import authenticateMiddleware from "../common/authMiddleware";
 
@@ -36,6 +39,10 @@ router.post(
   upload.single("image"),
   saveDraftOrder
 );
+
+router.put("/:orderId/status", updateOrderStatus); // עדכון סטטוס
+router.delete("/:orderId", deleteOrder); // מחיקת הזמנה
+router.get("/:orderId", getOrderById); // שליפת הזמנה לפי ID
 
 // שכפול הזמנה
 router.post("/duplicate", authenticateMiddleware, duplicateOrder);
