@@ -9,6 +9,7 @@ import {
   validateOrderInput,
   updateOrderStatus,
   deleteOrder,
+  getUserOrders,
   getOrderById,
 } from "../controllers/ordersController";
 import authenticateMiddleware from "../common/authMiddleware";
@@ -58,5 +59,8 @@ router.post("/check-date", authenticateMiddleware, checkDeliveryDate);
 router.post("/validate", authenticateMiddleware, validateOrderInput);
 
 router.get("/", authenticateMiddleware, getDecorations); // GET /decorations
+
+router.get("/user/:userId", authenticateMiddleware, getUserOrders); // קריאה לפי `userId`
+
 
 export default router;

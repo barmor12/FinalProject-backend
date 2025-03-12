@@ -33,7 +33,7 @@ export const placeOrder = async (
         const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
         if (!foundCake) return null;
         totalPrice += foundCake.price * i.quantity;
-        return { cake: i.cakeId, quantity: i.quantity };
+        return { cake: i.cakeId, name: i.name, imagePath: i.image, quantity: i.quantity };
       })
       .filter(Boolean);
 
@@ -314,7 +314,10 @@ export const getOrderById = async (req: Request, res: Response) => {
     // חיפוש ההזמנה במסד הנתונים
     const order = await Order.findById(orderId)
       .populate("user", "firstName lastName phone address email")
-      .populate("cake", "name image"); // ✅ לא items.cake אלא פשוט cake
+      .populate({
+        path: "items.cake",
+        select: "name image"
+      });
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
@@ -332,14 +335,40 @@ export const getOrderById = async (req: Request, res: Response) => {
   }
 
 };
+export const getUserOrders = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userId } = req.params;
 
-export default {
-  placeOrder,
-  getAllOrders,
-  saveDraftOrder,
-  duplicateOrder,
-  applyDiscountCode,
-  checkDeliveryDate,
-  validateOrderInput,
-  getDecorations,
+    // בדיקה אם ה-userID סופק
+    if (!userId) {
+      res.status(400).json({ error: "User ID is required" });
+      return;
+    }
+
+    // בדיקה אם ה-userID תקין (MongoDB ObjectID)
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(400).json({ error: "Invalid User ID format" });
+      return;
+    }
+
+    // חיפוש כל ההזמנות של המשתמש
+    const orders = await Order.find({ user: userId })
+      .sort({ createdAt: -1 }) // סדר מההזמנה האחרונה לישנה ביותר
+      .populate("user", "firstName lastName phone address email") // מידע על המשתמש
+      .populate({
+        path: "items.cake",
+        select: "name image price", // שליפת נתוני העוגה מההזמנה
+      });
+
+    if (!orders || orders.length === 0) {
+      res.status(404).json({ error: "No orders found for this user" });
+      return;
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("❌ Error fetching user orders:", error);
+    res.status(500).json({ error: "Failed to fetch user orders" });
+  }
 };
+
