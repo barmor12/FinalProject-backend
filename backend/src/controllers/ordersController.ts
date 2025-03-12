@@ -65,7 +65,7 @@ export const getAllOrders = async (
   try {
     console.log("🔍 Fetching all orders...");
     const orders = await Order.find()
-      .populate("user", "nickname email")
+      .populate("user", "firstName lastName phone address email")
       .populate({
         path: "items.cake",
         select: "name price image",
@@ -313,8 +313,8 @@ export const getOrderById = async (req: Request, res: Response) => {
 
     // חיפוש ההזמנה במסד הנתונים
     const order = await Order.findById(orderId)
-      .populate("user", "email")
-      .populate("cake"); // ✅ לא items.cake אלא פשוט cake
+      .populate("user", "firstName lastName phone address email")
+      .populate("cake", "name image"); // ✅ לא items.cake אלא פשוט cake
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
