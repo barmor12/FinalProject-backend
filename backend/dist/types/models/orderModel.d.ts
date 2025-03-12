@@ -1,10 +1,18 @@
 import mongoose from "mongoose";
-declare const Order: mongoose.Model<{
+declare const _default: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
-    cake: mongoose.Types.ObjectId;
-    quantity: number;
+    items: mongoose.Types.DocumentArray<{
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }> & {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }>;
     totalPrice: number;
     decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
@@ -15,8 +23,16 @@ declare const Order: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
-    cake: mongoose.Types.ObjectId;
-    quantity: number;
+    items: mongoose.Types.DocumentArray<{
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }> & {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }>;
     totalPrice: number;
     decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
@@ -27,8 +43,16 @@ declare const Order: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
-    cake: mongoose.Types.ObjectId;
-    quantity: number;
+    items: mongoose.Types.DocumentArray<{
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }> & {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }>;
     totalPrice: number;
     decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
@@ -43,8 +67,16 @@ declare const Order: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
-    cake: mongoose.Types.ObjectId;
-    quantity: number;
+    items: mongoose.Types.DocumentArray<{
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }> & {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }>;
     totalPrice: number;
     decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
@@ -55,8 +87,16 @@ declare const Order: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
-    cake: mongoose.Types.ObjectId;
-    quantity: number;
+    items: mongoose.Types.DocumentArray<{
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }> & {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }>;
     totalPrice: number;
     decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
@@ -67,8 +107,16 @@ declare const Order: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
-    cake: mongoose.Types.ObjectId;
-    quantity: number;
+    items: mongoose.Types.DocumentArray<{
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }> & {
+        cake: mongoose.Types.ObjectId;
+        quantity: number;
+    }>;
     totalPrice: number;
     decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
@@ -80,4 +128,4 @@ declare const Order: mongoose.Model<{
 } & {
     __v: number;
 }>>;
-export default Order;
+export default _default;

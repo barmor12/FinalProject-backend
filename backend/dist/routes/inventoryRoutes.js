@@ -8,6 +8,7 @@ const inventoryController_1 = require("../controllers/inventoryController");
 const router = express_1.default.Router();
 router.get("/", inventoryController_1.getAllProducts);
 router.put("/:id", inventoryController_1.updateProduct);
-router.delete("/:id", inventoryController_1.deleteProduct);
+router.delete("/bulk-delete", inventoryController_1.deleteProducts);
+router.delete("/:cakeId", inventoryController_1.deleteProduct);
 exports.default = router;
 //# sourceMappingURL=inventoryRoutes.js.map

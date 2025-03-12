@@ -23,58 +23,75 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
+exports.getOrderById = exports.deleteOrder = exports.updateOrderStatus = exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const discountCodeModel_1 = __importDefault(require("../models/discountCodeModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const cartModel_1 = __importDefault(require("../models/cartModel"));
 const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, cakeId, quantity, decoration } = req.body;
-    if (!userId || !cakeId || !quantity) {
-        res
-            .status(400)
-            .json({ error: "User ID, Cake ID, and quantity are required" });
+    const { userId, items, paymentMethod, decoration } = req.body;
+    console.log("📨 Received Order Request:", req.body);
+    if (!userId || !items || items.length === 0) {
+        res.status(400).json({ error: "User ID and items are required" });
         return;
     }
     try {
-        if (!mongoose_1.default.Types.ObjectId.isValid(userId) ||
-            !mongoose_1.default.Types.ObjectId.isValid(cakeId)) {
-            res.status(400).json({ error: "Invalid ID format" });
+        const cakeIds = items.map((i) => i.cakeId);
+        const cakes = yield cakeModel_1.default.find({ _id: { $in: cakeIds } });
+        if (cakes.length !== items.length) {
+            res.status(404).json({ error: "One or more cakes not found" });
             return;
         }
-        const cake = yield cakeModel_1.default.findById(cakeId);
-        if (!cake) {
-            res.status(404).json({ error: "Cake not found" });
-            return;
-        }
-        const totalPrice = cake.price * quantity;
+        let totalPrice = 0;
+        const mappedItems = items
+            .map((i) => {
+            const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
+            if (!foundCake)
+                return null;
+            totalPrice += foundCake.price * i.quantity;
+            return { cake: i.cakeId, quantity: i.quantity };
+        })
+            .filter(Boolean);
         const order = new orderModel_1.default({
             user: userId,
-            cake: cakeId,
-            quantity,
+            items: mappedItems,
             totalPrice,
-            decoration: decoration || null,
+            decoration: decoration || "",
+            paymentMethod,
+            status: "pending",
         });
         const savedOrder = yield order.save();
+        console.log("✅ Order Saved:", savedOrder);
+        yield cartModel_1.default.deleteOne({ user: userId });
         res.status(201).json(savedOrder);
     }
-    catch (err) {
-        console.error("Failed to place order:", err);
+    catch (error) {
+        console.error("❌ Error placing order:", error);
         res.status(500).json({ error: "Failed to place order" });
     }
 });
 exports.placeOrder = placeOrder;
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("🔍 Fetching all orders...");
         const orders = yield orderModel_1.default.find()
             .populate("user", "nickname email")
-            .populate("cake", "name price");
+            .populate({
+            path: "items.cake",
+            select: "name price image",
+            strictPopulate: false,
+        });
+        console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
         res.status(200).json(orders);
     }
     catch (err) {
-        console.error("Error fetching orders:", err);
-        res.status(500).json({ error: "Failed to fetch orders" });
+        console.error("❌ Error fetching orders:", err);
+        res.status(500).json({
+            error: "Failed to fetch orders",
+            details: err.message,
+        });
     }
 });
 exports.getAllOrders = getAllOrders;
@@ -227,6 +244,70 @@ const getDecorations = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getDecorations = getDecorations;
+const updateOrderStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const { status } = req.body;
+        if (!["draft", "pending", "confirmed", "delivered"].includes(status)) {
+            res.status(400).json({ error: "Invalid status value" });
+            return;
+        }
+        const order = yield orderModel_1.default.findByIdAndUpdate(orderId, { status }, { new: true });
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.json({ message: "Order status updated successfully", order });
+    }
+    catch (error) {
+        console.error("❌ Error updating order:", error);
+        res.status(500).json({ error: "Failed to update order status" });
+    }
+});
+exports.updateOrderStatus = updateOrderStatus;
+const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const order = yield orderModel_1.default.findByIdAndDelete(orderId);
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.json({ message: "Order deleted successfully" });
+    }
+    catch (error) {
+        console.error("❌ Error deleting order:", error);
+        res.status(500).json({ error: "Failed to delete order" });
+    }
+});
+exports.deleteOrder = deleteOrder;
+const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        if (!orderId) {
+            res.status(400).json({ error: "Order ID is required" });
+            return;
+        }
+        const order = yield orderModel_1.default.findById(orderId)
+            .populate("user", "email")
+            .populate("cake");
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.json(order);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            console.error("❌ Error fetching order:", error);
+            res.status(500).json({ error: "Failed to fetch order", details: error.message });
+        }
+        else {
+            res.status(500).json({ error: "Unknown error occurred" });
+        }
+    }
+});
+exports.getOrderById = getOrderById;
 exports.default = {
     placeOrder: exports.placeOrder,
     getAllOrders: exports.getAllOrders,

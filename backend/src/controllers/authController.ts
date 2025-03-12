@@ -71,7 +71,6 @@ const generateTokens = async (userId: string, role: string) => {
     }
   );
 
-
   const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET!, {
     expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d",
   });
@@ -545,16 +544,15 @@ export const forgotPassword = async (req: Request, res: Response) => {
       return sendError(res, "User not found", 404);
     }
 
-    // יצירת קוד אימות בן 6 ספרות
+    // יצירת קוד אימות ושמירה במסד הנתונים
     const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 15 * 60 * 1000; // תוקף ל-15 דקות
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 דקות
 
-    // שמירת הקוד בזיכרון (אפשר להשתמש גם בבסיס נתונים)
-    setTimeout(() => {
-      resetPasswordTokens.delete(user.email);
-    }, 15 * 60 * 1000);
+    user.resetToken = resetCode;
+    user.resetExpires = expiresAt;
+    await user.save();
 
-    // שליחת אימייל למשתמש
+    // שליחת אימייל
     await sendResetEmail(user.email, resetCode);
 
     res.status(200).json({ message: "Reset code sent to email" });
@@ -571,26 +569,28 @@ export const resetPassword = async (req: Request, res: Response) => {
   }
 
   try {
-    // בדיקת קיום המשתמש
     const user = await User.findOne({ email });
     if (!user) {
       return sendError(res, "User not found", 404);
     }
 
-    // בדיקת קוד שחזור
-    const storedToken = resetPasswordTokens.get(email);
+    // בדיקת קוד השחזור והתוקף
     if (
-      !storedToken ||
-      storedToken.code !== code ||
-      Date.now() > storedToken.expiresAt
+      !user.resetToken ||
+      user.resetToken !== code ||
+      !user.resetExpires ||
+      Date.now() > user.resetExpires.getTime()
     ) {
       return sendError(res, "Invalid or expired reset code", 400);
     }
 
-    // מחיקת הטוקן מהזיכרון לאחר השימוש
-    resetPasswordTokens.delete(email);
+    // מחיקת קוד האיפוס לאחר השימוש
+    await User.updateOne(
+      { email },
+      { $unset: { resetToken: 1, resetExpires: 1 } }
+    );
 
-    // הצפנת הסיסמה החדשה ועדכונה במסד הנתונים
+    // עדכון הסיסמה לאחר אימות
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     await user.save();

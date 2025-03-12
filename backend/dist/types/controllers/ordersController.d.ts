@@ -7,6 +7,9 @@ export declare const applyDiscountCode: (req: Request, res: Response) => Promise
 export declare const checkDeliveryDate: (req: Request, res: Response) => Promise<void>;
 export declare const validateOrderInput: (req: Request, res: Response) => Promise<void>;
 export declare const getDecorations: (req: Request, res: Response) => Promise<void>;
+export declare const updateOrderStatus: (req: Request, res: Response) => Promise<void>;
+export declare const deleteOrder: (req: Request, res: Response) => Promise<void>;
+export declare const getOrderById: (req: Request, res: Response) => Promise<void>;
 declare const _default: {
     placeOrder: (req: Request, res: Response) => Promise<void>;
     getAllOrders: (req: Request, res: Response) => Promise<void>;

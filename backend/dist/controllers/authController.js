@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
+exports.uploadProfilePic = exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -86,7 +86,7 @@ const sendVerificationEmail = (email, token) => __awaiter(void 0, void 0, void 0
             },
             secure: true,
         });
-        const verificationLink = `${process.env.FRONTEND_URL}/EmailVerificationScreen?token=${token}`;
+        const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email?token=${token}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -281,26 +281,164 @@ exports.logout = logout;
 const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { token } = req.query;
     if (!token || !process.env.EMAIL_SECRET) {
-        return res
-            .status(400)
-            .json({ message: "Invalid or missing verification token" });
+        return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email Verification</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+
+          body {
+            background: radial-gradient(circle, #ff9966, #ff5e62);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            text-align: center;
+          }
+
+          .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            text-align: center;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+          }
+
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+          }
+
+          .error { color: #e74c3c; }
+          .success { color: #27ae60; }
+
+          .title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+          }
+
+          .message {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 20px;
+          }
+
+          .glow {
+            animation: glowEffect 1.5s infinite alternate;
+          }
+
+          @keyframes glowEffect {
+            from { text-shadow: 0 0 10px rgba(255, 94, 98, 0.8); }
+            to { text-shadow: 0 0 20px rgba(255, 94, 98, 1); }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="icon">❌</div>
+          <div class="title error glow">Verification Error</div>
+          <div class="message">Please check your email and try again.</div>
+        </div>
+      </body>
+      </html>
+    `);
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.EMAIL_SECRET);
         const user = yield userModel_1.default.findById(decoded.userId);
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Email Verification</title>
+        </head>
+        <body>
+          <div class="container">
+            <div class="icon">❌</div>
+            <div class="title error glow">User Not Found</div>
+            <div class="message">Please ensure you are registered.</div>
+          </div>
+        </body>
+        </html>
+      `);
         }
         if (user.isVerified) {
-            return res.status(200).json({ message: "User already verified" });
+            return res.status(200).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Email Verified</title>
+        </head>
+        <body>
+          <div class="container">
+            <div class="icon">✅</div>
+            <div class="title success glow">Email Already Verified</div>
+            <div class="message">Your email has already been verified.</div>
+          </div>
+        </body>
+        </html>
+      `);
         }
         user.isVerified = true;
         yield user.save();
-        return res.status(200).json({ message: "Email verified successfully!" });
+        return res.status(200).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email Verified</title>
+      </head>
+      <body>
+        <div class="container">
+          <div class="icon">🎉</div>
+          <div class="title success glow">Thank You!</div>
+          <div class="message">Your email has been successfully verified!</div>
+        </div>
+      </body>
+      </html>
+    `);
     }
     catch (error) {
-        logger_1.default.error(`[ERROR] Email verification error: ${error}`);
-        return res.status(400).json({ message: "Invalid or expired token" });
+        return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Email Verification</title>
+      </head>
+      <body>
+        <div class="container">
+          <div class="icon">⚠️</div>
+          <div class="title error glow">Invalid or Expired Token</div>
+          <div class="message">Please request a new verification email.</div>
+        </div>
+      </body>
+      </html>
+    `);
     }
 });
 exports.verifyEmail = verifyEmail;
@@ -316,10 +454,10 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return (0, exports.sendError)(res, "User not found", 404);
         }
         const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
-        const expiresAt = Date.now() + 15 * 60 * 1000;
-        setTimeout(() => {
-            resetPasswordTokens.delete(user.email);
-        }, 15 * 60 * 1000);
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+        user.resetToken = resetCode;
+        user.resetExpires = expiresAt;
+        yield user.save();
         yield sendResetEmail(user.email, resetCode);
         res.status(200).json({ message: "Reset code sent to email" });
     }
@@ -339,13 +477,13 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!user) {
             return (0, exports.sendError)(res, "User not found", 404);
         }
-        const storedToken = resetPasswordTokens.get(email);
-        if (!storedToken ||
-            storedToken.code !== code ||
-            Date.now() > storedToken.expiresAt) {
+        if (!user.resetToken ||
+            user.resetToken !== code ||
+            !user.resetExpires ||
+            Date.now() > user.resetExpires.getTime()) {
             return (0, exports.sendError)(res, "Invalid or expired reset code", 400);
         }
-        resetPasswordTokens.delete(email);
+        yield userModel_1.default.updateOne({ email }, { $unset: { resetToken: 1, resetExpires: 1 } });
         const hashedPassword = yield bcryptjs_1.default.hash(newPassword, 10);
         user.password = hashedPassword;
         yield user.save();
@@ -382,6 +520,34 @@ const sendResetEmail = (email, resetCode) => __awaiter(void 0, void 0, void 0, f
     yield transporter.sendMail(mailOptions);
     logger_1.default.info(`[INFO] Password reset email sent to: ${email}`);
 });
+const uploadProfilePic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const token = (0, exports.getTokenFromRequest)(req);
+        if (!token) {
+            return (0, exports.sendError)(res, "Authentication required", 401);
+        }
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        if (!req.file) {
+            return (0, exports.sendError)(res, "No file uploaded", 400);
+        }
+        user.profilePic = `/uploads/${req.file.filename}`;
+        yield user.save();
+        const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+        res.status(200).json({
+            message: "Profile picture updated successfully",
+            profilePicUrl: `${baseUrl}/uploads/${req.file.filename}`,
+        });
+    }
+    catch (error) {
+        console.error("[ERROR] Upload profile picture failed:", error);
+        (0, exports.sendError)(res, "Failed to upload profile picture", 500);
+    }
+});
+exports.uploadProfilePic = uploadProfilePic;
 exports.default = {
     enforceHttps: exports.enforceHttps,
     register: exports.register,
@@ -393,5 +559,8 @@ exports.default = {
     getTokenFromRequest: exports.getTokenFromRequest,
     verifyEmail: exports.verifyEmail,
     updatePassword: exports.updatePassword,
+    forgotPassword: exports.forgotPassword,
+    resetPassword: exports.resetPassword,
+    uploadProfilePic: exports.uploadProfilePic,
 };
 //# sourceMappingURL=authController.js.map
