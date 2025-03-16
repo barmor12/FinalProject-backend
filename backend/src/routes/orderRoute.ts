@@ -9,7 +9,9 @@ import {
   validateOrderInput,
   updateOrderStatus,
   deleteOrder,
+  getUserOrders,
   getOrderById,
+  sendOrderUpdateEmailHandler,
 } from "../controllers/ordersController";
 import authenticateMiddleware from "../common/authMiddleware";
 
@@ -31,6 +33,7 @@ router.post(
 
 router.get("/orders", authenticateMiddleware, getAllOrders);
 router.post("/create", authenticateMiddleware, placeOrder);
+router.post("/:orderId/send-email", authenticateMiddleware, sendOrderUpdateEmailHandler);
 
 // שמירת טיוטת הזמנה עם העלאת תמונה
 router.post(
@@ -42,8 +45,9 @@ router.post(
 );
 
 router.put("/:orderId/status", updateOrderStatus); // עדכון סטטוס
-router.delete("/:orderId", deleteOrder); // מחיקת הזמנה
+router.delete("/delete/:orderId", deleteOrder); // מחיקת הזמנה
 router.get("/:orderId", getOrderById); // שליפת הזמנה לפי ID
+
 
 // שכפול הזמנה
 router.post("/duplicate", authenticateMiddleware, duplicateOrder);
@@ -58,5 +62,8 @@ router.post("/check-date", authenticateMiddleware, checkDeliveryDate);
 router.post("/validate", authenticateMiddleware, validateOrderInput);
 
 router.get("/", authenticateMiddleware, getDecorations); // GET /decorations
+
+router.get("/user/:userId", authenticateMiddleware, getUserOrders); // קריאה לפי `userId`
+
 
 export default router;

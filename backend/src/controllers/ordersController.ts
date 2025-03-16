@@ -5,6 +5,7 @@ import User from "../models/userModel";
 import DiscountCode from "../models/discountCodeModel";
 import mongoose from "mongoose";
 import Cart from "../models/cartModel";
+import nodemailer from "nodemailer";
 
 export const placeOrder = async (
   req: Request,
@@ -33,7 +34,7 @@ export const placeOrder = async (
         const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
         if (!foundCake) return null;
         totalPrice += foundCake.price * i.quantity;
-        return { cake: i.cakeId, quantity: i.quantity };
+        return { cake: i.cakeId, name: i.name, imagePath: i.image, quantity: i.quantity };
       })
       .filter(Boolean);
 
@@ -287,6 +288,13 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 export const deleteOrder = async (req: Request, res: Response) => {
   try {
     const { orderId } = req.params;
+
+    // ✅ בדיקת תקינות ה-ID לפני שאילתת MongoDB
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      res.status(400).json({ error: "Invalid order ID" });
+      return;
+    }
+
     const order = await Order.findByIdAndDelete(orderId);
 
     if (!order) {
@@ -294,12 +302,87 @@ export const deleteOrder = async (req: Request, res: Response) => {
       return;
     }
 
-    res.json({ message: "Order deleted successfully" });
+    res.status(200).json({
+      message: "Order deleted successfully",
+      deletedOrderId: order._id, // אפשר להחזיר גם את פרטי ההזמנה שנמחקה אם רוצים
+    });
+
   } catch (error) {
     console.error("❌ Error deleting order:", error);
     res.status(500).json({ error: "Failed to delete order" });
   }
 };
+
+export const sendOrderUpdateEmailHandler = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { customerEmail, orderStatus, managerMessage, hasMsg } = req.body;
+
+    console.log("Received request body:", req.body);
+
+    if (!customerEmail || !orderStatus) {
+      res.status(400).json({ error: "Missing required fields" });
+      return;
+    }
+
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+      throw new Error("Email credentials are missing in .env file");
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      secure: true,
+    });
+
+    const statusMessages: Record<string, string> = {
+      pending: "Your order has been received and is awaiting confirmation.",
+      confirmed: "Your order has been confirmed and is being prepared.",
+      delivered: "Your order has been successfully delivered!",
+      cancelled: "Unfortunately, your order has been cancelled.",
+    };
+
+    let emailContent = `
+      <h2>Order Update</h2>
+      <p>Hello,</p>
+      <p>Your order <strong>#${orderId.slice(-6)}</strong> has been updated to: <strong>${orderStatus}</strong>.</p>
+      <p>${statusMessages[orderStatus]}</p>
+    `;
+
+    // אם יש הודעת מנהל, נוסיף אותה
+    if (hasMsg && managerMessage) {
+      emailContent += `
+        <p><strong>Message from the manager:</strong></p>
+        <blockquote>${managerMessage}</blockquote>
+      `;
+    }
+
+    emailContent += `<p>Thank you for ordering with us!</p>`;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: customerEmail,
+      subject: `Order #${orderId.slice(-6)} Status Update`,
+      html: emailContent,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`[INFO] Order update email sent to: ${customerEmail}`);
+
+    res.status(200).json({ success: true, message: "Email sent successfully!" });
+    return;
+  } catch (error: any) {
+    console.error(`[ERROR] Failed to send email: ${error.message}`);
+    res.status(500).json({ success: false, message: "Failed to send email." });
+    return;
+  }
+};
+
+
+
 
 export const getOrderById = async (req: Request, res: Response) => {
   try {
@@ -314,7 +397,10 @@ export const getOrderById = async (req: Request, res: Response) => {
     // חיפוש ההזמנה במסד הנתונים
     const order = await Order.findById(orderId)
       .populate("user", "firstName lastName phone address email")
-      .populate("cake", "name image"); // ✅ לא items.cake אלא פשוט cake
+      .populate({
+        path: "items.cake",
+        select: "name image"
+      });
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
@@ -332,14 +418,40 @@ export const getOrderById = async (req: Request, res: Response) => {
   }
 
 };
+export const getUserOrders = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userId } = req.params;
 
-export default {
-  placeOrder,
-  getAllOrders,
-  saveDraftOrder,
-  duplicateOrder,
-  applyDiscountCode,
-  checkDeliveryDate,
-  validateOrderInput,
-  getDecorations,
+    // בדיקה אם ה-userID סופק
+    if (!userId) {
+      res.status(400).json({ error: "User ID is required" });
+      return;
+    }
+
+    // בדיקה אם ה-userID תקין (MongoDB ObjectID)
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(400).json({ error: "Invalid User ID format" });
+      return;
+    }
+
+    // חיפוש כל ההזמנות של המשתמש
+    const orders = await Order.find({ user: userId })
+      .sort({ createdAt: -1 }) // סדר מההזמנה האחרונה לישנה ביותר
+      .populate("user", "firstName lastName phone address email") // מידע על המשתמש
+      .populate({
+        path: "items.cake",
+        select: "name image price", // שליפת נתוני העוגה מההזמנה
+      });
+
+    if (!orders || orders.length === 0) {
+      res.status(404).json({ error: "No orders found for this user" });
+      return;
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("❌ Error fetching user orders:", error);
+    res.status(500).json({ error: "Failed to fetch user orders" });
+  }
 };
+

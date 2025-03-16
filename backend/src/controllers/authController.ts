@@ -262,6 +262,7 @@ export const login = async (req: Request, res: Response) => {
       message: "User logged in successfully",
       tokens,
       role: user.role,
+      userID: user._id
     });
   } catch (err) {
     logger.error(`[ERROR] Login error: ${(err as Error).message}`);
