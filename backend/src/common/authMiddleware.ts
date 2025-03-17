@@ -54,7 +54,7 @@ const authenticateMiddleware = async (
     }
 
     // הוספת מזהה המשתמש לבקשה
-    req.body.userId = decoded.userId; // כאן השתמשנו ב- userId
+    if (!req.body.userId) req.body.userId = decoded.userId;
     console.log("[INFO] Authenticated user ID:", decoded.userId);
 
     // אם יש צורך לבדוק role, ניתן לעשות כאן

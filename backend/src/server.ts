@@ -15,6 +15,7 @@ import userRoute from "./routes/userRoute";
 import cartRoute from "./routes/cartRoute";
 import inventoryRoute from "./routes/inventoryRoutes";
 import adminRoute from "./routes/adminRoute";
+import addressRoute from "./routes/addressRoute";
 
 import "./passport";
 import path from "path";
@@ -51,6 +52,7 @@ app.use("/cakes", cakeRoute);
 app.use("/order", orderRoute);
 app.use("/cart", cartRoute);
 app.use("/user", userRoute);
+app.use("/address", addressRoute);
 app.use("/inventory", inventoryRoute);
 import fs from "fs";
 const uploadsPath = path.join(__dirname, "../src/uploads");
