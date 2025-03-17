@@ -4,6 +4,7 @@ import {
     addAddress,
     updateAddress,
     deleteAddress,
+    setDefaultAddress,
 } from "../controllers/addressController";
 import authMiddleware from "../common/authMiddleware"; // 👈 מייבאים את המידלוור
 
@@ -13,5 +14,6 @@ router.get("/", authMiddleware, getUserAddresses); // 👈 כל הנתיבים �
 router.post("/", authMiddleware, addAddress);
 router.put("/:id", authMiddleware, updateAddress);
 router.delete("/:id", authMiddleware, deleteAddress);
+router.put("/default/:addressId", setDefaultAddress);
 
 export default router;
