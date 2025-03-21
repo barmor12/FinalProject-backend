@@ -8,6 +8,7 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import User from "../models/userModel";
 import logger from "../logger";
+import cloudinary from "../config/cloudinary";
 
 dotenv.config();
 
@@ -88,7 +89,6 @@ const generateVerificationToken = (userId: string) => {
   return jwt.sign({ userId }, process.env.EMAIL_SECRET, { expiresIn: "1d" });
 };
 
-// שליחת קישור לאימות דוא"ל
 // שליחת קישור לאימות דוא"ל
 export const sendVerificationEmail = async (email: string, token: string) => {
   try {
@@ -178,20 +178,22 @@ export const updatePassword = async (req: Request, res: Response) => {
 // רישום משתמש חדש
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
-  const profilePic = req.file ? `/uploads/${req.file.filename}` : "";
 
   logger.info(`[INFO] Attempting to register user: ${email}`);
-  if (!firstName || !lastName || !email || !password) {
+
+  if (!firstName || !lastName || !email || !password || !req.file) {
     logger.warn("[WARN] Registration failed: Missing fields");
-    return sendError(res, "All fields are required");
+    return sendError(res, "All fields including image are required", 400);
   }
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   if (!passwordRegex.test(password)) {
     return sendError(
       res,
-      "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character."
+      "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      400
     );
   }
 
@@ -199,8 +201,12 @@ export const register = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       logger.warn(`[WARN] Registration failed: Email ${email} already exists`);
-      return sendError(res, "User with this email already exists");
+      return sendError(res, "User with this email already exists", 409);
     }
+
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+      folder: "users", // ← שם התיקייה בקלאודינרי
+    });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
@@ -208,7 +214,10 @@ export const register = async (req: Request, res: Response) => {
       lastName,
       email,
       password: hashedPassword,
-      profilePic,
+      profilePic: {
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id,
+      },
       role: "user",
       isVerified: false,
     });
@@ -218,14 +227,17 @@ export const register = async (req: Request, res: Response) => {
     await sendVerificationEmail(email, verificationToken);
 
     logger.info(`[INFO] User registered successfully: ${email}`);
+
     res.status(201).json({
       message: "User created successfully. Please verify your email.",
+      user: newUser,
     });
   } catch (err) {
     logger.error(`[ERROR] Registration error: ${(err as Error).message}`);
     sendError(res, "Failed to register", 500);
   }
 };
+
 
 // כניסת משתמש
 export const login = async (req: Request, res: Response) => {
@@ -528,10 +540,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
     `);
   }
 };
-const resetPasswordTokens = new Map<
-  string,
-  { code: string; expiresAt: number }
->();
 
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -630,42 +638,9 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   await transporter.sendMail(mailOptions);
   logger.info(`[INFO] Password reset email sent to: ${email}`);
 };
-export const uploadProfilePic = async (req: Request, res: Response) => {
-  try {
-    const token = getTokenFromRequest(req);
-    if (!token) {
-      return sendError(res, "Authentication required", 401);
-    }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.ACCESS_TOKEN_SECRET!
-    ) as TokenPayload;
 
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      return sendError(res, "User not found", 404);
-    }
 
-    if (!req.file) {
-      return sendError(res, "No file uploaded", 400);
-    }
-
-    user.profilePic = `/uploads/${req.file.filename}`;
-    await user.save();
-
-    // שימוש בכתובת ברירת מחדל אם BASE_URL לא מוגדר
-    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
-
-    res.status(200).json({
-      message: "Profile picture updated successfully",
-      profilePicUrl: `${baseUrl}/uploads/${req.file.filename}`,
-    });
-  } catch (error) {
-    console.error("[ERROR] Upload profile picture failed:", error);
-    sendError(res, "Failed to upload profile picture", 500);
-  }
-};
 
 export default {
   enforceHttps,
@@ -680,5 +655,4 @@ export default {
   updatePassword,
   forgotPassword,
   resetPassword,
-  uploadProfilePic,
 };

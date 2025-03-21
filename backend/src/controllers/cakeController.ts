@@ -1,22 +1,28 @@
 import { Request, Response } from 'express';
 import Cake from '../models/cakeModel';
 import User from "../models/userModel";
+import cloudinary from '../config/cloudinary';
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients, image } = req.body;
-
-  if (!name || !description || !price || !ingredients || !image) {
-    res.status(400).json({ error: 'All fields are required' });
+  const { name, description, price, ingredients } = req.body;
+  console.log("body: ", req.body);
+  if (!name || !description || !price || !ingredients || !req.file) {
+    res.status(400).json({ error: 'All fields including image are required' });
     return;
   }
 
   try {
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: "cakes" });
+
     const cake = new Cake({
       name,
       description,
       price,
       ingredients,
-      image
+      image: {
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id
+      }
     });
 
     const savedCake = await cake.save();
@@ -28,27 +34,33 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const updateCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients, image } = req.body;
+  const { name, description, price, ingredients } = req.body;
   const cakeId = req.params.id;
 
   try {
-    const updatedCake = await Cake.findByIdAndUpdate(
-      cakeId,
-      {
-        name,
-        description,
-        price,
-        ingredients,
-        image
-      },
-      { new: true }
-    );
-
-    if (!updatedCake) {
+    const cake = await Cake.findById(cakeId);
+    if (!cake) {
       res.status(404).json({ error: 'Cake not found' });
       return;
     }
 
+    if (req.file) {
+      if (cake.image?.public_id) {
+        await cloudinary.uploader.destroy(cake.image.public_id);
+      }
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: "cakes" });
+      cake.image = {
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id
+      };
+    }
+
+    cake.name = name || cake.name;
+    cake.description = description || cake.description;
+    cake.price = price || cake.price;
+    cake.ingredients = ingredients || cake.ingredients;
+
+    const updatedCake = await cake.save();
     res.status(200).json(updatedCake);
   } catch (err) {
     console.error('Failed to update cake:', err);
@@ -70,17 +82,24 @@ export const deleteCake = async (req: Request, res: Response): Promise<void> => 
   const cakeId = req.params.id;
 
   try {
-    const deletedCake = await Cake.findByIdAndDelete(cakeId);
-    if (!deletedCake) {
+    const cake = await Cake.findById(cakeId);
+    if (!cake) {
       res.status(404).json({ error: 'Cake not found' });
       return;
     }
+
+    if (cake.image?.public_id) {
+      await cloudinary.uploader.destroy(cake.image.public_id);
+    }
+
+    await Cake.findByIdAndDelete(cakeId);
     res.status(200).json({ message: 'Cake deleted successfully' });
   } catch (err) {
     console.error('Failed to delete cake:', err);
     res.status(500).json({ error: 'Failed to delete cake' });
   }
 };
+
 export const addToFavorites = async (req: Request, res: Response): Promise<void> => {
   const { userId, cakeId } = req.body;
 

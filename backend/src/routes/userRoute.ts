@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteProfile, getProfile, updateProfile } from "../controllers/userController";
+import { deleteProfile, getProfile, updateUserName, updateUserProfilePic } from "../controllers/userController";
 import authenticateMiddleware from "../common/authMiddleware";
 import multer from "multer";
 
@@ -11,10 +11,7 @@ router.get("/profile", authenticateMiddleware, getProfile);
 router.post("/delete-profile", authenticateMiddleware, deleteProfile);
 
 // עדכון פרטי משתמש
-router.put(
-  "/profile",
-  authenticateMiddleware,
-  updateProfile
-);
+router.put('/updateNameProfile', updateUserName);
+router.put('/update-profile-pic', upload.single('profilePic'), updateUserProfilePic);
 
 export default router;

@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
-import "./config/firebaseConfig"; // ✅ מוודאים שה-Firebase מאותחל
 
 import authRoute from "./routes/authRoute";
 import recipeRoute from "./routes/recipeRoute";

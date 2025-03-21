@@ -6,7 +6,10 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    profilePic: { type: String },
+    profilePic: {
+      url: { type: String, }, // הקישור הישיר לתמונה ב-Cloudinary
+      public_id: { type: String, }, // מזהה התמונה לניהול עתידי
+    },
     role: { type: String, default: "user" },
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cake" }],
     refresh_tokens: [String],

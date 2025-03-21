@@ -1,26 +1,27 @@
 import express from "express";
-import { addCake, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites } from "../controllers/cakeController";
-
 import multer from "multer";
-import path from "path";
-import authenticateAdminMiddleware from "../common/authAdminMiddleware";
+import { addCake, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites } from "../controllers/cakeController";
 import authenticateMiddleware from "../common/authMiddleware";
-import { deleteProduct } from "src/controllers/inventoryController";
 
 const router = express.Router();
 
+// הגדרת multer להעלאת תמונות
+const upload = multer({ dest: 'uploads/' });
 
 // רוטים לניהול עוגות
 router.post(
   "/addcake",
-  authenticateMiddleware,
+  upload.single('image'), // ← הוספת multer כאן
   addCake
 );
+
 router.put(
   "/:id",
   authenticateMiddleware,
+  upload.single('image'), // ← הוספת multer כאן לעדכון תמונה
   updateCake
 );
+
 router.get("/", getAllCakes);
 
 // הוספת עוגה למועדפים

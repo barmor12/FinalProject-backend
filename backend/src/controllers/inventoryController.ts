@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import Product from "../models/inventoryModel";
 import Cake from '../models/cakeModel';
-const admin = require("firebase-admin");
+import cloudinary from "../config/cloudinary";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   const products = await Product.find();
+  console.log(products);
   res.json({ products });
 };
 
@@ -17,13 +18,13 @@ export const updateProduct = async (req: Request, res: Response) => {
   res.json(updatedProduct);
 };
 
-const bucket = admin.storage().bucket(); // Firebase Storage bucket
 
 // מחיקת מוצר כולל תמונה
 export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { cakeId } = req.params;
     console.log(cakeId);
+
     // חיפוש המוצר במסד הנתונים
     const cake = await Cake.findById(cakeId);
     if (!cake) {
@@ -31,14 +32,10 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
       return; // ✅ עצירת המשך הקוד אם המוצר לא נמצא
     }
 
-    // מחיקת התמונה מ-Firebase Storage אם קיימת
-    if (cake.image) {
-      const imageName = cake.image.split("%2F")[1]?.split("?")[0]; // חילוץ שם הקובץ
-      if (imageName) {
-        const file = bucket.file(`cakes/${imageName}`);
-        await file.delete();
-        console.log(`🗑️ Image deleted: cakes/${imageName}`);
-      }
+    // מחיקת התמונה מ-Cloudinary אם קיימת
+    if (cake.image && cake.image.public_id) {
+      await cloudinary.uploader.destroy(cake.image.public_id);
+      console.log(`🗑️ Image deleted: ${cake.image.public_id}`);
     }
 
     // מחיקת המוצר מהמסד נתונים
@@ -52,6 +49,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
 };
 
 
+
 export const deleteProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     console.log("🔍 Received Request Body:", req.body); // הדפסת תוכן הבקשה
@@ -62,7 +60,6 @@ export const deleteProducts = async (req: Request, res: Response): Promise<void>
       res.status(400).json({ error: "Invalid productIds array" });
       return;
     }
-
 
     console.log("✅ Valid productIds:", productIds);
 
@@ -76,15 +73,12 @@ export const deleteProducts = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    // מחיקת התמונות מ-Firebase
+    // מחיקת התמונות מ-Cloudinary
     await Promise.all(
       cakes.map(async (cake) => {
-        if (cake.image) {
-          const imageName = cake.image.split("%2F")[1]?.split("?")[0]; // חילוץ שם הקובץ
-          if (imageName) {
-            await bucket.file(`cakes/${imageName}`).delete();
-            console.log(`🗑️ Image deleted: cakes/${imageName}`);
-          }
+        if (cake.image && cake.image.public_id) {
+          await cloudinary.uploader.destroy(cake.image.public_id);
+          console.log(`🗑️ Image deleted: ${cake.image.public_id}`);
         }
       })
     );
@@ -98,5 +92,3 @@ export const deleteProducts = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ error: "Failed to delete product" });
   }
 };
-
-

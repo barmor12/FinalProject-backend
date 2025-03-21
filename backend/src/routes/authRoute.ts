@@ -9,13 +9,12 @@ import {
   refresh,
   forgotPassword,
   resetPassword,
-  uploadProfilePic,
   upload,
 } from "../controllers/authController";
 
 const router = express.Router();
 
-router.post("/register", register);
+router.post('/register', upload.single('profilePic'), register);
 router.put("/update-password", updatePassword);
 router.post("/login", login);
 router.post("/logout", logout);
@@ -39,9 +38,5 @@ router.get(
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/refresh", refresh);
-router.post(
-  "/upload-profile-pic",
-  upload.single("profilePic"),
-  uploadProfilePic
-);
+
 export default router;
