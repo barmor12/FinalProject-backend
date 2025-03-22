@@ -15,6 +15,7 @@ import cartRoute from "./routes/cartRoute";
 import inventoryRoute from "./routes/inventoryRoutes";
 import adminRoute from "./routes/adminRoute";
 import addressRoute from "./routes/addressRoute";
+import discountRoutes from "./routes/discountRoute";
 
 import "./passport";
 import path from "path";
@@ -47,6 +48,7 @@ app.use(passport.session());
 app.use("/admin", adminRoute);
 app.use("/auth", authRoute);
 app.use("/recipes", recipeRoute);
+app.use("/discount", discountRoutes);
 app.use("/cakes", cakeRoute);
 app.use("/order", orderRoute);
 app.use("/cart", cartRoute);
