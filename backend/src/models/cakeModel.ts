@@ -9,6 +9,7 @@ const cakeSchema = new mongoose.Schema({
     public_id: String
   },
   ingredients: { type: [String], required: true },  // רשימת מרכיבים
+  stock: { type: Number, default: 0 }, // שדה למלאי
   createdAt: { type: Date, default: Date.now },  // תאריך יצירה
   updatedAt: { type: Date, default: Date.now },  // תאריך עדכון
 });

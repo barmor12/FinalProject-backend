@@ -4,7 +4,7 @@ import User from "../models/userModel";
 import cloudinary from '../config/cloudinary';
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients } = req.body;
+  const { name, description, price, ingredients, stock } = req.body;
   console.log("body: ", req.body);
   if (!name || !description || !price || !ingredients || !req.file) {
     res.status(400).json({ error: 'All fields including image are required' });
@@ -22,7 +22,8 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
       image: {
         url: uploadResult.secure_url,
         public_id: uploadResult.public_id
-      }
+      },
+      stock,
     });
 
     const savedCake = await cake.save();
@@ -34,7 +35,7 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const updateCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients } = req.body;
+  const { name, description, price, ingredients, stock } = req.body;
   const cakeId = req.params.id;
 
   try {
@@ -59,7 +60,7 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
     cake.description = description || cake.description;
     cake.price = price || cake.price;
     cake.ingredients = ingredients || cake.ingredients;
-
+    cake.stock = stock || cake.stock;
     const updatedCake = await cake.save();
     res.status(200).json(updatedCake);
   } catch (err) {
@@ -166,3 +167,23 @@ export const removeFromFavorites = async (req: Request, res: Response): Promise<
   }
 };
 
+// פונקציה לעדכון מלאי של עוגה
+export const updateStock = async (req: Request, res: Response) => {
+  try {
+    const { stock } = req.body;
+    const cake = await Cake.findByIdAndUpdate(
+      req.params.id,
+      { stock },
+      { new: true } // מחזירים את העוגה אחרי העדכון
+    );
+
+    if (!cake) {
+      res.status(404).json({ message: "Cake not found" });
+      return;
+    }
+
+    res.status(200).json(cake);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
