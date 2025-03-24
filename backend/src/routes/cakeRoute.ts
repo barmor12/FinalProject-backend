@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { addCake, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites } from "../controllers/cakeController";
+import { addCake, updateStock, updateCake, getAllCakes, deleteCake, addToFavorites, removeFromFavorites } from "../controllers/cakeController";
 import authenticateMiddleware from "../common/authMiddleware";
 
 const router = express.Router();
@@ -31,5 +31,6 @@ router.post("/favorites", authenticateMiddleware, addToFavorites);
 router.delete("/favorites", authenticateMiddleware, removeFromFavorites);
 
 router.delete("/:id", authenticateMiddleware, deleteCake);
+router.put('/cakes/:id/update-stock', updateStock);
 
 export default router;
