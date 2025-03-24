@@ -100,10 +100,29 @@ export const deleteCake = async (req: Request, res: Response): Promise<void> => 
     res.status(500).json({ error: 'Failed to delete cake' });
   }
 };
+export const getFavorites = async (req: Request, res: Response): Promise<void> => {
+  const { userId } = req.params;
+  console.log("xxxxxxxxxxxxxuserID", userId);
+  if (!userId) {
+    res.status(400).json({ error: "User ID is required" });
+    return;
+  }
 
+  try {
+    const user = await User.findById(userId).populate("favorites");
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    res.status(200).json({ favorites: user.favorites });
+  } catch (error) {
+    console.error("Failed to fetch favorites:", error);
+    res.status(500).json({ error: "Failed to fetch favorites" });
+  }
+};
 export const addToFavorites = async (req: Request, res: Response): Promise<void> => {
   const { userId, cakeId } = req.body;
-
   if (!userId || !cakeId) {
     res.status(400).json({ error: "User ID and Cake ID are required" });
     return;
