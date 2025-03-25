@@ -102,7 +102,6 @@ export const deleteCake = async (req: Request, res: Response): Promise<void> => 
 };
 export const getFavorites = async (req: Request, res: Response): Promise<void> => {
   const { userId } = req.params;
-  console.log("xxxxxxxxxxxxxuserID", userId);
   if (!userId) {
     res.status(400).json({ error: "User ID is required" });
     return;

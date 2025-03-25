@@ -113,7 +113,6 @@ const deleteCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteCake = deleteCake;
 const getFavorites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
-    console.log("xxxxxxxxxxxxxuserID", userId);
     if (!userId) {
         res.status(400).json({ error: "User ID is required" });
         return;
