@@ -3,6 +3,7 @@ declare const _default: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
+    address: mongoose.Types.ObjectId;
     items: mongoose.Types.DocumentArray<{
         cake: mongoose.Types.ObjectId;
         quantity: number;
@@ -14,15 +15,13 @@ declare const _default: mongoose.Model<{
         quantity: number;
     }>;
     totalPrice: number;
-    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
-    expiresAt: NativeDate;
-    discountCode?: string | null | undefined;
     deliveryDate?: NativeDate | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
+    address: mongoose.Types.ObjectId;
     items: mongoose.Types.DocumentArray<{
         cake: mongoose.Types.ObjectId;
         quantity: number;
@@ -34,15 +33,13 @@ declare const _default: mongoose.Model<{
         quantity: number;
     }>;
     totalPrice: number;
-    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
-    expiresAt: NativeDate;
-    discountCode?: string | null | undefined;
     deliveryDate?: NativeDate | null | undefined;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
+    address: mongoose.Types.ObjectId;
     items: mongoose.Types.DocumentArray<{
         cake: mongoose.Types.ObjectId;
         quantity: number;
@@ -54,10 +51,7 @@ declare const _default: mongoose.Model<{
         quantity: number;
     }>;
     totalPrice: number;
-    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
-    expiresAt: NativeDate;
-    discountCode?: string | null | undefined;
     deliveryDate?: NativeDate | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
@@ -67,6 +61,7 @@ declare const _default: mongoose.Model<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
+    address: mongoose.Types.ObjectId;
     items: mongoose.Types.DocumentArray<{
         cake: mongoose.Types.ObjectId;
         quantity: number;
@@ -78,15 +73,13 @@ declare const _default: mongoose.Model<{
         quantity: number;
     }>;
     totalPrice: number;
-    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
-    expiresAt: NativeDate;
-    discountCode?: string | null | undefined;
     deliveryDate?: NativeDate | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
+    address: mongoose.Types.ObjectId;
     items: mongoose.Types.DocumentArray<{
         cake: mongoose.Types.ObjectId;
         quantity: number;
@@ -98,15 +91,13 @@ declare const _default: mongoose.Model<{
         quantity: number;
     }>;
     totalPrice: number;
-    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
-    expiresAt: NativeDate;
-    discountCode?: string | null | undefined;
     deliveryDate?: NativeDate | null | undefined;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
     user: mongoose.Types.ObjectId;
+    address: mongoose.Types.ObjectId;
     items: mongoose.Types.DocumentArray<{
         cake: mongoose.Types.ObjectId;
         quantity: number;
@@ -118,10 +109,7 @@ declare const _default: mongoose.Model<{
         quantity: number;
     }>;
     totalPrice: number;
-    decoration: string;
     status: "pending" | "draft" | "confirmed" | "delivered";
-    expiresAt: NativeDate;
-    discountCode?: string | null | undefined;
     deliveryDate?: NativeDate | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;

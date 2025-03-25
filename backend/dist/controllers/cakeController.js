@@ -12,23 +12,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.removeFromFavorites = exports.addToFavorites = exports.deleteCake = exports.getAllCakes = exports.updateCake = exports.addCake = void 0;
+exports.updateStock = exports.removeFromFavorites = exports.addToFavorites = exports.getFavorites = exports.deleteCake = exports.getAllCakes = exports.updateCake = exports.addCake = void 0;
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
-const admin = require("firebase-admin");
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, price, ingredients, image } = req.body;
-    if (!name || !description || !price || !ingredients || !image) {
-        res.status(400).json({ error: 'All fields are required' });
+    const { name, description, price, ingredients, stock } = req.body;
+    console.log("body: ", req.body);
+    if (!name || !description || !price || !ingredients || !req.file) {
+        res.status(400).json({ error: 'All fields including image are required' });
         return;
     }
     try {
+        const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, { folder: "cakes" });
         const cake = new cakeModel_1.default({
             name,
             description,
             price,
             ingredients,
-            image
+            image: {
+                url: uploadResult.secure_url,
+                public_id: uploadResult.public_id
+            },
+            stock,
         });
         const savedCake = yield cake.save();
         res.status(201).json(savedCake);
@@ -40,20 +46,31 @@ const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addCake = addCake;
 const updateCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, price, ingredients, image } = req.body;
+    var _a;
+    const { name, description, price, ingredients, stock } = req.body;
     const cakeId = req.params.id;
     try {
-        const updatedCake = yield cakeModel_1.default.findByIdAndUpdate(cakeId, {
-            name,
-            description,
-            price,
-            ingredients,
-            image
-        }, { new: true });
-        if (!updatedCake) {
+        const cake = yield cakeModel_1.default.findById(cakeId);
+        if (!cake) {
             res.status(404).json({ error: 'Cake not found' });
             return;
         }
+        if (req.file) {
+            if ((_a = cake.image) === null || _a === void 0 ? void 0 : _a.public_id) {
+                yield cloudinary_1.default.uploader.destroy(cake.image.public_id);
+            }
+            const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, { folder: "cakes" });
+            cake.image = {
+                url: uploadResult.secure_url,
+                public_id: uploadResult.public_id
+            };
+        }
+        cake.name = name || cake.name;
+        cake.description = description || cake.description;
+        cake.price = price || cake.price;
+        cake.ingredients = ingredients || cake.ingredients;
+        cake.stock = stock || cake.stock;
+        const updatedCake = yield cake.save();
         res.status(200).json(updatedCake);
     }
     catch (err) {
@@ -74,13 +91,18 @@ const getAllCakes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getAllCakes = getAllCakes;
 const deleteCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const cakeId = req.params.id;
     try {
-        const deletedCake = yield cakeModel_1.default.findByIdAndDelete(cakeId);
-        if (!deletedCake) {
+        const cake = yield cakeModel_1.default.findById(cakeId);
+        if (!cake) {
             res.status(404).json({ error: 'Cake not found' });
             return;
         }
+        if ((_a = cake.image) === null || _a === void 0 ? void 0 : _a.public_id) {
+            yield cloudinary_1.default.uploader.destroy(cake.image.public_id);
+        }
+        yield cakeModel_1.default.findByIdAndDelete(cakeId);
         res.status(200).json({ message: 'Cake deleted successfully' });
     }
     catch (err) {
@@ -89,6 +111,27 @@ const deleteCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteCake = deleteCake;
+const getFavorites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    console.log("xxxxxxxxxxxxxuserID", userId);
+    if (!userId) {
+        res.status(400).json({ error: "User ID is required" });
+        return;
+    }
+    try {
+        const user = yield userModel_1.default.findById(userId).populate("favorites");
+        if (!user) {
+            res.status(404).json({ error: "User not found" });
+            return;
+        }
+        res.status(200).json({ favorites: user.favorites });
+    }
+    catch (error) {
+        console.error("Failed to fetch favorites:", error);
+        res.status(500).json({ error: "Failed to fetch favorites" });
+    }
+});
+exports.getFavorites = getFavorites;
 const addToFavorites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, cakeId } = req.body;
     if (!userId || !cakeId) {
@@ -142,21 +185,19 @@ const removeFromFavorites = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.removeFromFavorites = removeFromFavorites;
-const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateStock = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { cakeId } = req.params;
-        const cake = yield cakeModel_1.default.findById(cakeId);
+        const { stock } = req.body;
+        const cake = yield cakeModel_1.default.findByIdAndUpdate(req.params.id, { stock }, { new: true });
         if (!cake) {
-            res.status(404).json({ error: "Product not found" });
+            res.status(404).json({ message: "Cake not found" });
             return;
         }
-        yield cakeModel_1.default.findByIdAndDelete(cakeId);
-        res.json({ success: true, message: "Product deleted successfully" });
+        res.status(200).json(cake);
     }
-    catch (error) {
-        console.error("❌ Error deleting product:", error);
-        res.status(500).json({ error: "Failed to delete product" });
+    catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
-exports.deleteProduct = deleteProduct;
+exports.updateStock = updateStock;
 //# sourceMappingURL=cakeController.js.map

@@ -9,15 +9,6 @@ export declare const validateOrderInput: (req: Request, res: Response) => Promis
 export declare const getDecorations: (req: Request, res: Response) => Promise<void>;
 export declare const updateOrderStatus: (req: Request, res: Response) => Promise<void>;
 export declare const deleteOrder: (req: Request, res: Response) => Promise<void>;
+export declare const sendOrderUpdateEmailHandler: (req: Request, res: Response) => Promise<void>;
 export declare const getOrderById: (req: Request, res: Response) => Promise<void>;
-declare const _default: {
-    placeOrder: (req: Request, res: Response) => Promise<void>;
-    getAllOrders: (req: Request, res: Response) => Promise<void>;
-    saveDraftOrder: (req: Request, res: Response) => Promise<void>;
-    duplicateOrder: (req: Request, res: Response) => Promise<void>;
-    applyDiscountCode: (req: Request, res: Response) => Promise<void>;
-    checkDeliveryDate: (req: Request, res: Response) => Promise<void>;
-    validateOrderInput: (req: Request, res: Response) => Promise<void>;
-    getDecorations: (req: Request, res: Response) => Promise<void>;
-};
-export default _default;
+export declare const getUserOrders: (req: Request, res: Response) => Promise<void>;

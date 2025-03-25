@@ -76,7 +76,6 @@ const generateTokens = async (userId: string, role: string) => {
     expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d",
   });
 
-  logger.info(`[INFO] Tokens generated successfully for userId: ${userId}`);
   return { accessToken, refreshToken };
 };
 
@@ -238,7 +237,6 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-
 // כניסת משתמש
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -274,7 +272,7 @@ export const login = async (req: Request, res: Response) => {
       message: "User logged in successfully",
       tokens,
       role: user.role,
-      userID: user._id
+      userID: user._id,
     });
   } catch (err) {
     logger.error(`[ERROR] Login error: ${(err as Error).message}`);
@@ -638,9 +636,6 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   await transporter.sendMail(mailOptions);
   logger.info(`[INFO] Password reset email sent to: ${email}`);
 };
-
-
-
 
 export default {
   enforceHttps,

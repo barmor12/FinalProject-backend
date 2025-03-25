@@ -4,25 +4,37 @@ declare const _default: mongoose.Model<{
     description: string;
     price: number;
     ingredients: string[];
+    stock: number;
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    image?: string | null | undefined;
+    image?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     name: string;
     description: string;
     price: number;
     ingredients: string[];
+    stock: number;
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    image?: string | null | undefined;
+    image?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
 }> & {
     name: string;
     description: string;
     price: number;
     ingredients: string[];
+    stock: number;
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    image?: string | null | undefined;
+    image?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -32,25 +44,37 @@ declare const _default: mongoose.Model<{
     description: string;
     price: number;
     ingredients: string[];
+    stock: number;
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    image?: string | null | undefined;
+    image?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     name: string;
     description: string;
     price: number;
     ingredients: string[];
+    stock: number;
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    image?: string | null | undefined;
+    image?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
 }>> & mongoose.FlatRecord<{
     name: string;
     description: string;
     price: number;
     ingredients: string[];
+    stock: number;
     createdAt: NativeDate;
     updatedAt: NativeDate;
-    image?: string | null | undefined;
+    image?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

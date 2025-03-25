@@ -34,7 +34,7 @@ const updateCakeImages = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log(`📌 Found ${cakes.length} cakes in DB`);
         for (const cake of cakes) {
             if (updatedImages.hasOwnProperty(cake.name)) {
-                cake.image = updatedImages[cake.name];
+                cake.image = { url: updatedImages[cake.name] };
                 cake.updatedAt = new Date();
                 yield cake.save();
                 console.log(`✅ Updated image for: ${cake.name}`);

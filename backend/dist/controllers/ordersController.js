@@ -23,39 +23,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrderById = exports.deleteOrder = exports.updateOrderStatus = exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
+exports.getUserOrders = exports.getOrderById = exports.sendOrderUpdateEmailHandler = exports.deleteOrder = exports.updateOrderStatus = exports.getDecorations = exports.validateOrderInput = exports.checkDeliveryDate = exports.applyDiscountCode = exports.duplicateOrder = exports.saveDraftOrder = exports.getAllOrders = exports.placeOrder = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const discountCodeModel_1 = __importDefault(require("../models/discountCodeModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cartModel_1 = __importDefault(require("../models/cartModel"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const addressModel_1 = __importDefault(require("../models/addressModel"));
 const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, items, paymentMethod, decoration } = req.body;
-    console.log("📨 Received Order Request:", req.body);
-    if (!userId || !items || items.length === 0) {
-        res.status(400).json({ error: "User ID and items are required" });
-        return;
-    }
     try {
+        const { userId, address, items, paymentMethod, decoration } = req.body;
+        console.log("📨 Full Request Body:", JSON.stringify(req.body, null, 2));
+        if (!userId || !address || !items || items.length === 0) {
+            console.error("❌ Error: Missing required fields.");
+            res.status(400).json({ error: "User ID, address, and items are required" });
+            return;
+        }
+        const user = yield userModel_1.default.findById(userId);
+        if (!user) {
+            console.error("❌ Error: User not found:", userId);
+            res.status(404).json({ error: "User not found" });
+            return;
+        }
+        const userAddress = yield addressModel_1.default.findById(address);
+        if (!userAddress || userAddress.userId.toString() !== userId) {
+            console.error("❌ Error: Address not found or doesn't belong to user:", address);
+            res.status(404).json({ error: "Address not found or does not belong to user" });
+            return;
+        }
         const cakeIds = items.map((i) => i.cakeId);
         const cakes = yield cakeModel_1.default.find({ _id: { $in: cakeIds } });
         if (cakes.length !== items.length) {
+            console.error("❌ Error: One or more cakes not found.", { expected: items.length, found: cakes.length });
             res.status(404).json({ error: "One or more cakes not found" });
             return;
         }
         let totalPrice = 0;
-        const mappedItems = items
-            .map((i) => {
+        const mappedItems = items.map((i) => {
             const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
             if (!foundCake)
                 return null;
             totalPrice += foundCake.price * i.quantity;
+            totalPrice = parseFloat(totalPrice.toFixed(2));
             return { cake: i.cakeId, quantity: i.quantity };
-        })
-            .filter(Boolean);
+        }).filter(Boolean);
         const order = new orderModel_1.default({
             user: userId,
+            address: userAddress,
             items: mappedItems,
             totalPrice,
             decoration: decoration || "",
@@ -63,13 +79,18 @@ const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             status: "pending",
         });
         const savedOrder = yield order.save();
-        console.log("✅ Order Saved:", savedOrder);
+        console.log("✅ Order Saved Successfully:", savedOrder);
         yield cartModel_1.default.deleteOne({ user: userId });
         res.status(201).json(savedOrder);
     }
     catch (error) {
         console.error("❌ Error placing order:", error);
-        res.status(500).json({ error: "Failed to place order" });
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        }
+        else {
+            res.status(500).json({ error: "Failed to place order due to an unknown error" });
+        }
     }
 });
 exports.placeOrder = placeOrder;
@@ -77,7 +98,7 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         console.log("🔍 Fetching all orders...");
         const orders = yield orderModel_1.default.find()
-            .populate("user", "nickname email")
+            .populate("user", "firstName lastName email")
             .populate({
             path: "items.cake",
             select: "name price image",
@@ -268,12 +289,19 @@ exports.updateOrderStatus = updateOrderStatus;
 const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { orderId } = req.params;
+        if (!mongoose_1.default.Types.ObjectId.isValid(orderId)) {
+            res.status(400).json({ error: "Invalid order ID" });
+            return;
+        }
         const order = yield orderModel_1.default.findByIdAndDelete(orderId);
         if (!order) {
             res.status(404).json({ error: "Order not found" });
             return;
         }
-        res.json({ message: "Order deleted successfully" });
+        res.status(200).json({
+            message: "Order deleted successfully",
+            deletedOrderId: order._id,
+        });
     }
     catch (error) {
         console.error("❌ Error deleting order:", error);
@@ -281,6 +309,63 @@ const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.deleteOrder = deleteOrder;
+const sendOrderUpdateEmailHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const { customerEmail, orderStatus, managerMessage, hasMsg } = req.body;
+        console.log("Received request body:", req.body);
+        if (!customerEmail || !orderStatus) {
+            res.status(400).json({ error: "Missing required fields" });
+            return;
+        }
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+            throw new Error("Email credentials are missing in .env file");
+        }
+        const transporter = nodemailer_1.default.createTransport({
+            service: "Gmail",
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+            secure: true,
+        });
+        const statusMessages = {
+            pending: "Your order has been received and is awaiting confirmation.",
+            confirmed: "Your order has been confirmed and is being prepared.",
+            delivered: "Your order has been successfully delivered!",
+            cancelled: "Unfortunately, your order has been cancelled.",
+        };
+        let emailContent = `
+      <h2>Order Update</h2>
+      <p>Hello,</p>
+      <p>Your order <strong>#${orderId.slice(-6)}</strong> has been updated to: <strong>${orderStatus}</strong>.</p>
+      <p>${statusMessages[orderStatus]}</p>
+    `;
+        if (hasMsg && managerMessage) {
+            emailContent += `
+        <p><strong>Message from the manager:</strong></p>
+        <blockquote>${managerMessage}</blockquote>
+      `;
+        }
+        emailContent += `<p>Thank you for ordering with us!</p>`;
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: customerEmail,
+            subject: `Order #${orderId.slice(-6)} Status Update`,
+            html: emailContent,
+        };
+        yield transporter.sendMail(mailOptions);
+        console.log(`[INFO] Order update email sent to: ${customerEmail}`);
+        res.status(200).json({ success: true, message: "Email sent successfully!" });
+        return;
+    }
+    catch (error) {
+        console.error(`[ERROR] Failed to send email: ${error.message}`);
+        res.status(500).json({ success: false, message: "Failed to send email." });
+        return;
+    }
+});
+exports.sendOrderUpdateEmailHandler = sendOrderUpdateEmailHandler;
 const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { orderId } = req.params;
@@ -289,8 +374,12 @@ const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return;
         }
         const order = yield orderModel_1.default.findById(orderId)
-            .populate("user", "email")
-            .populate("cake");
+            .populate("user", "firstName lastName email")
+            .populate({
+            path: "items.cake",
+            select: "name image"
+        })
+            .populate("address");
         if (!order) {
             res.status(404).json({ error: "Order not found" });
             return;
@@ -308,14 +397,41 @@ const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getOrderById = getOrderById;
-exports.default = {
-    placeOrder: exports.placeOrder,
-    getAllOrders: exports.getAllOrders,
-    saveDraftOrder: exports.saveDraftOrder,
-    duplicateOrder: exports.duplicateOrder,
-    applyDiscountCode: exports.applyDiscountCode,
-    checkDeliveryDate: exports.checkDeliveryDate,
-    validateOrderInput: exports.validateOrderInput,
-    getDecorations: exports.getDecorations,
-};
+const getUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        if (!userId) {
+            res.status(400).json({ error: "User ID is required" });
+            return;
+        }
+        if (!mongoose_1.default.Types.ObjectId.isValid(userId)) {
+            res.status(400).json({ error: "Invalid User ID format" });
+            return;
+        }
+        const orders = yield orderModel_1.default.find({ user: userId })
+            .sort({ createdAt: -1 })
+            .populate("user", "firstName lastName email")
+            .populate({
+            path: "items.cake",
+            select: "name image price",
+        })
+            .populate({
+            path: "address",
+            select: "fullName phone street city zipCode country",
+        });
+        if (!orders || orders.length === 0) {
+            res.status(200).json([]);
+            return;
+        }
+        res.status(200).json(orders);
+    }
+    catch (error) {
+        console.error("❌ Error fetching user orders:", error);
+        const errorMessage = error instanceof mongoose_1.default.Error.ValidationError
+            ? "Validation error while fetching orders."
+            : "Failed to fetch user orders.";
+        res.status(500).json({ error: errorMessage });
+    }
+});
+exports.getUserOrders = getUserOrders;
 //# sourceMappingURL=ordersController.js.map

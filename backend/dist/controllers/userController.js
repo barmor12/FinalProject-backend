@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProfile = exports.getProfile = exports.updateProfile = void 0;
+exports.deleteProfile = exports.getProfile = exports.updateUserProfilePic = exports.updateUserName = void 0;
 const userModel_1 = __importDefault(require("../models/userModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authController_1 = require("./authController");
-const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
+const updateUserName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = (0, authController_1.getTokenFromRequest)(req);
     if (!token) {
         return (0, authController_1.sendError)(res, "Token required", 401);
@@ -31,18 +32,59 @@ const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
         const updatedUser = yield user.save();
-        console.log("Updated user:", updatedUser);
         res.status(200).json({
-            message: "Profile updated successfully",
+            message: "Name updated successfully",
             user: updatedUser,
         });
     }
     catch (err) {
-        console.error("Update profile error:", err);
-        (0, authController_1.sendError)(res, "Failed to update profile", 500);
+        console.error("Update name error:", err);
+        (0, authController_1.sendError)(res, "Failed to update name", 500);
     }
 });
-exports.updateProfile = updateProfile;
+exports.updateUserName = updateUserName;
+const updateUserProfilePic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, authController_1.getTokenFromRequest)(req);
+    if (!token) {
+        return (0, authController_1.sendError)(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, authController_1.sendError)(res, "User not found", 404);
+        }
+        if (!req.file) {
+            return (0, authController_1.sendError)(res, "No image provided", 400);
+        }
+        if (!req.file.mimetype.startsWith("image/")) {
+            return (0, authController_1.sendError)(res, "Invalid file type. Only images are allowed.", 400);
+        }
+        console.log("Uploading new profile picture...");
+        res.status(202).json({ message: "Uploading image..." });
+        if (user.profilePic && user.profilePic.public_id) {
+            yield cloudinary_1.default.uploader.destroy(user.profilePic.public_id);
+        }
+        const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, {
+            folder: "users"
+        });
+        console.log("Upload completed:", uploadResult.secure_url);
+        user.profilePic = {
+            url: uploadResult.secure_url,
+            public_id: uploadResult.public_id,
+        };
+        const updatedUser = yield user.save();
+        res.status(200).json({
+            message: "Profile picture updated successfully",
+            user: updatedUser,
+        });
+    }
+    catch (err) {
+        console.error("Update profile picture error:", err);
+        (0, authController_1.sendError)(res, "Failed to update profile picture", 500);
+    }
+});
+exports.updateUserProfilePic = updateUserProfilePic;
 const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = (0, authController_1.getTokenFromRequest)(req);
     if (!token) {
@@ -63,6 +105,7 @@ const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getProfile = getProfile;
 const deleteProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const token = (0, authController_1.getTokenFromRequest)(req);
     if (!token) {
         return (0, authController_1.sendError)(res, "Token required", 401);
@@ -73,9 +116,14 @@ const deleteProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!user) {
             return (0, authController_1.sendError)(res, "User not found", 404);
         }
+        if (user.profilePic && user.profilePic.public_id) {
+            console.log("profilePic", user.profilePic);
+            console.log("publicID", user.profilePic.public_id);
+            yield cloudinary_1.default.uploader.destroy((_a = user.profilePic) === null || _a === void 0 ? void 0 : _a.public_id);
+        }
         yield userModel_1.default.findByIdAndDelete(decoded.userId);
         res.status(200).json({
-            message: "Profile deleted successfully"
+            message: "Profile deleted successfully",
         });
     }
     catch (err) {
@@ -86,7 +134,8 @@ const deleteProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.deleteProfile = deleteProfile;
 exports.default = {
     getProfile: exports.getProfile,
-    updateProfile: exports.updateProfile,
-    deleteProfile: exports.deleteProfile
+    updateUserName: exports.updateUserName,
+    updateUserProfilePic: exports.updateUserProfilePic,
+    deleteProfile: exports.deleteProfile,
 };
 //# sourceMappingURL=userController.js.map

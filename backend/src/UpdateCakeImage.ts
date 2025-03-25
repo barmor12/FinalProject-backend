@@ -37,7 +37,7 @@ const updateCakeImages = async () => {
 
     for (const cake of cakes) {
       if (updatedImages.hasOwnProperty(cake.name)) {
-        cake.image = updatedImages[cake.name];
+        cake.image = { url: updatedImages[cake.name] };
         cake.updatedAt = new Date();
         await cake.save();
         console.log(`✅ Updated image for: ${cake.name}`);

@@ -22,7 +22,6 @@ const discountCodeSchema = new mongoose_1.default.Schema({
     },
     expiryDate: {
         type: Date,
-        required: false,
     },
 }, { timestamps: true });
 discountCodeSchema.methods.isValid = function () {

@@ -15,9 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProducts = exports.deleteProduct = exports.updateProduct = exports.getAllProducts = void 0;
 const inventoryModel_1 = __importDefault(require("../models/inventoryModel"));
 const cakeModel_1 = __importDefault(require("../models/cakeModel"));
-const admin = require("firebase-admin");
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield inventoryModel_1.default.find();
+    console.log(products);
     res.json({ products });
 });
 exports.getAllProducts = getAllProducts;
@@ -26,9 +27,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.json(updatedProduct);
 });
 exports.updateProduct = updateProduct;
-const bucket = admin.storage().bucket();
 const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const { cakeId } = req.params;
         console.log(cakeId);
@@ -37,13 +36,9 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             res.status(404).json({ error: "Product not found" });
             return;
         }
-        if (cake.image) {
-            const imageName = (_a = cake.image.split("%2F")[1]) === null || _a === void 0 ? void 0 : _a.split("?")[0];
-            if (imageName) {
-                const file = bucket.file(`cakes/${imageName}`);
-                yield file.delete();
-                console.log(`🗑️ Image deleted: cakes/${imageName}`);
-            }
+        if (cake.image && cake.image.public_id) {
+            yield cloudinary_1.default.uploader.destroy(cake.image.public_id);
+            console.log(`🗑️ Image deleted: ${cake.image.public_id}`);
         }
         yield cakeModel_1.default.findByIdAndDelete(cakeId);
         res.json({ success: true, message: "Product and image deleted successfully" });
@@ -70,13 +65,9 @@ const deleteProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return;
         }
         yield Promise.all(cakes.map((cake) => __awaiter(void 0, void 0, void 0, function* () {
-            var _a;
-            if (cake.image) {
-                const imageName = (_a = cake.image.split("%2F")[1]) === null || _a === void 0 ? void 0 : _a.split("?")[0];
-                if (imageName) {
-                    yield bucket.file(`cakes/${imageName}`).delete();
-                    console.log(`🗑️ Image deleted: cakes/${imageName}`);
-                }
+            if (cake.image && cake.image.public_id) {
+                yield cloudinary_1.default.uploader.destroy(cake.image.public_id);
+                console.log(`🗑️ Image deleted: ${cake.image.public_id}`);
             }
         })));
         yield cakeModel_1.default.deleteMany({ _id: { $in: productIds } });

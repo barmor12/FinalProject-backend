@@ -1,61 +1,14 @@
-import mongoose from "mongoose";
-declare const _default: mongoose.Model<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
+import mongoose, { Document } from "mongoose";
+export interface IDiscountCode extends Document {
     code: string;
     discountPercentage: number;
     isActive: boolean;
-    expiryDate?: NativeDate | null | undefined;
-}, {}, {}, {}, mongoose.Document<unknown, {}, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    code: string;
-    discountPercentage: number;
-    isActive: boolean;
-    expiryDate?: NativeDate | null | undefined;
+    expiryDate?: Date;
+    isValid(): boolean;
+}
+declare const _default: mongoose.Model<IDiscountCode, {}, {}, {}, mongoose.Document<unknown, {}, IDiscountCode> & IDiscountCode & Required<{
+    _id: unknown;
 }> & {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    code: string;
-    discountPercentage: number;
-    isActive: boolean;
-    expiryDate?: NativeDate | null | undefined;
-} & {
-    _id: mongoose.Types.ObjectId;
-} & {
     __v: number;
-}, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
-    timestamps: true;
-}, {
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    code: string;
-    discountPercentage: number;
-    isActive: boolean;
-    expiryDate?: NativeDate | null | undefined;
-}, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    code: string;
-    discountPercentage: number;
-    isActive: boolean;
-    expiryDate?: NativeDate | null | undefined;
-}>> & mongoose.FlatRecord<{
-    createdAt: NativeDate;
-    updatedAt: NativeDate;
-} & {
-    code: string;
-    discountPercentage: number;
-    isActive: boolean;
-    expiryDate?: NativeDate | null | undefined;
-}> & {
-    _id: mongoose.Types.ObjectId;
-} & {
-    __v: number;
-}>>;
+}, any>;
 export default _default;

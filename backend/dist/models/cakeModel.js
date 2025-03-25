@@ -8,8 +8,12 @@ const cakeSchema = new mongoose_1.default.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    image: { type: String },
+    image: {
+        url: String,
+        public_id: String
+    },
     ingredients: { type: [String], required: true },
+    stock: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });

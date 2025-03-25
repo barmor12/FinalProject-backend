@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadProfilePic = exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
+exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -22,6 +22,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const logger_1 = __importDefault(require("../logger"));
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 dotenv_1.default.config();
 const enforceHttps = (req, res, next) => {
     if (req.headers["x-forwarded-proto"] !== "https") {
@@ -64,7 +65,6 @@ const generateTokens = (userId, role) => __awaiter(void 0, void 0, void 0, funct
     const refreshToken = jsonwebtoken_1.default.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d",
     });
-    logger_1.default.info(`[INFO] Tokens generated successfully for userId: ${userId}`);
     return { accessToken, refreshToken };
 });
 const generateVerificationToken = (userId) => {
@@ -146,29 +146,34 @@ const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.updatePassword = updatePassword;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
-    const profilePic = req.file ? `/uploads/${req.file.filename}` : "";
     logger_1.default.info(`[INFO] Attempting to register user: ${email}`);
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !req.file) {
         logger_1.default.warn("[WARN] Registration failed: Missing fields");
-        return (0, exports.sendError)(res, "All fields are required");
+        return (0, exports.sendError)(res, "All fields including image are required", 400);
     }
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-        return (0, exports.sendError)(res, "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        return (0, exports.sendError)(res, "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.", 400);
     }
     try {
         const existingUser = yield userModel_1.default.findOne({ email });
         if (existingUser) {
             logger_1.default.warn(`[WARN] Registration failed: Email ${email} already exists`);
-            return (0, exports.sendError)(res, "User with this email already exists");
+            return (0, exports.sendError)(res, "User with this email already exists", 409);
         }
+        const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, {
+            folder: "users",
+        });
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         const user = new userModel_1.default({
             firstName,
             lastName,
             email,
             password: hashedPassword,
-            profilePic,
+            profilePic: {
+                url: uploadResult.secure_url,
+                public_id: uploadResult.public_id,
+            },
             role: "user",
             isVerified: false,
         });
@@ -178,6 +183,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         logger_1.default.info(`[INFO] User registered successfully: ${email}`);
         res.status(201).json({
             message: "User created successfully. Please verify your email.",
+            user: newUser,
         });
     }
     catch (err) {
@@ -211,6 +217,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "User logged in successfully",
             tokens,
             role: user.role,
+            userID: user._id,
         });
     }
     catch (err) {
@@ -442,7 +449,6 @@ const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.verifyEmail = verifyEmail;
-const resetPasswordTokens = new Map();
 const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     if (!email) {
@@ -520,34 +526,6 @@ const sendResetEmail = (email, resetCode) => __awaiter(void 0, void 0, void 0, f
     yield transporter.sendMail(mailOptions);
     logger_1.default.info(`[INFO] Password reset email sent to: ${email}`);
 });
-const uploadProfilePic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const token = (0, exports.getTokenFromRequest)(req);
-        if (!token) {
-            return (0, exports.sendError)(res, "Authentication required", 401);
-        }
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const user = yield userModel_1.default.findById(decoded.userId);
-        if (!user) {
-            return (0, exports.sendError)(res, "User not found", 404);
-        }
-        if (!req.file) {
-            return (0, exports.sendError)(res, "No file uploaded", 400);
-        }
-        user.profilePic = `/uploads/${req.file.filename}`;
-        yield user.save();
-        const baseUrl = process.env.BASE_URL || "http://localhost:3000";
-        res.status(200).json({
-            message: "Profile picture updated successfully",
-            profilePicUrl: `${baseUrl}/uploads/${req.file.filename}`,
-        });
-    }
-    catch (error) {
-        console.error("[ERROR] Upload profile picture failed:", error);
-        (0, exports.sendError)(res, "Failed to upload profile picture", 500);
-    }
-});
-exports.uploadProfilePic = uploadProfilePic;
 exports.default = {
     enforceHttps: exports.enforceHttps,
     register: exports.register,
@@ -561,6 +539,5 @@ exports.default = {
     updatePassword: exports.updatePassword,
     forgotPassword: exports.forgotPassword,
     resetPassword: exports.resetPassword,
-    uploadProfilePic: exports.uploadProfilePic,
 };
 //# sourceMappingURL=authController.js.map

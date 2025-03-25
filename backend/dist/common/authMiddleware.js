@@ -18,30 +18,25 @@ function isTokenPayload(payload) {
     return payload && typeof payload === "object" && "userId" in payload;
 }
 const authenticateMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.user) {
+        return next();
+    }
     try {
         if (!process.env.ACCESS_TOKEN_SECRET) {
             console.error("[ERROR] ACCESS_TOKEN_SECRET is not defined in environment variables.");
             throw new Error("Missing ACCESS_TOKEN_SECRET in environment variables");
         }
         const token = (0, authController_1.getTokenFromRequest)(req);
-        console.log("[INFO] Authorization Header:", req.headers.authorization);
-        console.log("[INFO] Extracted Token:", token);
         if (!token) {
             console.error("[ERROR] Token is missing from the request");
             return (0, authController_1.sendError)(res, "Authorization token is required", 401);
         }
-        console.log("[INFO] Decoding token...");
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log("[INFO] Decoded Token:", decoded);
         if (!isTokenPayload(decoded)) {
             console.error("[ERROR] Invalid token payload structure:", decoded);
             return (0, authController_1.sendError)(res, "Invalid token data", 403);
         }
-        req.body.userId = decoded.userId;
-        console.log("[INFO] Authenticated user ID:", decoded.userId);
-        if (decoded.role) {
-            console.log("[INFO] User role:", decoded.role);
-        }
+        req.user = decoded;
         next();
     }
     catch (err) {

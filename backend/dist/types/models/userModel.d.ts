@@ -11,9 +11,11 @@ declare const _default: mongoose.Model<{
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     isVerified: boolean;
-    profilePic?: string | null | undefined;
-    phone?: string | null | undefined;
-    address?: string | null | undefined;
+    addresses: mongoose.Types.ObjectId[];
+    profilePic?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
@@ -28,9 +30,11 @@ declare const _default: mongoose.Model<{
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     isVerified: boolean;
-    profilePic?: string | null | undefined;
-    phone?: string | null | undefined;
-    address?: string | null | undefined;
+    addresses: mongoose.Types.ObjectId[];
+    profilePic?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }> & {
@@ -45,9 +49,11 @@ declare const _default: mongoose.Model<{
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     isVerified: boolean;
-    profilePic?: string | null | undefined;
-    phone?: string | null | undefined;
-    address?: string | null | undefined;
+    addresses: mongoose.Types.ObjectId[];
+    profilePic?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 } & {
@@ -68,9 +74,11 @@ declare const _default: mongoose.Model<{
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     isVerified: boolean;
-    profilePic?: string | null | undefined;
-    phone?: string | null | undefined;
-    address?: string | null | undefined;
+    addresses: mongoose.Types.ObjectId[];
+    profilePic?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
@@ -85,9 +93,11 @@ declare const _default: mongoose.Model<{
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     isVerified: boolean;
-    profilePic?: string | null | undefined;
-    phone?: string | null | undefined;
-    address?: string | null | undefined;
+    addresses: mongoose.Types.ObjectId[];
+    profilePic?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }>> & mongoose.FlatRecord<{
@@ -102,9 +112,11 @@ declare const _default: mongoose.Model<{
     favorites: mongoose.Types.ObjectId[];
     refresh_tokens: string[];
     isVerified: boolean;
-    profilePic?: string | null | undefined;
-    phone?: string | null | undefined;
-    address?: string | null | undefined;
+    addresses: mongoose.Types.ObjectId[];
+    profilePic?: {
+        url?: string | null | undefined;
+        public_id?: string | null | undefined;
+    } | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }> & {
