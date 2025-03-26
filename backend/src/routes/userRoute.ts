@@ -11,7 +11,7 @@ router.get("/profile", authenticateMiddleware, getProfile);
 router.post("/delete-profile", authenticateMiddleware, deleteProfile);
 
 // עדכון פרטי משתמש
-router.put('/updateNameProfile', updateUserName);
-router.put('/update-profile-pic', upload.single('profilePic'), updateUserProfilePic);
+router.put('/updateNameProfile', authenticateMiddleware, updateUserName);
+router.put('/update-profile-pic', authenticateMiddleware, upload.single('profilePic'), updateUserProfilePic);
 
 export default router;

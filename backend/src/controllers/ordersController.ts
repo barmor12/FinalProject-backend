@@ -53,13 +53,18 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
       if (!foundCake) return null;
       totalPrice += foundCake.price * i.quantity;
       totalPrice = parseFloat(totalPrice.toFixed(2));
-      return { cake: i.cakeId, quantity: i.quantity };
+      return {
+        cake: foundCake._id, // שמירה של ה-ID של העוגה
+        quantity: i.quantity,
+        price: foundCake.price, // אם צריך את המחיר
+        cakeName: foundCake.name, // אם צריך את שם העוגה
+      };
     }).filter(Boolean);
 
     // ✅ יצירת אובייקט הזמנה
     const order = new Order({
       user: userId,
-      address: userAddress, // 🔥 שימוש בכתובת ששייכת למשתמש
+      address: userAddress,
       items: mappedItems,
       totalPrice,
       decoration: decoration || "",
@@ -70,6 +75,18 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     // ✅ שמירת ההזמנה במסד הנתונים
     const savedOrder = await order.save();
     console.log("✅ Order Saved Successfully:", savedOrder);
+    const orderIdStr = savedOrder._id.toString();
+
+    // ✅ שליחת מייל אישור הזמנה
+    await sendOrderConfirmationEmail(
+      user.email,
+      orderIdStr,
+      totalPrice,
+      mappedItems,
+      userAddress.fullName,
+      user.firstName,
+      "https://example.com"
+    );
 
     // ✅ ניקוי עגלת הקניות של המשתמש
     await Cart.deleteOne({ user: userId });
@@ -78,15 +95,177 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
   } catch (error: unknown) {
     console.error("❌ Error placing order:", error);
 
-    // 🛠 המרה ל-Error כדי להבטיח גישה להודעת השגיאה
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
       res.status(500).json({ error: "Failed to place order due to an unknown error" });
     }
   }
-
 };
+
+
+export const sendOrderConfirmationEmail = async (
+  customerEmail: string,
+  orderId: string,
+  totalPrice: number,
+  orderItems: Array<any>, // פרטי העוגות שהוזמנו
+  deliveryAddress: string,
+  customerName: string,
+  shopUrl: string
+): Promise<void> => {
+  try {
+    // יצירת טרנספורטור לשליחת המייל
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER, // כתובת המייל ששולחת את המייל
+        pass: process.env.EMAIL_PASSWORD, // הסיסמא של המייל
+      },
+    });
+
+    // יצירת תוכן המייל עם התייחסות לנתונים דינמיים
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // מאיפה נשלח את המייל
+      to: customerEmail, // כתובת המייל של הלקוח
+      subject: `Order Confirmation - Order #${orderId}`, // נושא המייל
+      html: `
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      background-color: #5a3827;
+      padding: 10px;
+      border-radius: 8px;
+      color: white;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .order-details {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #333333;
+    }
+    .order-details p {
+      margin: 5px 0;
+    }
+    .order-items {
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+    .order-items table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .order-items th, .order-items td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .order-items th {
+      background-color: #f4f4f9;
+    }
+    .total-price {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #5a3827;
+    }
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: #777777;
+    }
+    .footer p {
+      margin: 5px 0;
+    }
+  </style>
+  <title>Order Confirmation</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Order Confirmation</h1>
+    </div>
+
+    <div class="order-details">
+      <p>Hi <strong>${customerName}</strong>,</p>
+      <p>Thank you for your order! We're excited to let you know that your order <strong>#${orderId}</strong> has been successfully placed.</p>
+      <p><strong>Order Status:</strong> Pending</p>
+      <p><strong>Delivery Address:</strong> ${deliveryAddress}</p>
+    </div>
+
+    <div class="order-items">
+      <h3>Order Details</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orderItems
+          .map(
+            (item: any) => `
+              <tr>
+                <td>${item.cakeName}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.price}</td>
+              </tr>`
+          )
+          .join("")}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="total-price">
+      <p>Total Price: $${totalPrice.toFixed(2)}</p>
+    </div>
+
+    <div class="footer">
+      <p>We will notify you when your order is confirmed and on its way.</p>
+      <p>If you have any questions, feel free to contact us.</p>
+      <p>Thank you for shopping with us!</p>
+      <p><a href="${shopUrl}" style="color: #5a3827; text-decoration: none;">Visit our shop</a></p>
+    </div>
+  </div>
+</body>
+</html>
+      `,
+    };
+
+    // שליחת המייל
+    await transporter.sendMail(mailOptions);
+    console.log(`Order confirmation email sent to ${customerEmail}`);
+  } catch (error) {
+    console.error("Error sending order confirmation email:", error);
+  }
+};
+
 
 
 

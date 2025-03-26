@@ -21,13 +21,6 @@ import authenticateAdminMiddleware from "../common/authAdminMiddleware";
 
 const router = express.Router();
 
-// הזמנת עוגה חדשה עם העלאת תמונה
-router.post(
-  "/new-order",
-  authenticateMiddleware,
-  upload.single("image"), // Middleware לתמונה
-  placeOrder
-);
 
 // הצגת כל ההזמנות
 

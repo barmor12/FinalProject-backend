@@ -14,6 +14,6 @@ router.get("/", authMiddleware, getUserAddresses); // 👈 כל הנתיבים �
 router.post("/", authMiddleware, addAddress);
 router.put("/:id", authMiddleware, updateAddress);
 router.delete("/:id", authMiddleware, deleteAddress);
-router.put("/default/:addressId", setDefaultAddress);
+router.put("/default/:addressId", authMiddleware, setDefaultAddress);
 
 export default router;
