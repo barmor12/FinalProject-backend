@@ -57,16 +57,6 @@ export const updateOrder = async (req: Request, res: Response) => {
     }
 };
 
-// פונקציה למשיכת כל המשתמשים
-export const getAllUsers = async (req: Request, res: Response) => {
-    try {
-        const users = await User.find();
-        res.status(200).json({ users });
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({ error: "Failed to fetch users" });
-    }
-};
 
 // פונקציה לעדכון משתמש על פי המזהה
 export const updateUser = async (req: Request, res: Response) => {
@@ -85,3 +75,22 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 };
 
+// פונקציה לשליפת כל המשתמשים
+export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // שליפת כל המשתמשים ממסד הנתונים
+        const users = await User.find(); // אם צריך ניתן להוסיף פילטרים כמו .select() או .populate() אם יש צורך במידע נוסף
+
+        // אם לא נמצאו משתמשים, נחזיר תשובה ריקה
+        if (!users || users.length === 0) {
+            res.status(404).json({ message: "No users found" });
+            return;
+        }
+
+        // החזרת כל המשתמשים
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("❌ Error fetching users:", error);
+        res.status(500).json({ error: "Failed to fetch users" });
+    }
+};
