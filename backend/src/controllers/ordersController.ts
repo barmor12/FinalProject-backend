@@ -267,8 +267,6 @@ export const sendOrderConfirmationEmail = async (
 };
 
 
-
-
 export const getAllOrders = async (
   req: Request,
   res: Response

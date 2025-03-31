@@ -4,7 +4,8 @@ import {
     updateOrder,
     getAllUsers,
     updateUser,
-    getStats
+    getStats,
+    getUserById
 } from "../controllers/adminController";
 import authenticateAdminMiddleware from "../common/authAdminMiddleware";
 
@@ -19,5 +20,6 @@ router.put("/orders/:orderId", authenticateAdminMiddleware, updateOrder);
 // נתיבים למשתמשים
 router.get("/users", authenticateAdminMiddleware, getAllUsers);
 router.put("/users/:userId", authenticateAdminMiddleware, updateUser);
+router.get("/users/:userId", authenticateAdminMiddleware, getUserById);
 
 export default router;
