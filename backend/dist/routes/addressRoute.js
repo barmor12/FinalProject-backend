@@ -11,6 +11,6 @@ router.get("/", authMiddleware_1.default, addressController_1.getUserAddresses);
 router.post("/", authMiddleware_1.default, addressController_1.addAddress);
 router.put("/:id", authMiddleware_1.default, addressController_1.updateAddress);
 router.delete("/:id", authMiddleware_1.default, addressController_1.deleteAddress);
-router.put("/default/:addressId", addressController_1.setDefaultAddress);
+router.put("/default/:addressId", authMiddleware_1.default, addressController_1.setDefaultAddress);
 exports.default = router;
 //# sourceMappingURL=addressRoute.js.map

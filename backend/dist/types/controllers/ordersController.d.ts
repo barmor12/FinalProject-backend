@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 export declare const placeOrder: (req: Request, res: Response) => Promise<void>;
+export declare const sendOrderConfirmationEmail: (customerEmail: string, orderId: string, totalPrice: number, orderItems: Array<any>, deliveryAddress: string, customerName: string, shopUrl: string) => Promise<void>;
 export declare const getAllOrders: (req: Request, res: Response) => Promise<void>;
 export declare const saveDraftOrder: (req: Request, res: Response) => Promise<void>;
 export declare const duplicateOrder: (req: Request, res: Response) => Promise<void>;

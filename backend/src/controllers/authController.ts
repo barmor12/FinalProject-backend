@@ -1,3 +1,62 @@
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
+
+export const googleCallback = async (req: Request, res: Response) => {
+  const { id_token, password } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: id_token,
+      audience: process.env.GOOGLE_CLIENT_ID_IOS,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res
+        .status(400)
+        .json({ error: "Failed to get payload from token" });
+    }
+
+    let user = await User.findOne({ googleId: payload.sub });
+
+    if (!user) {
+      user = await User.findOne({ email: payload.email });
+      if (user) {
+        user.googleId = payload.sub;
+        await user.save();
+      } else {
+        const hashedPassword = await bcrypt.hash(
+          password || payload.sub + "google",
+          10
+        );
+        user = new User({
+          googleId: payload.sub,
+          email: payload.email,
+          nickname: payload.name,
+          firstName: payload.given_name || "Google",
+          lastName: payload.family_name || "User",
+          profilePic: payload.picture,
+          password: hashedPassword,
+          role: "user",
+        });
+        await user.save();
+      }
+    } else if (!user.password) {
+      const hashedPassword = await bcrypt.hash(
+        password || payload.sub + "google",
+        10
+      );
+      user.password = hashedPassword;
+      await user.save();
+    }
+
+    const tokens = await generateTokens(user._id.toString(), user.role);
+    res.json(tokens);
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(500).json({ error: "Failed to authenticate user" });
+  }
+};
 import express, { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -650,4 +709,5 @@ export default {
   updatePassword,
   forgotPassword,
   resetPassword,
+  googleCallback,
 };
