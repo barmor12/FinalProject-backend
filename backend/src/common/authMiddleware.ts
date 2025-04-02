@@ -5,7 +5,7 @@ import { sendError, getTokenFromRequest } from "../controllers/authController";
 // הגדרת מבנה הטוקן
 interface TokenPayload extends JwtPayload {
   userId: string; // שדה זה ישתמש ב-userId במקום _id
-  role?: string;  // במידת הצורך, ניתן להוסיף גם role
+  role?: string; // במידת הצורך, ניתן להוסיף גם role
 }
 
 // פונקציה לבדיקת מבנה הטוקן
@@ -19,10 +19,8 @@ const authenticateMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  // אם כבר יש מידע על המשתמש, אל תבצע את פענוח הטוקן שוב
-  if (req.body.userId) {
-    console.log("[INFO] User already authenticated:", req.body.userId);
-    return next(); // עוברים ל־next במידה וכבר יש מידע
+  if (req.user) {
+    return next();
   }
   try {
     // בדיקה אם הסוד מוגדר ב-.env
@@ -35,8 +33,6 @@ const authenticateMiddleware = async (
 
     // שליפת הטוקן מתוך הבקשה
     const token = getTokenFromRequest(req);
-    console.log("[INFO] Authorization Header:", req.headers.authorization);
-    console.log("[INFO] Extracted Token:", token);
 
     if (!token) {
       console.error("[ERROR] Token is missing from the request");
@@ -44,13 +40,11 @@ const authenticateMiddleware = async (
     }
 
     // פענוח הטוקן
-    console.log("[INFO] Decoding token...");
     const decoded = jwt.verify(
       token,
       process.env.ACCESS_TOKEN_SECRET
     ) as TokenPayload;
-
-    console.log("[INFO] Decoded Token:", decoded);
+    req.user = decoded;
 
     // בדיקת מבנה הטוקן
     if (!isTokenPayload(decoded)) {
@@ -58,12 +52,11 @@ const authenticateMiddleware = async (
       return sendError(res, "Invalid token data", 403);
     }
 
-    // הוספת מזהה המשתמש לבקשה
-    if (!req.body.userId) req.body.userId = decoded.userId;
+    // הוספת המשתמש לבקשה
+    req.user = decoded;
 
     // אם יש צורך לבדוק role, ניתן לעשות כאן
     if (decoded.role) {
-      console.log("[INFO] User role:", decoded.role);
     }
 
     // העברת הבקשה ל-Next Middleware
