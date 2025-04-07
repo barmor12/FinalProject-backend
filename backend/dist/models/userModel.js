@@ -10,10 +10,11 @@ const userSchema = new mongoose_1.default.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     profilePic: {
-        url: { type: String, },
-        public_id: { type: String, },
+        url: { type: String },
+        public_id: { type: String },
     },
     role: { type: String, default: "user" },
+    googleId: { type: String },
     favorites: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Cake" }],
     refresh_tokens: [String],
     isVerified: { type: Boolean, default: false },

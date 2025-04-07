@@ -306,3 +306,50 @@
 }
 2025-03-25T15:56:51.420Z [INFO]: [INFO] Generating tokens for userId: 67a4248449deb4dcfeca75e5, role: user
 2025-03-25T15:56:51.420Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-04-02T14:26:43.602Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T14:29:32.467Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T14:35:55.238Z [INFO]: [INFO] Refresh token process started
+2025-04-02T14:35:55.240Z [INFO]: [INFO] Refresh token verified for userId: 67e41b5e1d469490c76f4ac0
+2025-04-02T14:35:55.363Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-04-02T14:36:02.563Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T14:36:34.230Z [INFO]: [INFO] Refresh token process started
+2025-04-02T14:36:34.232Z [INFO]: [INFO] Refresh token verified for userId: 67e41b5e1d469490c76f4ac0
+2025-04-02T14:36:34.357Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-04-02T14:36:48.624Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T14:38:01.110Z [INFO]: [INFO] Refresh token process started
+2025-04-02T14:38:01.112Z [INFO]: [INFO] Refresh token verified for userId: 67e41b5e1d469490c76f4ac0
+2025-04-02T14:38:01.234Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-04-02T14:38:09.705Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T14:57:16.401Z [INFO]: [INFO] Refresh token process started
+2025-04-02T14:57:16.402Z [INFO]: [INFO] Refresh token verified for userId: 67e41b5e1d469490c76f4ac0
+2025-04-02T14:57:16.518Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-04-02T14:57:38.373Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T15:12:19.579Z [INFO]: [INFO] Refresh token process started
+2025-04-02T15:12:19.580Z [INFO]: [INFO] Refresh token verified for userId: 67e41b5e1d469490c76f4ac0
+2025-04-02T15:12:19.696Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-04-02T15:12:59.896Z [INFO]: [INFO] Login attempt for email: barmor123456@gmail.com
+2025-04-02T15:13:00.017Z [INFO]: [INFO] User fetched during login: {
+  _id: new ObjectId('67e41b5e1d469490c76f4ac0'),
+  email: 'barmor123456@gmail.com',
+  password: '$2a$10$cZnSwL0B/dhCpnYLyXNMWuvqx2GTktC5EYFVLU8qoQDwI.SiEbfCS',
+  firstName: 'Bar',
+  lastName: 'Mor',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2U0MWI1ZTFkNDY5NDkwYzc2ZjRhYzAiLCJpYXQiOjE3NDMwMDM0OTgsImV4cCI6MTc0MzYwODI5OH0.heLotoONxtnAn5PEc30CXZ9g7KxVzytu9C9wLfD3R7M',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2U0MWI1ZTFkNDY5NDkwYzc2ZjRhYzAiLCJpYXQiOjE3NDMwMDczMzAsImV4cCI6MTc0MzYxMjEzMH0.MKLj2fe_bWInSttrKFkgdg3gzuNHXc_AaBoMhyW9lSY',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2U0MWI1ZTFkNDY5NDkwYzc2ZjRhYzAiLCJpYXQiOjE3NDMwODMyMTcsImV4cCI6MTc0MzY4ODAxN30.Kh2LPco5Nb3G-WS-Rk7WaILCBYV9BuGN11pYVLDBYSs',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2U0MWI1ZTFkNDY5NDkwYzc2ZjRhYzAiLCJpYXQiOjE3NDM2MDE0NDQsImV4cCI6MTc0NDIwNjI0NH0.ZmrscTjFGRiY6ruRslSOwa7LIL6H_Azx-YByu4HNylU',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2U0MWI1ZTFkNDY5NDkwYzc2ZjRhYzAiLCJpYXQiOjE3NDM2MDI3MDMsImV4cCI6MTc0NDIwNzUwM30.3L8MILYjEi4SDqFck5aN_Eqvs81LrCw6WXUJz61m5UA'
+  ],
+  isVerified: true,
+  addresses: [ new ObjectId('67e41bb01d469490c76f4b0f') ],
+  createdAt: 2025-03-26T15:21:02.252Z,
+  updatedAt: 2025-04-02T14:19:46.357Z,
+  __v: 10,
+  googleId: '107347893426360270570'
+}
+2025-04-02T15:13:00.148Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-02T15:13:00.149Z [INFO]: [INFO] Generated tokens for user: barmor123456@gmail.com
+2025-04-02T15:13:15.988Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user

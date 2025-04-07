@@ -7,10 +7,11 @@ const express_1 = __importDefault(require("express"));
 const cartController_1 = __importDefault(require("../controllers/cartController"));
 const authMiddleware_1 = __importDefault(require("../common/authMiddleware"));
 const router = express_1.default.Router();
-router.post("/add", authMiddleware_1.default, cartController_1.default.addToCart);
-router.get("/", authMiddleware_1.default, cartController_1.default.getCart);
-router.delete("/remove", authMiddleware_1.default, cartController_1.default.removeFromCart);
-router.delete("/clear", authMiddleware_1.default, cartController_1.default.clearCart);
-router.post("/update", authMiddleware_1.default, cartController_1.default.updateCartItem);
+router.use(authMiddleware_1.default);
+router.post("/add", cartController_1.default.addToCart);
+router.get("/", cartController_1.default.getCart);
+router.delete("/remove", cartController_1.default.removeFromCart);
+router.delete("/clear", cartController_1.default.clearCart);
+router.post("/update", cartController_1.default.updateCartItem);
 exports.default = router;
 //# sourceMappingURL=cartRoute.js.map

@@ -1,3 +1,4 @@
+export declare const googleCallback: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 import express, { Request, Response, NextFunction } from "express";
 import multer from "multer";
 export declare const enforceHttps: (req: Request, res: Response, next: NextFunction) => express.Response<any, Record<string, any>> | undefined;
@@ -26,5 +27,6 @@ declare const _default: {
     updatePassword: (req: Request, res: Response) => Promise<void>;
     forgotPassword: (req: Request, res: Response) => Promise<void>;
     resetPassword: (req: Request, res: Response) => Promise<void>;
+    googleCallback: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 };
 export default _default;

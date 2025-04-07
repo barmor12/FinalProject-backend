@@ -10,6 +10,7 @@ import {
   forgotPassword,
   resetPassword,
   upload,
+  googleCallback,
 } from "../controllers/authController";
 
 const router = express.Router();
@@ -35,6 +36,15 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => res.redirect("/")
 );
+
+router.post("/google/callback", async (req, res, next) => {
+  try {
+    await googleCallback(req, res);
+  } catch (error) {
+    console.error("[ERROR] Google callback failed:", error);
+    next(error);
+  }
+});
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/refresh", refresh);

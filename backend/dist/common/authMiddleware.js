@@ -32,11 +32,14 @@ const authenticateMiddleware = (req, res, next) => __awaiter(void 0, void 0, voi
             return (0, authController_1.sendError)(res, "Authorization token is required", 401);
         }
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        req.user = decoded;
         if (!isTokenPayload(decoded)) {
             console.error("[ERROR] Invalid token payload structure:", decoded);
             return (0, authController_1.sendError)(res, "Invalid token data", 403);
         }
         req.user = decoded;
+        if (decoded.role) {
+        }
         next();
     }
     catch (err) {

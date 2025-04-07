@@ -12,7 +12,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = void 0;
+exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = exports.googleCallback = void 0;
+const google_auth_library_1 = require("google-auth-library");
+const client = new google_auth_library_1.OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
+const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_token, password } = req.body;
+    try {
+        const ticket = yield client.verifyIdToken({
+            idToken: id_token,
+            audience: process.env.GOOGLE_CLIENT_ID_IOS,
+        });
+        const payload = ticket.getPayload();
+        if (!payload) {
+            return res
+                .status(400)
+                .json({ error: "Failed to get payload from token" });
+        }
+        let user = yield userModel_1.default.findOne({ googleId: payload.sub });
+        if (!user) {
+            user = yield userModel_1.default.findOne({ email: payload.email });
+            if (user) {
+                user.googleId = payload.sub;
+                yield user.save();
+            }
+            else {
+                const hashedPassword = yield bcryptjs_1.default.hash(password || payload.sub + "google", 10);
+                user = new userModel_1.default({
+                    googleId: payload.sub,
+                    email: payload.email,
+                    nickname: payload.name,
+                    firstName: payload.given_name || "Google",
+                    lastName: payload.family_name || "User",
+                    profilePic: payload.picture,
+                    password: hashedPassword,
+                    role: "user",
+                });
+                yield user.save();
+            }
+        }
+        else if (!user.password) {
+            const hashedPassword = yield bcryptjs_1.default.hash(password || payload.sub + "google", 10);
+            user.password = hashedPassword;
+            yield user.save();
+        }
+        const tokens = yield generateTokens(user._id.toString(), user.role);
+        res.json(tokens);
+    }
+    catch (error) {
+        console.error("Error verifying token:", error);
+        res.status(500).json({ error: "Failed to authenticate user" });
+    }
+});
+exports.googleCallback = googleCallback;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
@@ -539,5 +590,6 @@ exports.default = {
     updatePassword: exports.updatePassword,
     forgotPassword: exports.forgotPassword,
     resetPassword: exports.resetPassword,
+    googleCallback: exports.googleCallback,
 };
 //# sourceMappingURL=authController.js.map
