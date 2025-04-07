@@ -90,21 +90,8 @@ export const enforceHttps = (
   next();
 };
 
-// יצירת תיקייה להעלאות אם אינה קיימת
-const uploadsDir = path.join(__dirname, "..", "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
 // הגדרת Multer להעלאת קבצים
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
 // שליפת טוקן מהבקשה
@@ -239,9 +226,9 @@ export const register = async (req: Request, res: Response) => {
 
   logger.info(`[INFO] Attempting to register user: ${email}`);
 
-  if (!firstName || !lastName || !email || !password || !req.file) {
+  if (!firstName || !lastName || !email || !password) {
     logger.warn("[WARN] Registration failed: Missing fields");
-    return sendError(res, "All fields including image are required", 400);
+    return sendError(res, "All fields are required", 400);
   }
 
   const passwordRegex =
@@ -262,25 +249,56 @@ export const register = async (req: Request, res: Response) => {
       return sendError(res, "User with this email already exists", 409);
     }
 
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      folder: "users", // ← שם התיקייה בקלאודינרי
-    });
+    let profilePic = {
+      url: "https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png",
+      public_id: "users/default_profile_image",
+    };
+
+    if (req.file) {
+      logger.info("[INFO] Uploading profile image to Cloudinary...");
+
+      const streamUpload = (buffer: Buffer) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "users" },
+            (error: any, result: any) => {
+              if (result) resolve(result);
+              else reject(error);
+            }
+          );
+          const { Readable } = require("stream");
+          Readable.from(buffer).pipe(stream);
+        });
+      };
+
+      try {
+        const uploadResult: any = await streamUpload(req.file.buffer);
+        profilePic = {
+          url: uploadResult.secure_url,
+          public_id: uploadResult.public_id,
+        };
+        logger.info("[INFO] Profile image uploaded successfully");
+      } catch (error: any) {
+        logger.error(`[ERROR] Cloudinary upload error: ${error.message}`);
+        return sendError(res, "Profile image upload failed", 500);
+      }
+    }
+
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = new User({
       firstName,
       lastName,
       email,
       password: hashedPassword,
-      profilePic: {
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id,
-      },
+      profilePic,
       role: "user",
       isVerified: false,
     });
 
     const newUser = await user.save();
+
     const verificationToken = generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, verificationToken);
 
@@ -295,6 +313,7 @@ export const register = async (req: Request, res: Response) => {
     sendError(res, "Failed to register", 500);
   }
 };
+
 
 // כניסת משתמש
 export const login = async (req: Request, res: Response) => {

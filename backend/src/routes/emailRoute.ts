@@ -5,6 +5,6 @@ import { deleteUserWithEmail, sendEmailToUser } from "../controllers/emailContro
 const router = express.Router();
 
 router.post("/:userId/message", authenticateAdminMiddleware, sendEmailToUser);
-router.delete("delete/:id", authenticateAdminMiddleware, deleteUserWithEmail);
+router.delete("/delete/:id", authenticateAdminMiddleware, deleteUserWithEmail);
 
 export default router;
