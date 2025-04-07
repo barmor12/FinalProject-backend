@@ -31,21 +31,8 @@ export const enforceHttps = (
   next();
 };
 
-// יצירת תיקייה להעלאות אם אינה קיימת
-const uploadsDir = path.join(__dirname, "..", "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
 // הגדרת Multer להעלאת קבצים
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
 // שליפת טוקן מהבקשה
@@ -204,25 +191,43 @@ export const register = async (req: Request, res: Response) => {
     }
 
     let profilePic = {
-      url: "https://res.cloudinary.com/demo/image/upload/v1234567890/users/default.png", // כתובת לתמונה ברירת מחדל
-      public_id: "users/default",
+      url: "https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png",
+      public_id: "users/default_profile_image",
     };
 
-    // אם יש קובץ - נעלה אותו
     if (req.file) {
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: "users",
-      });
+      logger.info("[INFO] Uploading profile image to Cloudinary...");
 
-      profilePic = {
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id,
+      const streamUpload = (buffer: Buffer) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "users" },
+            (error: any, result: any) => {
+              if (result) resolve(result);
+              else reject(error);
+            }
+          );
+          const { Readable } = require("stream");
+          Readable.from(buffer).pipe(stream);
+        });
       };
-    } else {
-      logger.info("[INFO] No profile image provided, using default");
+
+      try {
+        const uploadResult: any = await streamUpload(req.file.buffer);
+        profilePic = {
+          url: uploadResult.secure_url,
+          public_id: uploadResult.public_id,
+        };
+        logger.info("[INFO] Profile image uploaded successfully");
+      } catch (error: any) {
+        logger.error(`[ERROR] Cloudinary upload error: ${error.message}`);
+        return sendError(res, "Profile image upload failed", 500);
+      }
     }
 
+
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = new User({
       firstName,
       lastName,
@@ -234,6 +239,7 @@ export const register = async (req: Request, res: Response) => {
     });
 
     const newUser = await user.save();
+
     const verificationToken = generateVerificationToken(newUser._id.toString());
     await sendVerificationEmail(email, verificationToken);
 
