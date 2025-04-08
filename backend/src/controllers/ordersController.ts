@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import Cart from "../models/cartModel";
 import nodemailer from "nodemailer";
 import Address from "../models/addressModel";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const placeOrder = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -103,7 +104,10 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-
+interface TokenPayload extends JwtPayload {
+  userId: string;
+  role: string;
+}
 export const sendOrderConfirmationEmail = async (
   customerEmail: string,
   orderId: string,
@@ -319,31 +323,58 @@ export const saveDraftOrder = async (req: Request, res: Response) => {
 };
 
 export const duplicateOrder = async (req: Request, res: Response) => {
-  const { orderId } = req.body;
-
   try {
-    const originalOrder = await Order.findById(orderId);
-    if (!originalOrder) {
-      res.status(404).json({ error: "Original order not found" });
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+    const decoded = jwt.verify(
+      token as string,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
+    const userId = (decoded as any).userId;
+
+    // נדרש שהבקשה תשלח את המערך items עם מבנה: { cakeId: string, quantity: number }
+    const { items } = req.body;
+    if (!items || !Array.isArray(items)) {
+      res.status(400).json({ error: "Invalid items format" });
       return;
     }
 
-    const { _id, createdAt, updatedAt, ...orderData } =
-      originalOrder.toObject();
+    // חיפוש עגלה קיימת למשתמש או יצירת עגלה חדשה
+    let cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      cart = new Cart({ user: userId, items: [] });
+    }
 
-    const duplicatedOrder = new Order({
-      ...orderData,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    // הוספת הפריטים לעגלה הקיימת:
+    items.forEach((item: { cakeId: string; quantity: number }) => {
+      const cakeObjectId = new mongoose.Types.ObjectId(item.cakeId);
+      // בדיקה אם הפריט כבר קיים בעגלה
+      const existingIndex = cart.items.findIndex(
+        (cartItem) => cartItem.cake.toString() === item.cakeId
+      );
+      if (existingIndex !== -1) {
+        // אם קיים – עדכון הכמות (הוספה למה שכבר קיים)
+        cart.items[existingIndex].quantity += item.quantity;
+      } else {
+        // אם לא – הוספת הפריט לעגלה
+        cart.items.push({
+          cake: cakeObjectId,
+          quantity: item.quantity,
+        });
+      }
     });
 
-    const savedOrder = await duplicatedOrder.save();
-    res.status(201).json(savedOrder);
-  } catch (err) {
-    console.error("Error duplicating order:", err);
-    res.status(500).json({ error: "Failed to duplicate order" });
+    await cart.save();
+    res.status(200).json({ message: "Cart updated", cart });
+  } catch (error) {
+    console.error("Error in reorderCart:", error);
+    res.status(500).json({ error: "Failed to reorder cart" });
   }
 };
+
 
 export const applyDiscountCode = async (req: Request, res: Response) => {
   const { orderId, discountCode } = req.body;
