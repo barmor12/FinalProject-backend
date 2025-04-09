@@ -314,8 +314,222 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+// Generate and send 2FA code
+const generateAndSend2FACode = async (email: string) => {
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
-// כניסת משתמש
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  user.twoFactorCode = code;
+  user.twoFactorExpires = expiresAt;
+  await user.save();
+
+  // Send email with 2FA code
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    throw new Error("Email credentials are missing in environment variables");
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+    secure: true,
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Your 2FA Verification Code",
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+          }
+          .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+          .header {
+            text-align: center;
+            background-color: #5a3827;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 24px;
+          }
+          .content {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333333;
+          }
+          .code {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #5a3827;
+            letter-spacing: 5px;
+          }
+          .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #777777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Two-Factor Authentication</h1>
+          </div>
+          
+          <div class="content">
+            <p>Hello,</p>
+            <p>Your verification code is:</p>
+            <div class="code">${code}</div>
+            <p>This code will expire in 15 minutes.</p>
+            <p>If you didn't request this code, please ignore this email.</p>
+          </div>
+
+          <div class="footer">
+            <p>This is an automated message, please do not reply.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+  logger.info(`[INFO] 2FA code sent to: ${email}`);
+};
+
+// Enable 2FA
+export const enable2FA = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return sendError(res, "Token required", 401);
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    // Generate and send verification code
+    await generateAndSend2FACode(user.email);
+
+    res.status(200).json({
+      message: "Verification code sent to your email",
+      requiresVerification: true
+    });
+  } catch (err) {
+    logger.error(`[ERROR] Enable 2FA error: ${(err as Error).message}`);
+    sendError(res, "Failed to enable 2FA", 500);
+  }
+};
+
+// Verify 2FA code
+export const verify2FACode = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return sendError(res, "Token required", 401);
+  }
+
+  const { code } = req.body;
+  if (!code) {
+    return sendError(res, "Verification code is required", 400);
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    if (!user.twoFactorCode || !user.twoFactorExpires) {
+      return sendError(res, "No 2FA code found", 400);
+    }
+
+    if (user.twoFactorCode !== code) {
+      return sendError(res, "Invalid 2FA code", 400);
+    }
+
+    if (Date.now() > user.twoFactorExpires.getTime()) {
+      return sendError(res, "2FA code has expired", 400);
+    }
+
+    // Enable 2FA and clear the verification code
+    user.twoFactorEnabled = true;
+    user.twoFactorCode = undefined;
+    user.twoFactorExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      message: "2FA enabled successfully",
+      twoFactorEnabled: true
+    });
+  } catch (err) {
+    logger.error(`[ERROR] Verify 2FA code error: ${(err as Error).message}`);
+    sendError(res, "Failed to verify 2FA code", 500);
+  }
+};
+
+// Disable 2FA
+export const disable2FA = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return sendError(res, "Token required", 401);
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    user.twoFactorEnabled = false;
+    user.twoFactorCode = undefined;
+    user.twoFactorExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "2FA disabled successfully" });
+  } catch (err) {
+    logger.error(`[ERROR] Disable 2FA error: ${(err as Error).message}`);
+    sendError(res, "Failed to disable 2FA", 500);
+  }
+};
+
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -340,6 +554,24 @@ export const login = async (req: Request, res: Response) => {
         "Email not verified. A new verification email has been sent."
       );
     }
+
+    // If 2FA is enabled, send code and return temporary tokens
+    if (user.twoFactorEnabled) {
+      await generateAndSend2FACode(email);
+
+      // Generate temporary tokens for 2FA verification
+      const tempTokens = await generateTokens(user._id.toString(), user.role);
+
+      res.status(200).json({
+        message: "2FA code sent to email",
+        requires2FA: true,
+        tokens: tempTokens,
+        userID: user._id,
+        role: user.role
+      });
+      return;
+    }
+
     const tokens = await generateTokens(user._id.toString(), user.role);
     logger.info(`[INFO] Generated tokens for user: ${email}`);
 
@@ -357,7 +589,28 @@ export const login = async (req: Request, res: Response) => {
     sendError(res, "Failed to login", 500);
   }
 };
+export const get2FAStatus = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return sendError(res, "Token required", 401);
+  }
 
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return sendError(res, "User not found", 404);
+    }
+
+    res.status(200).json({
+      isEnabled: user.twoFactorEnabled || false
+    });
+  } catch (err) {
+    logger.error(`[ERROR] Get 2FA status error: ${(err as Error).message}`);
+    sendError(res, "Failed to get 2FA status", 500);
+  }
+};
 // רענון טוקן
 export const refresh = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
@@ -729,4 +982,8 @@ export default {
   forgotPassword,
   resetPassword,
   googleCallback,
+  enable2FA,
+  disable2FA,
+  verify2FACode,
+  get2FAStatus,
 };
