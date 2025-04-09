@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
 
     // 🔥 מחליפים כתובת ומספר טלפון בהפנייה לסכמת Address
     addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
+
+    // 2FA related fields
+    twoFactorEnabled: { type: Boolean, default: false },
+    twoFactorCode: { type: String },
+    twoFactorExpires: { type: Date },
   },
   { timestamps: true }
 );

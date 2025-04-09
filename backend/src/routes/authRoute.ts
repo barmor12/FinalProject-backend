@@ -11,6 +11,10 @@ import {
   resetPassword,
   upload,
   googleCallback,
+  enable2FA,
+  disable2FA,
+  verify2FACode,
+  get2FAStatus,
 } from "../controllers/authController";
 
 const router = express.Router();
@@ -48,5 +52,11 @@ router.post("/google/callback", async (req, res, next) => {
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/refresh", refresh);
+
+// 2FA routes
+router.post("/2fa/enable", enable2FA);
+router.post("/2fa/disable", disable2FA);
+router.post("/2fa/verify", verify2FACode);
+router.get("/2fa/status", get2FAStatus);
 
 export default router;
