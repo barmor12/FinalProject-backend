@@ -9,7 +9,6 @@ const authMiddleware_1 = __importDefault(require("../common/authMiddleware"));
 const multerMiddleware_1 = __importDefault(require("../common/multerMiddleware"));
 const ordersController_2 = require("../controllers/ordersController");
 const router = express_1.default.Router();
-router.post("/new-order", authMiddleware_1.default, multerMiddleware_1.default.single("image"), ordersController_1.placeOrder);
 router.get("/orders", authMiddleware_1.default, ordersController_1.getAllOrders);
 router.post("/create", authMiddleware_1.default, ordersController_1.placeOrder);
 router.post("/:orderId/send-email", authMiddleware_1.default, ordersController_1.sendOrderUpdateEmailHandler);

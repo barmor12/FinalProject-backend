@@ -1,0 +1,1 @@
+{"version":3,"file":"emailRoute.js","sourceRoot":"","sources":["../../src/routes/emailRoute.ts"],"names":[],"mappings":";;;;;AAAA,sDAA8B;AAC9B,wFAAwE;AACxE,oEAAsF;AAEtF,MAAM,MAAM,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AAEhC,MAAM,CAAC,IAAI,CAAC,kBAAkB,EAAE,6BAA2B,EAAE,iCAAe,CAAC,CAAC;AAC9E,MAAM,CAAC,MAAM,CAAC,YAAY,EAAE,6BAA2B,EAAE,qCAAmB,CAAC,CAAC;AAE9E,kBAAe,MAAM,CAAC"}

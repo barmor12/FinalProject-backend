@@ -10,11 +10,16 @@ import {
   forgotPassword,
   resetPassword,
   upload,
+  googleCallback,
+  enable2FA,
+  disable2FA,
+  verify2FACode,
+  get2FAStatus,
 } from "../controllers/authController";
 
 const router = express.Router();
 
-router.post('/register', upload.single('profilePic'), register);
+router.post('/register', upload.single('profileImage'), register);
 router.put("/update-password", updatePassword);
 router.post("/login", login);
 router.post("/logout", logout);
@@ -35,8 +40,23 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => res.redirect("/")
 );
+
+router.post("/google/callback", async (req, res, next) => {
+  try {
+    await googleCallback(req, res);
+  } catch (error) {
+    console.error("[ERROR] Google callback failed:", error);
+    next(error);
+  }
+});
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/refresh", refresh);
+
+// 2FA routes
+router.post("/2fa/enable", enable2FA);
+router.post("/2fa/disable", disable2FA);
+router.post("/2fa/verify", verify2FACode);
+router.get("/2fa/status", get2FAStatus);
 
 export default router;
