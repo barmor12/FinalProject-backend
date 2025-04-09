@@ -19,7 +19,7 @@ import {
 
 const router = express.Router();
 
-router.post("/register", upload.single("profilePic"), register);
+router.post('/register', upload.single('profileImage'), register);
 router.put("/update-password", updatePassword);
 router.post("/login", login);
 router.post("/logout", logout);
