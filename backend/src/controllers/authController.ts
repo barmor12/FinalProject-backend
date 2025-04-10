@@ -180,9 +180,9 @@ export const register = async (req: Request, res: Response) => {
 
   logger.info(`[INFO] Attempting to register user: ${email}`);
 
-  if (!firstName || !lastName || !email || !password || !req.file) {
+  if (!firstName || !lastName || !email || !password) {
     logger.warn("[WARN] Registration failed: Missing fields");
-    return sendError(res, "All fields including image are required", 400);
+    return sendError(res, "All fields are required", 400);
   }
 
   const passwordRegex =
@@ -203,9 +203,20 @@ export const register = async (req: Request, res: Response) => {
       return sendError(res, "User with this email already exists", 409);
     }
 
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      folder: "users", // ← שם התיקייה בקלאודינרי
-    });
+    let profilePic = {
+      url: "https://res.cloudinary.com/dhhrsuudb/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_black,b_rgb:262c35/v1743463363/default_profile_image.png",
+      public_id: "users/default-profile.jpg",
+    };
+
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: "users",
+      });
+      profilePic = {
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id,
+      };
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
@@ -213,10 +224,7 @@ export const register = async (req: Request, res: Response) => {
       lastName,
       email,
       password: hashedPassword,
-      profilePic: {
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id,
-      },
+      profilePic,
       role: "user",
       isVerified: false,
     });
@@ -236,6 +244,7 @@ export const register = async (req: Request, res: Response) => {
     sendError(res, "Failed to register", 500);
   }
 };
+
 
 // כניסת משתמש
 export const login = async (req: Request, res: Response) => {
