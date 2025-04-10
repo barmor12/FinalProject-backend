@@ -250,21 +250,6 @@ export const register = async (req: Request, res: Response) => {
     }
 
     let profilePic = {
-<<<<<<< HEAD
-      url: "https://res.cloudinary.com/dhhrsuudb/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_black,b_rgb:262c35/v1743463363/default_profile_image.png",
-      public_id: "users/default-profile.jpg",
-    };
-
-    if (req.file) {
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: "users",
-      });
-      profilePic = {
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id,
-      };
-    }
-=======
       url: "https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png",
       public_id: "users/default_profile_image",
     };
@@ -299,7 +284,6 @@ export const register = async (req: Request, res: Response) => {
       }
     }
 
->>>>>>> 0d47ba372ebf9730f4de53d13cedfd1fa3d76864
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -330,10 +314,6 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-<<<<<<< HEAD
-
-// כניסת משתמש
-=======
 // Generate and send 2FA code
 const generateAndSend2FACode = async (email: string) => {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -550,7 +530,6 @@ export const disable2FA = async (req: Request, res: Response) => {
   }
 };
 
->>>>>>> 0d47ba372ebf9730f4de53d13cedfd1fa3d76864
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
