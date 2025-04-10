@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUser = exports.getAllUsers = exports.updateOrder = exports.getStats = exports.getAllOrders = void 0;
+exports.getUserById = exports.getAllUsers = exports.updateUser = exports.updateOrder = exports.getStats = exports.getAllOrders = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,17 +70,6 @@ const updateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.updateOrder = updateOrder;
-const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const users = yield userModel_1.default.find();
-        res.status(200).json({ users });
-    }
-    catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({ error: "Failed to fetch users" });
-    }
-});
-exports.getAllUsers = getAllUsers;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
@@ -97,4 +86,35 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateUser = updateUser;
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield userModel_1.default.find();
+        if (!users || users.length === 0) {
+            res.status(404).json({ message: "No users found" });
+            return;
+        }
+        res.status(200).json(users);
+    }
+    catch (error) {
+        console.error("❌ Error fetching users:", error);
+        res.status(500).json({ error: "Failed to fetch users" });
+    }
+});
+exports.getAllUsers = getAllUsers;
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const user = yield userModel_1.default.findById(userId);
+        if (!user) {
+            res.status(404).json({ error: "User not found" });
+            return;
+        }
+        res.status(200).json(user);
+    }
+    catch (error) {
+        console.error("Error fetching user by ID:", error);
+        res.status(500).json({ error: "Failed to fetch user" });
+    }
+});
+exports.getUserById = getUserById;
 //# sourceMappingURL=adminController.js.map

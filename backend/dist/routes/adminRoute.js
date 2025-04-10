@@ -12,5 +12,6 @@ router.get("/orders", authAdminMiddleware_1.default, adminController_1.getAllOrd
 router.put("/orders/:orderId", authAdminMiddleware_1.default, adminController_1.updateOrder);
 router.get("/users", authAdminMiddleware_1.default, adminController_1.getAllUsers);
 router.put("/users/:userId", authAdminMiddleware_1.default, adminController_1.updateUser);
+router.get("/users/:userId", authAdminMiddleware_1.default, adminController_1.getUserById);
 exports.default = router;
 //# sourceMappingURL=adminRoute.js.map

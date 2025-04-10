@@ -16,6 +16,7 @@ declare const _default: mongoose.Model<{
         url?: string | null | undefined;
         public_id?: string | null | undefined;
     } | null | undefined;
+    googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
@@ -35,6 +36,7 @@ declare const _default: mongoose.Model<{
         url?: string | null | undefined;
         public_id?: string | null | undefined;
     } | null | undefined;
+    googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }> & {
@@ -54,6 +56,7 @@ declare const _default: mongoose.Model<{
         url?: string | null | undefined;
         public_id?: string | null | undefined;
     } | null | undefined;
+    googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 } & {
@@ -79,6 +82,7 @@ declare const _default: mongoose.Model<{
         url?: string | null | undefined;
         public_id?: string | null | undefined;
     } | null | undefined;
+    googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
@@ -98,6 +102,7 @@ declare const _default: mongoose.Model<{
         url?: string | null | undefined;
         public_id?: string | null | undefined;
     } | null | undefined;
+    googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }>> & mongoose.FlatRecord<{
@@ -117,6 +122,7 @@ declare const _default: mongoose.Model<{
         url?: string | null | undefined;
         public_id?: string | null | undefined;
     } | null | undefined;
+    googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
 }> & {
