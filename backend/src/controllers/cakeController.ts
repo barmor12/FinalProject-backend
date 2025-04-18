@@ -4,10 +4,24 @@ import User from "../models/userModel";
 import cloudinary from '../config/cloudinary';
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients, stock } = req.body;
+  const { name, description, price, cost, ingredients, stock } = req.body;
   console.log("body: ", req.body);
-  if (!name || !description || !price || !ingredients || !req.file) {
+  if (!name || !description || !price || !cost || !ingredients || !req.file) {
     res.status(400).json({ error: 'All fields including image are required' });
+    return;
+  }
+
+  // Validate cost and price
+  const costValue = parseFloat(cost);
+  const priceValue = parseFloat(price);
+
+  if (isNaN(costValue) || isNaN(priceValue)) {
+    res.status(400).json({ error: 'Cost and price must be valid numbers' });
+    return;
+  }
+
+  if (costValue >= priceValue) {
+    res.status(400).json({ error: 'Price must be higher than cost' });
     return;
   }
 
@@ -17,7 +31,8 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
     const cake = new Cake({
       name,
       description,
-      price,
+      cost: costValue,
+      price: priceValue,
       ingredients,
       image: {
         url: uploadResult.secure_url,
@@ -35,7 +50,7 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const updateCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, ingredients, stock } = req.body;
+  const { name, description, price, cost, ingredients, stock } = req.body;
   const cakeId = req.params.id;
 
   try {
@@ -43,6 +58,22 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
     if (!cake) {
       res.status(404).json({ error: 'Cake not found' });
       return;
+    }
+
+    // Validate cost and price if they are being updated
+    if (cost !== undefined || price !== undefined) {
+      const costValue = cost !== undefined ? parseFloat(cost) : cake.cost;
+      const priceValue = price !== undefined ? parseFloat(price) : cake.price;
+
+      if (isNaN(costValue) || isNaN(priceValue)) {
+        res.status(400).json({ error: 'Cost and price must be valid numbers' });
+        return;
+      }
+
+      if (costValue >= priceValue) {
+        res.status(400).json({ error: 'Price must be higher than cost' });
+        return;
+      }
     }
 
     if (req.file) {
@@ -58,9 +89,11 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
 
     cake.name = name || cake.name;
     cake.description = description || cake.description;
-    cake.price = price || cake.price;
+    cake.price = price !== undefined ? parseFloat(price) : cake.price;
+    cake.cost = cost !== undefined ? parseFloat(cost) : cake.cost;
     cake.ingredients = ingredients || cake.ingredients;
-    cake.stock = stock || cake.stock;
+    cake.stock = stock !== undefined ? parseInt(stock) : cake.stock;
+
     const updatedCake = await cake.save();
     res.status(200).json(updatedCake);
   } catch (err) {

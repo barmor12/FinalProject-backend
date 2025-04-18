@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const cakeSchema = new mongoose.Schema({
   name: { type: String, required: true },  // שם העוגה
   description: { type: String, required: true },  // תיאור העוגה
+  cost: { type: Number, required: true },  // עלות הייצור
   price: { type: Number, required: true },  // מחיר העוגה
   image: {
     url: String,

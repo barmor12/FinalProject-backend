@@ -1,17 +1,58 @@
 import mongoose from "mongoose";
 
-// הגדרת המודל של המתכון
+const ingredientSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  amount: { type: String, required: true }, // e.g., "2 cups", "1/2 teaspoon"
+  unit: { type: String, required: true } // e.g., "cup", "tablespoon", "piece"
+});
+
+const instructionSchema = new mongoose.Schema({
+  step: { type: Number, required: true },
+  instruction: { type: String, required: true }
+});
+
 const recipeSchema = new mongoose.Schema({
-  title: { type: String, required: true },  // שם המתכון
-  description: { type: String, required: true },  // תיאור קצר על המתכון
-  ingredients: { type: [String], required: true },  // רשימת מרכיבים
-  instructions: { type: [String], required: true },  // הוראות הכנה
-  image: { type: String },  // תמונה (קישור לתמונה)
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "User",  // הפניה למודל משתמש
-    required: true 
+  name: {
+    type: String,
+    required: true,
+    trim: true
   },
-}, { timestamps: true });  // הוספתי את timestamps כדי שיהיה לך תיעוד של תאריכי יצירה ועדכון
+  description: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  servings: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+  difficulty: {
+    type: String,
+    required: true,
+    enum: ['Easy', 'Medium', 'Hard'],
+    default: 'Medium'
+  },
+  makingTime: {
+    type: Number,
+    required: true,
+    min: 1,
+    description: 'Time in minutes'
+  },
+  image: {
+    url: { type: String, required: true },
+    public_id: { type: String, required: true }
+  },
+  ingredients: [ingredientSchema],
+  instructions: [instructionSchema],
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+// Update the updatedAt field before saving
+recipeSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
+  next();
+});
 
 export default mongoose.model("Recipe", recipeSchema);

@@ -1,21 +1,21 @@
 import express from "express";
 import multer from "multer";
 import {
-  getAllRecipes,
-  addRecipe,
+  getRecipes,
+  createRecipe,
   updateRecipe,
   deleteRecipe,
-  getRecipeById,
+  getRecipe,
 } from "../controllers/recipeController";
 import authenticateMiddleware from "../common/authMiddleware";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
-router.get("/", getAllRecipes);
-router.get("/:id", getRecipeById);
+router.get("/", getRecipes);
+router.get("/:id", getRecipe);
 
-router.post("/", authenticateMiddleware, upload.single("image"), addRecipe);
+router.post("/", authenticateMiddleware, upload.single("image"), createRecipe);
 
 router.put(
   "/:id",

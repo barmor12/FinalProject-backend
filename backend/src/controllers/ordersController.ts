@@ -11,13 +11,23 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const placeOrder = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId, address, items, paymentMethod, decoration } = req.body;
+    const { items, paymentMethod, address } = req.body;
     console.log("📨 Full Request Body:", JSON.stringify(req.body, null, 2));
+
+    // Get userId from the authenticated user
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      res.status(401).json({ error: "Authorization token is required" });
+      return;
+    }
+
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
+    const userId = decoded.userId;
 
     // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים
     if (!userId || !address || !items || items.length === 0) {
       console.error("❌ Error: Missing required fields.");
-      res.status(400).json({ error: "User ID, address, and items are required" });
+      res.status(400).json({ error: "Address and items are required" });
       return;
     }
 
@@ -47,18 +57,28 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    // ✅ חישוב מחיר כולל
+    // ✅ חישוב מחיר כולל ורווח
     let totalPrice = 0;
+    let totalRevenue = 0;
     const mappedItems = items.map((i: any) => {
       const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
       if (!foundCake) return null;
-      totalPrice += foundCake.price * i.quantity;
+
+      const itemPrice = foundCake.price * i.quantity;
+      const itemCost = foundCake.cost * i.quantity;
+      const itemRevenue = itemPrice - itemCost;
+
+      totalPrice += itemPrice;
+      totalRevenue += itemRevenue;
+
       totalPrice = parseFloat(totalPrice.toFixed(2));
+      totalRevenue = parseFloat(totalRevenue.toFixed(2));
+
       return {
-        cake: foundCake._id, // שמירה של ה-ID של העוגה
+        cake: foundCake._id,
         quantity: i.quantity,
-        price: foundCake.price, // אם צריך את המחיר
-        cakeName: foundCake.name, // אם צריך את שם העוגה
+        price: foundCake.price,
+        cakeName: foundCake.name,
       };
     }).filter(Boolean);
 
@@ -68,7 +88,7 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
       address: userAddress,
       items: mappedItems,
       totalPrice,
-      decoration: decoration || "",
+      totalRevenue,
       paymentMethod,
       status: "pending",
     });
@@ -504,7 +524,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     const { orderId } = req.params;
     const { status } = req.body;
 
-    if (!["draft", "pending", "confirmed", "delivered"].includes(status)) {
+    if (!["draft", "pending", "confirmed", "delivered", "cancelled"].includes(status)) {
       res.status(400).json({ error: "Invalid status value" });
       return;
     }

@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 export const getUserAddresses = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).user?._id || req.body.userId;
+        const userId = (req as any).user?.userId || req.body.userId;
         console.log("🔍 User ID from request:", userId);
 
         if (!userId) {
@@ -27,7 +27,7 @@ export const getUserAddresses = async (req: Request, res: Response) => {
 // 📍 הוספת כתובת חדשה
 export const addAddress = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).user?._id || req.body.userId;
+        const userId = (req as any).user?.userId || req.body.userId;
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
             return;
@@ -91,7 +91,7 @@ export const setDefaultAddress = async (req: Request, res: Response) => {
 // 📍 עדכון כתובת קיימת
 export const updateAddress = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).user?._id || req.body.userId;
+        const userId = (req as any).user?.userId || req.body.userId;
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
             return;
@@ -126,7 +126,7 @@ export const updateAddress = async (req: Request, res: Response) => {
 // 📍 מחיקת כתובת
 export const deleteAddress = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).user?._id || req.body.userId;
+        const userId = (req as any).user?.userId || req.body.userId;
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
             return;
