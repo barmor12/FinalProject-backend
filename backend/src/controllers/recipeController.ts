@@ -6,36 +6,50 @@ import cloudinary from "../config/cloudinary";
 // Create a new recipe
 export const createRecipe = async (req: Request, res: Response) => {
   try {
-    const { name, description, servings, ingredients, directions, difficulty, makingTime } = req.body;
+    const {
+      name,
+      description,
+      servings,
+      ingredients,
+      instructions,
+      difficulty,
+      makingTime,
+    } = req.body;
 
-    // Validate required fields
-    if (!name || !description || !servings || !ingredients || !directions || !difficulty || !makingTime) {
+    if (!name || !description || !servings || !ingredients || !instructions || !difficulty || !makingTime) {
       res.status(400).json({ error: "All fields are required" });
       return;
     }
 
-    // Validate difficulty
     if (!['Easy', 'Medium', 'Hard'].includes(difficulty)) {
       res.status(400).json({ error: "Difficulty must be one of: Easy, Medium, Hard" });
       return;
     }
 
-    // Validate makingTime
     const makingTimeNum = parseInt(makingTime);
     if (isNaN(makingTimeNum) || makingTimeNum < 1) {
       res.status(400).json({ error: "Making time must be a positive number" });
       return;
     }
 
+    // Parse ingredients from object to array
+    const parsedIngredients = Object.entries(JSON.parse(ingredients)).map(([_, value]) => value);
+
+    // Parse instructions from object to array of instruction objects
+    const parsedInstructions = Object.entries(JSON.parse(instructions)).map(([_, value]: [string, any], index) => ({
+      step: index + 1,
+      instruction: typeof value === 'object' ? value.instruction : value
+    }));
+
     // Handle image upload
     let imageData;
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "recipes"
+        folder: "recipes",
       });
       imageData = {
         url: result.secure_url,
-        public_id: result.public_id
+        public_id: result.public_id,
       };
     } else {
       res.status(400).json({ error: "Recipe image is required" });
@@ -46,12 +60,12 @@ export const createRecipe = async (req: Request, res: Response) => {
     const recipe = new Recipe({
       name,
       description,
-      servings,
+      servings: parseInt(servings),
       difficulty,
       makingTime: makingTimeNum,
       image: imageData,
-      ingredients,
-      directions
+      ingredients: parsedIngredients,
+      instructions: parsedInstructions,
     });
 
     await recipe.save();
