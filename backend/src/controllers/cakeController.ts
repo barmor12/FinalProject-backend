@@ -4,10 +4,12 @@ import User from "../models/userModel";
 import cloudinary from '../config/cloudinary';
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, cost, ingredients, stock } = req.body;
+  const { name, description, price, cost, ingredients, stock, imageUrl } = req.body;
   console.log("body: ", req.body);
-  if (!name || !description || !price || !cost || !ingredients || !req.file) {
-    res.status(400).json({ error: 'All fields including image are required' });
+
+  // Check required fields
+  if (!name || !description || !price || !cost || !ingredients) {
+    res.status(400).json({ error: 'Name, description, price, cost, and ingredients are required' });
     return;
   }
 
@@ -26,7 +28,27 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: "cakes" });
+    let imageData = null;
+
+    // Handle image: either from file upload or URL in request body
+    if (req.file) {
+      // If image is uploaded via form
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: "cakes" });
+      imageData = {
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id
+      };
+    } else if (imageUrl) {
+      // If image URL is provided in request body
+      imageData = {
+        url: imageUrl,
+        public_id: `direct_url_${Date.now()}` // Create a pseudo ID for direct URLs
+      };
+    } else {
+      // No image provided
+      res.status(400).json({ error: 'Image file or image URL is required' });
+      return;
+    }
 
     const cake = new Cake({
       name,
@@ -34,10 +56,7 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
       cost: costValue,
       price: priceValue,
       ingredients,
-      image: {
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id
-      },
+      image: imageData,
       stock,
     });
 

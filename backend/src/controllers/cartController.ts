@@ -157,11 +157,11 @@ export const removeFromCart = async (
       process.env.ACCESS_TOKEN_SECRET!
     ) as TokenPayload;
     const userId = decoded.userId;
-    const { cakeId } = req.body; // 📌 ווידוא שהבקשה כוללת cakeId
+    const { itemId } = req.body; // Fix: Use itemId instead of cakeId
 
-    if (!cakeId) {
-      console.log("🚨 Missing cakeId in request");
-      res.status(400).json({ error: "Cake ID is required" });
+    if (!itemId) {
+      console.log("🚨 Missing itemId in request");
+      res.status(400).json({ error: "Item ID is required" });
       return;
     }
 
@@ -173,16 +173,19 @@ export const removeFromCart = async (
     }
 
     const initialLength = cart.items.length;
-    cart.items = cart.items.filter((item) => item.cake.toString() !== cakeId);
+    cart.items = cart.items.filter((item) => {
+      // Handle possible undefined _id
+      return item._id ? item._id.toString() !== itemId : false;
+    });
 
     if (cart.items.length === initialLength) {
-      console.log("🚨 Cake ID not found in cart:", cakeId);
+      console.log("🚨 Item ID not found in cart:", itemId);
       res.status(404).json({ error: "Item not found in cart" });
       return;
     }
 
     await cart.save();
-    console.log("✅ Removed item from cart:", cakeId);
+    console.log("✅ Removed item from cart:", itemId);
     res.status(200).json(cart);
   } catch (err) {
     console.error("❌ Failed to remove item from cart:", err);
