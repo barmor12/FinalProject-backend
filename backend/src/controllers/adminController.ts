@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Order from "../models/orderModel";
 import User from "../models/userModel";
+import bcrypt from "bcrypt";
 
 // פונקציה למשיכת כל ההזמנות
 export const getAllOrders = async (req: Request, res: Response) => {
@@ -64,11 +65,39 @@ export const updateUser = async (req: Request, res: Response) => {
         const { userId } = req.params;
         const updateData = req.body;
 
-        const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
+        // Check if password is being updated
+        if (updateData.password) {
+            console.log("Password update requested");
+
+            // Hash the password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(updateData.password, salt);
+            updateData.password = hashedPassword;
+        }
+
+        // Find the user and update with new data
+        const user = await User.findByIdAndUpdate(
+            userId,
+            updateData,
+            { new: true }
+        );
+
         if (!user) {
             res.status(404).json({ error: "User not found" });
+            return;
         }
-        res.status(200).json({ user });
+
+        // Return the updated user (without password)
+        const userResponse = {
+            _id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            // Include other fields as needed, but omit password
+        };
+
+        res.status(200).json({ user: userResponse });
     } catch (error) {
         console.error("Error updating user:", error);
         res.status(500).json({ error: "Failed to update user" });
@@ -112,4 +141,48 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
         console.error("Error fetching user by ID:", error);
         res.status(500).json({ error: "Failed to fetch user" });
     }
+};
+
+// Toggle order priority status
+export const toggleOrderPriority = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { orderId } = req.params;
+        const { isPriority } = req.body;
+
+        if (isPriority === undefined) {
+            res.status(400).json({ error: "isPriority field is required" });
+            return;
+        }
+
+        // Find and update the order
+        const order = await Order.findByIdAndUpdate(
+            orderId,
+            { isPriority },
+            { new: true }
+        );
+
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+
+        // Return the updated order
+        res.status(200).json({
+            message: `Order priority ${isPriority ? 'set' : 'removed'} successfully`,
+            order
+        });
+    } catch (error) {
+        console.error("Error updating order priority:", error);
+        res.status(500).json({ error: "Failed to update order priority" });
+    }
+};
+
+export default {
+    getAllOrders,
+    updateOrder,
+    getAllUsers,
+    getUserById,
+    updateUser,
+    getStats,
+    toggleOrderPriority
 };

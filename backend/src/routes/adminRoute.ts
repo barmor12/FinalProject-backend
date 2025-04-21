@@ -3,23 +3,29 @@ import {
     getAllOrders,
     updateOrder,
     getAllUsers,
+    getUserById,
     updateUser,
     getStats,
-    getUserById
+    toggleOrderPriority
 } from "../controllers/adminController";
-import authenticateAdminMiddleware from "../common/authAdminMiddleware";
+import authAdminMiddleware from "../common/authAdminMiddleware";
 
 const router = express.Router();
-router.get("/stats", authenticateAdminMiddleware, getStats);
 
+// Protected admin routes
+router.use(authAdminMiddleware);
 
-// נתיבים להזמנות
-router.get("/orders", authenticateAdminMiddleware, getAllOrders);
-router.put("/orders/:orderId", authenticateAdminMiddleware, updateOrder);
+// Orders routes
+router.get("/orders", getAllOrders);
+router.put("/orders/:orderId", updateOrder);
+router.put("/orders/:orderId/priority", toggleOrderPriority);
 
-// נתיבים למשתמשים
-router.get("/users", authenticateAdminMiddleware, getAllUsers);
-router.put("/users/:userId", authenticateAdminMiddleware, updateUser);
-router.get("/users/:userId", authenticateAdminMiddleware, getUserById);
+// Users routes
+router.get("/users", getAllUsers);
+router.get("/users/:userId", getUserById);
+router.put("/users/:userId", updateUser);
 
-export default router;
+// Stats route
+router.get("/stats", getStats);
+
+export default router; 

@@ -17,10 +17,7 @@ const userSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     resetToken: { type: String },
     resetExpires: { type: Date },
-    recoveryEmail: {
-      type: String,
-      default: "",
-    },
+
 
     // 🔥 מחליפים כתובת ומספר טלפון בהפנייה לסכמת Address
     addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],

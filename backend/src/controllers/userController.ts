@@ -96,38 +96,6 @@ export const updateUserProfilePic = async (req: Request, res: Response) => {
 };
 
 
-export const updateRecoveryEmail = async (req: Request, res: Response) => {
-    const token = getTokenFromRequest(req);
-    if (!token) {
-        return sendError(res, "Token required", 401);
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
-        const user = await User.findById(decoded.userId);
-
-        if (!user) {
-            return sendError(res, "User not found", 404);
-        }
-
-        const { recoveryEmail } = req.body;
-
-        if (!recoveryEmail || typeof recoveryEmail !== "string") {
-            return sendError(res, "Invalid recovery email", 400);
-        }
-
-        user.recoveryEmail = recoveryEmail;
-        await user.save();
-
-        res.status(200).json({
-            message: "Recovery email updated successfully",
-            recoveryEmail: user.recoveryEmail
-        });
-    } catch (err) {
-        console.error("Update recovery email error:", err);
-        sendError(res, "Failed to update recovery email", 500);
-    }
-};
 
 export const getProfile = async (req: Request, res: Response) => {
     const token = getTokenFromRequest(req);

@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema({
     enum: ["draft", "pending", "confirmed", "delivered"],
     default: "draft",
   },
+  isPriority: { type: Boolean, default: false }, // Field to mark priority orders
   deliveryDate: { type: Date },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
