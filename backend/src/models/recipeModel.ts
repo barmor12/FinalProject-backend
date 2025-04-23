@@ -34,10 +34,9 @@ const recipeSchema = new mongoose.Schema({
     default: 'Medium'
   },
   makingTime: {
-    type: Number,
+    type: String,
     required: true,
-    min: 1,
-    description: 'Time in minutes'
+    default: "",
   },
   image: {
     url: { type: String, required: true },
@@ -45,6 +44,14 @@ const recipeSchema = new mongoose.Schema({
   },
   ingredients: [ingredientSchema],
   instructions: [instructionSchema],
+  likes: {
+    type: Number,
+    default: 0
+  },
+  likedBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
