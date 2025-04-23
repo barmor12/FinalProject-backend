@@ -32,8 +32,9 @@ passport.use(
           console.log("New user created:", user);
         }
 
-        // הצלחה
-        return done(null, user);
+        // Ensure userId is present per User type
+        (user as any).userId = user._id.toString();
+        return done(null, user as any);
       } catch (err) {
         console.error("Error during authentication:", err);
         return done(err, false);
@@ -51,7 +52,10 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
-    done(null, user);
+    if (user) {
+      (user as any).userId = user._id.toString();
+    }
+    done(null, user as any);
   } catch (err) {
     console.error("Error during deserialization:", err);
     done(err, null);

@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
 const authController_1 = require("../controllers/authController");
 const router = express_1.default.Router();
-router.post("/register", authController_1.upload.single("profilePic"), authController_1.register);
+router.post('/register', authController_1.upload.single('profileImage'), authController_1.register);
 router.put("/update-password", authController_1.updatePassword);
 router.post("/login", authController_1.login);
 router.post("/logout", authController_1.logout);
@@ -43,5 +43,9 @@ router.post("/google/callback", (req, res, next) => __awaiter(void 0, void 0, vo
 router.post("/forgot-password", authController_1.forgotPassword);
 router.post("/reset-password", authController_1.resetPassword);
 router.post("/refresh", authController_1.refresh);
+router.post("/2fa/enable", authController_1.enable2FA);
+router.post("/2fa/disable", authController_1.disable2FA);
+router.post("/2fa/verify", authController_1.verify2FACode);
+router.get("/2fa/status", authController_1.get2FAStatus);
 exports.default = router;
 //# sourceMappingURL=authRoute.js.map

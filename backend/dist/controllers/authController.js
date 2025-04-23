@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.login = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = exports.googleCallback = void 0;
+exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.get2FAStatus = exports.login = exports.disable2FA = exports.verify2FACode = exports.enable2FA = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = exports.googleCallback = void 0;
 const google_auth_library_1 = require("google-auth-library");
 const client = new google_auth_library_1.OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,6 +46,7 @@ const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     profilePic: payload.picture,
                     password: hashedPassword,
                     role: "user",
+                    isVerified: true,
                 });
                 yield user.save();
             }
@@ -56,7 +57,15 @@ const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield user.save();
         }
         const tokens = yield generateTokens(user._id.toString(), user.role);
-        res.json(tokens);
+        user.refresh_tokens.push(tokens.refreshToken);
+        yield user.save();
+        res.status(200).json({
+            message: "User logged in successfully via Google",
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+            role: user.role,
+            userId: user._id.toString(),
+        });
     }
     catch (error) {
         console.error("Error verifying token:", error);
@@ -67,8 +76,6 @@ exports.googleCallback = googleCallback;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const userModel_1 = __importDefault(require("../models/userModel"));
@@ -83,18 +90,7 @@ const enforceHttps = (req, res, next) => {
     next();
 };
 exports.enforceHttps = enforceHttps;
-const uploadsDir = path_1.default.join(__dirname, "..", "uploads");
-if (!fs_1.default.existsSync(uploadsDir)) {
-    fs_1.default.mkdirSync(uploadsDir, { recursive: true });
-}
-const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    },
-});
+const storage = multer_1.default.memoryStorage();
 exports.upload = (0, multer_1.default)({ storage });
 const getTokenFromRequest = (req) => {
     const authHeader = req.headers["authorization"];
@@ -198,9 +194,9 @@ exports.updatePassword = updatePassword;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
     logger_1.default.info(`[INFO] Attempting to register user: ${email}`);
-    if (!firstName || !lastName || !email || !password || !req.file) {
+    if (!firstName || !lastName || !email || !password) {
         logger_1.default.warn("[WARN] Registration failed: Missing fields");
-        return (0, exports.sendError)(res, "All fields including image are required", 400);
+        return (0, exports.sendError)(res, "All fields are required", 400);
     }
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -212,19 +208,44 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             logger_1.default.warn(`[WARN] Registration failed: Email ${email} already exists`);
             return (0, exports.sendError)(res, "User with this email already exists", 409);
         }
-        const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, {
-            folder: "users",
-        });
+        let profilePic = {
+            url: "https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png",
+            public_id: "users/default_profile_image",
+        };
+        if (req.file) {
+            logger_1.default.info("[INFO] Uploading profile image to Cloudinary...");
+            const streamUpload = (buffer) => {
+                return new Promise((resolve, reject) => {
+                    const stream = cloudinary_1.default.uploader.upload_stream({ folder: "users" }, (error, result) => {
+                        if (result)
+                            resolve(result);
+                        else
+                            reject(error);
+                    });
+                    const { Readable } = require("stream");
+                    Readable.from(buffer).pipe(stream);
+                });
+            };
+            try {
+                const uploadResult = yield streamUpload(req.file.buffer);
+                profilePic = {
+                    url: uploadResult.secure_url,
+                    public_id: uploadResult.public_id,
+                };
+                logger_1.default.info("[INFO] Profile image uploaded successfully");
+            }
+            catch (error) {
+                logger_1.default.error(`[ERROR] Cloudinary upload error: ${error.message}`);
+                return (0, exports.sendError)(res, "Profile image upload failed", 500);
+            }
+        }
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         const user = new userModel_1.default({
             firstName,
             lastName,
             email,
             password: hashedPassword,
-            profilePic: {
-                url: uploadResult.secure_url,
-                public_id: uploadResult.public_id,
-            },
+            profilePic,
             role: "user",
             isVerified: false,
         });
@@ -243,6 +264,195 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.register = register;
+const generateAndSend2FACode = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    const user = yield userModel_1.default.findOne({ email });
+    if (!user) {
+        throw new Error("User not found");
+    }
+    user.twoFactorCode = code;
+    user.twoFactorExpires = expiresAt;
+    yield user.save();
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        throw new Error("Email credentials are missing in environment variables");
+    }
+    const transporter = nodemailer_1.default.createTransport({
+        service: "Gmail",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
+        },
+        secure: true,
+    });
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Your 2FA Verification Code",
+        html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+          }
+          .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+          .header {
+            text-align: center;
+            background-color: #5a3827;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 24px;
+          }
+          .content {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333333;
+          }
+          .code {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #5a3827;
+            letter-spacing: 5px;
+          }
+          .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #777777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Two-Factor Authentication</h1>
+          </div>
+          
+          <div class="content">
+            <p>Hello,</p>
+            <p>Your verification code is:</p>
+            <div class="code">${code}</div>
+            <p>This code will expire in 15 minutes.</p>
+            <p>If you didn't request this code, please ignore this email.</p>
+          </div>
+
+          <div class="footer">
+            <p>This is an automated message, please do not reply.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    };
+    yield transporter.sendMail(mailOptions);
+    logger_1.default.info(`[INFO] 2FA code sent to: ${email}`);
+});
+const enable2FA = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return (0, exports.sendError)(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        yield generateAndSend2FACode(user.email);
+        res.status(200).json({
+            message: "Verification code sent to your email",
+            requiresVerification: true,
+        });
+    }
+    catch (err) {
+        logger_1.default.error(`[ERROR] Enable 2FA error: ${err.message}`);
+        (0, exports.sendError)(res, "Failed to enable 2FA", 500);
+    }
+});
+exports.enable2FA = enable2FA;
+const verify2FACode = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return (0, exports.sendError)(res, "Token required", 401);
+    }
+    const { code } = req.body;
+    if (!code) {
+        return (0, exports.sendError)(res, "Verification code is required", 400);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        if (!user.twoFactorCode || !user.twoFactorExpires) {
+            return (0, exports.sendError)(res, "No 2FA code found", 400);
+        }
+        if (user.twoFactorCode !== code) {
+            return (0, exports.sendError)(res, "Invalid 2FA code", 400);
+        }
+        if (Date.now() > user.twoFactorExpires.getTime()) {
+            return (0, exports.sendError)(res, "2FA code has expired", 400);
+        }
+        user.twoFactorEnabled = true;
+        user.twoFactorCode = undefined;
+        user.twoFactorExpires = undefined;
+        yield user.save();
+        res.status(200).json({
+            message: "2FA enabled successfully",
+            twoFactorEnabled: true,
+        });
+    }
+    catch (err) {
+        logger_1.default.error(`[ERROR] Verify 2FA code error: ${err.message}`);
+        (0, exports.sendError)(res, "Failed to verify 2FA code", 500);
+    }
+});
+exports.verify2FACode = verify2FACode;
+const disable2FA = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return (0, exports.sendError)(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        user.twoFactorEnabled = false;
+        user.twoFactorCode = undefined;
+        user.twoFactorExpires = undefined;
+        yield user.save();
+        res.status(200).json({ message: "2FA disabled successfully" });
+    }
+    catch (err) {
+        logger_1.default.error(`[ERROR] Disable 2FA error: ${err.message}`);
+        (0, exports.sendError)(res, "Failed to disable 2FA", 500);
+    }
+});
+exports.disable2FA = disable2FA;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     logger_1.default.info(`[INFO] Login attempt for email: ${email}`);
@@ -260,6 +470,18 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield (0, exports.sendVerificationEmail)(user.email, verificationToken);
             return (0, exports.sendError)(res, "Email not verified. A new verification email has been sent.");
         }
+        if (user.twoFactorEnabled) {
+            yield generateAndSend2FACode(email);
+            const tempTokens = yield generateTokens(user._id.toString(), user.role);
+            res.status(200).json({
+                message: "2FA code sent to email",
+                requires2FA: true,
+                tokens: tempTokens,
+                userId: user._id.toString(),
+                role: user.role,
+            });
+            return;
+        }
         const tokens = yield generateTokens(user._id.toString(), user.role);
         logger_1.default.info(`[INFO] Generated tokens for user: ${email}`);
         user.refresh_tokens.push(tokens.refreshToken);
@@ -268,7 +490,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "User logged in successfully",
             tokens,
             role: user.role,
-            userID: user._id,
+            userId: user._id.toString(),
         });
     }
     catch (err) {
@@ -277,6 +499,27 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const get2FAStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = (0, exports.getTokenFromRequest)(req);
+    if (!token) {
+        return (0, exports.sendError)(res, "Token required", 401);
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = yield userModel_1.default.findById(decoded.userId);
+        if (!user) {
+            return (0, exports.sendError)(res, "User not found", 404);
+        }
+        res.status(200).json({
+            isEnabled: user.twoFactorEnabled || false,
+        });
+    }
+    catch (err) {
+        logger_1.default.error(`[ERROR] Get 2FA status error: ${err.message}`);
+        (0, exports.sendError)(res, "Failed to get 2FA status", 500);
+    }
+});
+exports.get2FAStatus = get2FAStatus;
 const refresh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.body;
     logger_1.default.info("[INFO] Refresh token process started");
@@ -591,5 +834,9 @@ exports.default = {
     forgotPassword: exports.forgotPassword,
     resetPassword: exports.resetPassword,
     googleCallback: exports.googleCallback,
+    enable2FA: exports.enable2FA,
+    disable2FA: exports.disable2FA,
+    verify2FACode: exports.verify2FACode,
+    get2FAStatus: exports.get2FAStatus,
 };
 //# sourceMappingURL=authController.js.map

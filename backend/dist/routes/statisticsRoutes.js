@@ -4,11 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const statisticsController_1 = require("../controllers/statisticsController");
 const authAdminMiddleware_1 = __importDefault(require("../common/authAdminMiddleware"));
-const emailController_1 = require("../controllers/emailController");
 const router = express_1.default.Router();
-router.post("/:userId/message", authAdminMiddleware_1.default, emailController_1.sendEmailToUser);
-router.post("/:orderId/send-review-email", emailController_1.sendReviewEmail);
-router.delete("/delete/:id", authAdminMiddleware_1.default, emailController_1.deleteUserWithEmail);
+router.get("/", authAdminMiddleware_1.default, statisticsController_1.getStatistics);
 exports.default = router;
-//# sourceMappingURL=emailRoute.js.map
+//# sourceMappingURL=statisticsRoutes.js.map

@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserById = exports.getAllUsers = exports.updateUser = exports.updateOrder = exports.getStats = exports.getAllOrders = void 0;
+exports.toggleOrderPriority = exports.getUserById = exports.getAllUsers = exports.updateUser = exports.updateOrder = exports.getStats = exports.getAllOrders = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield orderModel_1.default.find();
@@ -74,11 +75,25 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { userId } = req.params;
         const updateData = req.body;
+        if (updateData.password) {
+            console.log("Password update requested");
+            const salt = yield bcrypt_1.default.genSalt(10);
+            const hashedPassword = yield bcrypt_1.default.hash(updateData.password, salt);
+            updateData.password = hashedPassword;
+        }
         const user = yield userModel_1.default.findByIdAndUpdate(userId, updateData, { new: true });
         if (!user) {
             res.status(404).json({ error: "User not found" });
+            return;
         }
-        res.status(200).json({ user });
+        const userResponse = {
+            _id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+        };
+        res.status(200).json({ user: userResponse });
     }
     catch (error) {
         console.error("Error updating user:", error);
@@ -117,4 +132,37 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getUserById = getUserById;
+const toggleOrderPriority = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId } = req.params;
+        const { isPriority } = req.body;
+        if (isPriority === undefined) {
+            res.status(400).json({ error: "isPriority field is required" });
+            return;
+        }
+        const order = yield orderModel_1.default.findByIdAndUpdate(orderId, { isPriority }, { new: true });
+        if (!order) {
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+        res.status(200).json({
+            message: `Order priority ${isPriority ? 'set' : 'removed'} successfully`,
+            order
+        });
+    }
+    catch (error) {
+        console.error("Error updating order priority:", error);
+        res.status(500).json({ error: "Failed to update order priority" });
+    }
+});
+exports.toggleOrderPriority = toggleOrderPriority;
+exports.default = {
+    getAllOrders: exports.getAllOrders,
+    updateOrder: exports.updateOrder,
+    getAllUsers: exports.getAllUsers,
+    getUserById: exports.getUserById,
+    updateUser: exports.updateUser,
+    getStats: exports.getStats,
+    toggleOrderPriority: exports.toggleOrderPriority
+};
 //# sourceMappingURL=adminController.js.map

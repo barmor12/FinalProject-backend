@@ -21,6 +21,9 @@ const userSchema = new mongoose_1.default.Schema({
     resetToken: { type: String },
     resetExpires: { type: Date },
     addresses: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Address" }],
+    twoFactorEnabled: { type: Boolean, default: false },
+    twoFactorCode: { type: String },
+    twoFactorExpires: { type: Date },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("User", userSchema);
 //# sourceMappingURL=userModel.js.map

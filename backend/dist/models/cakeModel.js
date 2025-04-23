@@ -7,6 +7,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cakeSchema = new mongoose_1.default.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
+    cost: { type: Number, required: true },
     price: { type: Number, required: true },
     image: {
         url: String,

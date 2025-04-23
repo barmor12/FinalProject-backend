@@ -22,6 +22,7 @@ const adminRoute_1 = __importDefault(require("./routes/adminRoute"));
 const addressRoute_1 = __importDefault(require("./routes/addressRoute"));
 const discountRoute_1 = __importDefault(require("./routes/discountRoute"));
 const emailRoute_1 = __importDefault(require("./routes/emailRoute"));
+const statisticsRoutes_1 = __importDefault(require("./routes/statisticsRoutes"));
 require("./passport");
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
@@ -51,6 +52,7 @@ app.use("/user", userRoute_1.default);
 app.use("/address", addressRoute_1.default);
 app.use("/inventory", inventoryRoutes_1.default);
 app.use("/sendEmail", emailRoute_1.default);
+app.use("/statistics", statisticsRoutes_1.default);
 const fs_1 = __importDefault(require("fs"));
 const uploadsPath = path_1.default.join(__dirname, "../src/uploads");
 fs_1.default.readdir(uploadsPath, (err, files) => {

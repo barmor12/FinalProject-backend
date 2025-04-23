@@ -8,7 +8,11 @@ export declare const sendVerificationEmail: (email: string, token: string) => Pr
 export declare const sendError: (res: Response, message: string, statusCode?: number) => void;
 export declare const updatePassword: (req: Request, res: Response) => Promise<void>;
 export declare const register: (req: Request, res: Response) => Promise<void>;
+export declare const enable2FA: (req: Request, res: Response) => Promise<void>;
+export declare const verify2FACode: (req: Request, res: Response) => Promise<void>;
+export declare const disable2FA: (req: Request, res: Response) => Promise<void>;
 export declare const login: (req: Request, res: Response) => Promise<void>;
+export declare const get2FAStatus: (req: Request, res: Response) => Promise<void>;
 export declare const refresh: (req: Request, res: Response) => Promise<void>;
 export declare const logout: (req: Request, res: Response) => Promise<void>;
 export declare const verifyEmail: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>>>;
@@ -28,5 +32,9 @@ declare const _default: {
     forgotPassword: (req: Request, res: Response) => Promise<void>;
     resetPassword: (req: Request, res: Response) => Promise<void>;
     googleCallback: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
+    enable2FA: (req: Request, res: Response) => Promise<void>;
+    disable2FA: (req: Request, res: Response) => Promise<void>;
+    verify2FACode: (req: Request, res: Response) => Promise<void>;
+    get2FAStatus: (req: Request, res: Response) => Promise<void>;
 };
 export default _default;

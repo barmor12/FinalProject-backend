@@ -35,6 +35,7 @@ passport_1.default.use(new passport_google_oauth20_1.Strategy({
             yield user.save();
             console.log("New user created:", user);
         }
+        user.userId = user._id.toString();
         return done(null, user);
     }
     catch (err) {
@@ -48,6 +49,9 @@ passport_1.default.serializeUser((user, done) => {
 passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield userModel_1.default.findById(id);
+        if (user) {
+            user.userId = user._id.toString();
+        }
         done(null, user);
     }
     catch (err) {

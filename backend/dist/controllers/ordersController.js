@@ -8,17 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,13 +21,22 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cartModel_1 = __importDefault(require("../models/cartModel"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const addressModel_1 = __importDefault(require("../models/addressModel"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { userId, address, items, paymentMethod, decoration } = req.body;
+        const { items, paymentMethod, address } = req.body;
         console.log("📨 Full Request Body:", JSON.stringify(req.body, null, 2));
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+        if (!token) {
+            res.status(401).json({ error: "Authorization token is required" });
+            return;
+        }
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const userId = decoded.userId;
         if (!userId || !address || !items || items.length === 0) {
             console.error("❌ Error: Missing required fields.");
-            res.status(400).json({ error: "User ID, address, and items are required" });
+            res.status(400).json({ error: "Address and items are required" });
             return;
         }
         const user = yield userModel_1.default.findById(userId);
@@ -61,12 +59,18 @@ const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return;
         }
         let totalPrice = 0;
+        let totalRevenue = 0;
         const mappedItems = items.map((i) => {
             const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
             if (!foundCake)
                 return null;
-            totalPrice += foundCake.price * i.quantity;
+            const itemPrice = foundCake.price * i.quantity;
+            const itemCost = foundCake.cost * i.quantity;
+            const itemRevenue = itemPrice - itemCost;
+            totalPrice += itemPrice;
+            totalRevenue += itemRevenue;
             totalPrice = parseFloat(totalPrice.toFixed(2));
+            totalRevenue = parseFloat(totalRevenue.toFixed(2));
             return {
                 cake: foundCake._id,
                 quantity: i.quantity,
@@ -79,7 +83,7 @@ const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             address: userAddress,
             items: mappedItems,
             totalPrice,
-            decoration: decoration || "",
+            totalRevenue,
             paymentMethod,
             status: "pending",
         });
@@ -298,21 +302,43 @@ const saveDraftOrder = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.saveDraftOrder = saveDraftOrder;
 const duplicateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { orderId } = req.body;
+    var _a;
     try {
-        const originalOrder = yield orderModel_1.default.findById(orderId);
-        if (!originalOrder) {
-            res.status(404).json({ error: "Original order not found" });
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+        if (!token) {
+            res.status(401).json({ error: "Unauthorized" });
             return;
         }
-        const _a = originalOrder.toObject(), { _id, createdAt, updatedAt } = _a, orderData = __rest(_a, ["_id", "createdAt", "updatedAt"]);
-        const duplicatedOrder = new orderModel_1.default(Object.assign(Object.assign({}, orderData), { createdAt: new Date(), updatedAt: new Date() }));
-        const savedOrder = yield duplicatedOrder.save();
-        res.status(201).json(savedOrder);
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const userId = decoded.userId;
+        const { items } = req.body;
+        if (!items || !Array.isArray(items)) {
+            res.status(400).json({ error: "Invalid items format" });
+            return;
+        }
+        let cart = yield cartModel_1.default.findOne({ user: userId });
+        if (!cart) {
+            cart = new cartModel_1.default({ user: userId, items: [] });
+        }
+        items.forEach((item) => {
+            const cakeObjectId = new mongoose_1.default.Types.ObjectId(item.cakeId);
+            const existingIndex = cart.items.findIndex((cartItem) => cartItem.cake.toString() === item.cakeId);
+            if (existingIndex !== -1) {
+                cart.items[existingIndex].quantity += item.quantity;
+            }
+            else {
+                cart.items.push({
+                    cake: cakeObjectId,
+                    quantity: item.quantity,
+                });
+            }
+        });
+        yield cart.save();
+        res.status(200).json({ message: "Cart updated", cart });
     }
-    catch (err) {
-        console.error("Error duplicating order:", err);
-        res.status(500).json({ error: "Failed to duplicate order" });
+    catch (error) {
+        console.error("Error in reorderCart:", error);
+        res.status(500).json({ error: "Failed to reorder cart" });
     }
 });
 exports.duplicateOrder = duplicateOrder;
@@ -424,7 +450,7 @@ const updateOrderStatus = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const { orderId } = req.params;
         const { status } = req.body;
-        if (!["draft", "pending", "confirmed", "delivered"].includes(status)) {
+        if (!["draft", "pending", "confirmed", "delivered", "cancelled"].includes(status)) {
             res.status(400).json({ error: "Invalid status value" });
             return;
         }

@@ -17,23 +17,48 @@ const cakeModel_1 = __importDefault(require("../models/cakeModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, price, ingredients, stock } = req.body;
+    const { name, description, price, cost, ingredients, stock, imageUrl } = req.body;
     console.log("body: ", req.body);
-    if (!name || !description || !price || !ingredients || !req.file) {
-        res.status(400).json({ error: 'All fields including image are required' });
+    if (!name || !description || !price || !cost || !ingredients) {
+        res.status(400).json({ error: 'Name, description, price, cost, and ingredients are required' });
+        return;
+    }
+    const costValue = parseFloat(cost);
+    const priceValue = parseFloat(price);
+    if (isNaN(costValue) || isNaN(priceValue)) {
+        res.status(400).json({ error: 'Cost and price must be valid numbers' });
+        return;
+    }
+    if (costValue >= priceValue) {
+        res.status(400).json({ error: 'Price must be higher than cost' });
         return;
     }
     try {
-        const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, { folder: "cakes" });
+        let imageData = null;
+        if (req.file) {
+            const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, { folder: "cakes" });
+            imageData = {
+                url: uploadResult.secure_url,
+                public_id: uploadResult.public_id
+            };
+        }
+        else if (imageUrl) {
+            imageData = {
+                url: imageUrl,
+                public_id: `direct_url_${Date.now()}`
+            };
+        }
+        else {
+            res.status(400).json({ error: 'Image file or image URL is required' });
+            return;
+        }
         const cake = new cakeModel_1.default({
             name,
             description,
-            price,
+            cost: costValue,
+            price: priceValue,
             ingredients,
-            image: {
-                url: uploadResult.secure_url,
-                public_id: uploadResult.public_id
-            },
+            image: imageData,
             stock,
         });
         const savedCake = yield cake.save();
@@ -47,13 +72,25 @@ const addCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.addCake = addCake;
 const updateCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { name, description, price, ingredients, stock } = req.body;
+    const { name, description, price, cost, ingredients, stock } = req.body;
     const cakeId = req.params.id;
     try {
         const cake = yield cakeModel_1.default.findById(cakeId);
         if (!cake) {
             res.status(404).json({ error: 'Cake not found' });
             return;
+        }
+        if (cost !== undefined || price !== undefined) {
+            const costValue = cost !== undefined ? parseFloat(cost) : cake.cost;
+            const priceValue = price !== undefined ? parseFloat(price) : cake.price;
+            if (isNaN(costValue) || isNaN(priceValue)) {
+                res.status(400).json({ error: 'Cost and price must be valid numbers' });
+                return;
+            }
+            if (costValue >= priceValue) {
+                res.status(400).json({ error: 'Price must be higher than cost' });
+                return;
+            }
         }
         if (req.file) {
             if ((_a = cake.image) === null || _a === void 0 ? void 0 : _a.public_id) {
@@ -67,9 +104,10 @@ const updateCake = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         cake.name = name || cake.name;
         cake.description = description || cake.description;
-        cake.price = price || cake.price;
+        cake.price = price !== undefined ? parseFloat(price) : cake.price;
+        cake.cost = cost !== undefined ? parseFloat(cost) : cake.cost;
         cake.ingredients = ingredients || cake.ingredients;
-        cake.stock = stock || cake.stock;
+        cake.stock = stock !== undefined ? parseInt(stock) : cake.stock;
         const updatedCake = yield cake.save();
         res.status(200).json(updatedCake);
     }

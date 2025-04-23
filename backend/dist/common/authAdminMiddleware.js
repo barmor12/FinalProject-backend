@@ -36,7 +36,6 @@ const authenticateAdminMiddleware = (req, res, next) => __awaiter(void 0, void 0
             return (0, authController_1.sendError)(res, "Invalid token data", 403);
         }
         const user = yield userModel_1.default.findById(userId);
-        console.log("[INFO] User fetched from database:", user);
         if (!user) {
             console.error("[ERROR] User not found for ID:", userId);
             return (0, authController_1.sendError)(res, "User not found", 404);

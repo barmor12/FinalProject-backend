@@ -12,6 +12,7 @@ declare const _default: mongoose.Model<{
     refresh_tokens: string[];
     isVerified: boolean;
     addresses: mongoose.Types.ObjectId[];
+    twoFactorEnabled: boolean;
     profilePic?: {
         url?: string | null | undefined;
         public_id?: string | null | undefined;
@@ -19,6 +20,8 @@ declare const _default: mongoose.Model<{
     googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
+    twoFactorCode?: string | null | undefined;
+    twoFactorExpires?: NativeDate | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -32,6 +35,7 @@ declare const _default: mongoose.Model<{
     refresh_tokens: string[];
     isVerified: boolean;
     addresses: mongoose.Types.ObjectId[];
+    twoFactorEnabled: boolean;
     profilePic?: {
         url?: string | null | undefined;
         public_id?: string | null | undefined;
@@ -39,6 +43,8 @@ declare const _default: mongoose.Model<{
     googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
+    twoFactorCode?: string | null | undefined;
+    twoFactorExpires?: NativeDate | null | undefined;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -52,6 +58,7 @@ declare const _default: mongoose.Model<{
     refresh_tokens: string[];
     isVerified: boolean;
     addresses: mongoose.Types.ObjectId[];
+    twoFactorEnabled: boolean;
     profilePic?: {
         url?: string | null | undefined;
         public_id?: string | null | undefined;
@@ -59,6 +66,8 @@ declare const _default: mongoose.Model<{
     googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
+    twoFactorCode?: string | null | undefined;
+    twoFactorExpires?: NativeDate | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -78,6 +87,7 @@ declare const _default: mongoose.Model<{
     refresh_tokens: string[];
     isVerified: boolean;
     addresses: mongoose.Types.ObjectId[];
+    twoFactorEnabled: boolean;
     profilePic?: {
         url?: string | null | undefined;
         public_id?: string | null | undefined;
@@ -85,6 +95,8 @@ declare const _default: mongoose.Model<{
     googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
+    twoFactorCode?: string | null | undefined;
+    twoFactorExpires?: NativeDate | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -98,6 +110,7 @@ declare const _default: mongoose.Model<{
     refresh_tokens: string[];
     isVerified: boolean;
     addresses: mongoose.Types.ObjectId[];
+    twoFactorEnabled: boolean;
     profilePic?: {
         url?: string | null | undefined;
         public_id?: string | null | undefined;
@@ -105,6 +118,8 @@ declare const _default: mongoose.Model<{
     googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
+    twoFactorCode?: string | null | undefined;
+    twoFactorExpires?: NativeDate | null | undefined;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -118,6 +133,7 @@ declare const _default: mongoose.Model<{
     refresh_tokens: string[];
     isVerified: boolean;
     addresses: mongoose.Types.ObjectId[];
+    twoFactorEnabled: boolean;
     profilePic?: {
         url?: string | null | undefined;
         public_id?: string | null | undefined;
@@ -125,6 +141,8 @@ declare const _default: mongoose.Model<{
     googleId?: string | null | undefined;
     resetToken?: string | null | undefined;
     resetExpires?: NativeDate | null | undefined;
+    twoFactorCode?: string | null | undefined;
+    twoFactorExpires?: NativeDate | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

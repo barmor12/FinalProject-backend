@@ -128,10 +128,10 @@ const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const userId = decoded.userId;
-        const { cakeId } = req.body;
-        if (!cakeId) {
-            console.log("🚨 Missing cakeId in request");
-            res.status(400).json({ error: "Cake ID is required" });
+        const { itemId } = req.body;
+        if (!itemId) {
+            console.log("🚨 Missing itemId in request");
+            res.status(400).json({ error: "Item ID is required" });
             return;
         }
         const cart = yield cartModel_1.default.findOne({ user: userId });
@@ -141,14 +141,16 @@ const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return;
         }
         const initialLength = cart.items.length;
-        cart.items = cart.items.filter((item) => item.cake.toString() !== cakeId);
+        cart.items = cart.items.filter((item) => {
+            return item._id ? item._id.toString() !== itemId : false;
+        });
         if (cart.items.length === initialLength) {
-            console.log("🚨 Cake ID not found in cart:", cakeId);
+            console.log("🚨 Item ID not found in cart:", itemId);
             res.status(404).json({ error: "Item not found in cart" });
             return;
         }
         yield cart.save();
-        console.log("✅ Removed item from cart:", cakeId);
+        console.log("✅ Removed item from cart:", itemId);
         res.status(200).json(cart);
     }
     catch (err) {

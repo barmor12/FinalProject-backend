@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 declare const _default: mongoose.Model<{
     name: string;
     description: string;
+    cost: number;
     price: number;
     ingredients: string[];
     stock: number;
@@ -14,6 +15,7 @@ declare const _default: mongoose.Model<{
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     name: string;
     description: string;
+    cost: number;
     price: number;
     ingredients: string[];
     stock: number;
@@ -26,6 +28,7 @@ declare const _default: mongoose.Model<{
 }> & {
     name: string;
     description: string;
+    cost: number;
     price: number;
     ingredients: string[];
     stock: number;
@@ -42,6 +45,7 @@ declare const _default: mongoose.Model<{
 }, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
     name: string;
     description: string;
+    cost: number;
     price: number;
     ingredients: string[];
     stock: number;
@@ -54,6 +58,7 @@ declare const _default: mongoose.Model<{
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     name: string;
     description: string;
+    cost: number;
     price: number;
     ingredients: string[];
     stock: number;
@@ -66,6 +71,7 @@ declare const _default: mongoose.Model<{
 }>> & mongoose.FlatRecord<{
     name: string;
     description: string;
+    cost: number;
     price: number;
     ingredients: string[];
     stock: number;

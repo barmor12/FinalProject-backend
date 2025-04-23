@@ -19,7 +19,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const getUserAddresses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id) || req.body.userId;
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.userId) || req.body.userId;
         console.log("🔍 User ID from request:", userId);
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
@@ -38,7 +38,7 @@ exports.getUserAddresses = getUserAddresses;
 const addAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id) || req.body.userId;
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.userId) || req.body.userId;
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
             return;
@@ -84,7 +84,7 @@ exports.setDefaultAddress = setDefaultAddress;
 const updateAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id) || req.body.userId;
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.userId) || req.body.userId;
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
             return;
@@ -111,7 +111,7 @@ exports.updateAddress = updateAddress;
 const deleteAddress = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id) || req.body.userId;
+        const userId = ((_a = req.user) === null || _a === void 0 ? void 0 : _a.userId) || req.body.userId;
         if (!userId) {
             res.status(401).json({ message: "Unauthorized. No user found." });
             return;

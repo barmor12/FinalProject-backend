@@ -38,6 +38,7 @@ export const googleCallback = async (req: Request, res: Response) => {
           profilePic: payload.picture,
           password: hashedPassword,
           role: "user",
+          isVerified: true, // Google users are automatically verified
         });
         await user.save();
       }
@@ -51,7 +52,18 @@ export const googleCallback = async (req: Request, res: Response) => {
     }
 
     const tokens = await generateTokens(user._id.toString(), user.role);
-    res.json(tokens);
+    // Associate refresh token for persistence
+    user.refresh_tokens.push(tokens.refreshToken);
+    await user.save();
+
+    // Return tokens in the exact same format as regular login
+    res.status(200).json({
+      message: "User logged in successfully via Google",
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      role: user.role,
+      userId: user._id.toString(),
+    });
   } catch (error) {
     console.error("Error verifying token:", error);
     res.status(500).json({ error: "Failed to authenticate user" });
@@ -284,7 +296,6 @@ export const register = async (req: Request, res: Response) => {
       }
     }
 
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
@@ -435,7 +446,10 @@ export const enable2FA = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
     const user = await User.findById(decoded.userId);
 
     if (!user) {
@@ -447,7 +461,7 @@ export const enable2FA = async (req: Request, res: Response) => {
 
     res.status(200).json({
       message: "Verification code sent to your email",
-      requiresVerification: true
+      requiresVerification: true,
     });
   } catch (err) {
     logger.error(`[ERROR] Enable 2FA error: ${(err as Error).message}`);
@@ -468,7 +482,10 @@ export const verify2FACode = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
     const user = await User.findById(decoded.userId);
 
     if (!user) {
@@ -495,7 +512,7 @@ export const verify2FACode = async (req: Request, res: Response) => {
 
     res.status(200).json({
       message: "2FA enabled successfully",
-      twoFactorEnabled: true
+      twoFactorEnabled: true,
     });
   } catch (err) {
     logger.error(`[ERROR] Verify 2FA code error: ${(err as Error).message}`);
@@ -511,7 +528,10 @@ export const disable2FA = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
     const user = await User.findById(decoded.userId);
 
     if (!user) {
@@ -566,8 +586,8 @@ export const login = async (req: Request, res: Response) => {
         message: "2FA code sent to email",
         requires2FA: true,
         tokens: tempTokens,
-        userID: user._id,
-        role: user.role
+        userId: user._id.toString(),
+        role: user.role,
       });
       return;
     }
@@ -582,7 +602,7 @@ export const login = async (req: Request, res: Response) => {
       message: "User logged in successfully",
       tokens,
       role: user.role,
-      userID: user._id,
+      userId: user._id.toString(),
     });
   } catch (err) {
     logger.error(`[ERROR] Login error: ${(err as Error).message}`);
@@ -596,7 +616,10 @@ export const get2FAStatus = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
     const user = await User.findById(decoded.userId);
 
     if (!user) {
@@ -604,7 +627,7 @@ export const get2FAStatus = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      isEnabled: user.twoFactorEnabled || false
+      isEnabled: user.twoFactorEnabled || false,
     });
   } catch (err) {
     logger.error(`[ERROR] Get 2FA status error: ${(err as Error).message}`);
