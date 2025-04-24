@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Order from "../models/orderModel";
 import User from "../models/userModel";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // פונקציה למשיכת כל ההזמנות
 export const getAllOrders = async (req: Request, res: Response) => {

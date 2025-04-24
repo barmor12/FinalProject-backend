@@ -8,7 +8,7 @@ const upload = multer({ dest: "uploads/" });
 
 // קבלת פרטי משתמש מחובר
 router.get("/profile", authenticateMiddleware, getProfile);
-router.post("/delete-profile", authenticateMiddleware, deleteProfile);
+router.delete("/delete-profile", authenticateMiddleware, deleteProfile);
 
 // עדכון פרטי משתמש
 router.put('/updateNameProfile', authenticateMiddleware, updateUserName);

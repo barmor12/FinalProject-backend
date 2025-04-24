@@ -1,4 +1,16 @@
 import { OAuth2Client } from "google-auth-library";
+import express, { Request, Response, NextFunction } from "express";
+import bcrypt from "bcryptjs";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import multer from "multer";
+import fs from "fs";
+import path from "path";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+import User from "../models/userModel";
+import logger from "../logger";
+import cloudinary from "../config/cloudinary";
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 
 export const googleCallback = async (req: Request, res: Response) => {
@@ -17,32 +29,61 @@ export const googleCallback = async (req: Request, res: Response) => {
         .json({ error: "Failed to get payload from token" });
     }
 
+    if (!payload.email) {
+      return res.status(400).json({ error: "Google account must have an email" });
+    }
+
+    // First check if user exists by googleId
     let user = await User.findOne({ googleId: payload.sub });
 
+    // If no user found by googleId, check by email
     if (!user) {
       user = await User.findOne({ email: payload.email });
+
       if (user) {
+        // User exists with this email but not linked to Google
+        logger.info(`[INFO] Linking existing user account (${user._id}) with Google ID (${payload.sub})`);
+
+        // Link Google ID to the existing account
         user.googleId = payload.sub;
+
+        // If user doesn't have a profile picture but Google does, use the Google one
+        if (!user.profilePic && payload.picture) {
+          user.profilePic = {
+            url: payload.picture,
+            public_id: `google_${payload.sub}`
+          };
+        }
+
         await user.save();
       } else {
+        // No user exists with this email, create a new one
+        logger.info(`[INFO] Creating new user from Google login: ${payload.email}`);
+
         const hashedPassword = await bcrypt.hash(
           password || payload.sub + "google",
           10
         );
+
         user = new User({
           googleId: payload.sub,
           email: payload.email,
-          nickname: payload.name,
           firstName: payload.given_name || "Google",
           lastName: payload.family_name || "User",
-          profilePic: payload.picture,
+          profilePic: payload.picture ? {
+            url: payload.picture,
+            public_id: `google_${payload.sub}`
+          } : undefined,
           password: hashedPassword,
           role: "user",
           isVerified: true, // Google users are automatically verified
         });
+
         await user.save();
+        logger.info(`[INFO] New user created from Google login: ${user._id}`);
       }
     } else if (!user.password) {
+      // If user exists but doesn't have a password (rare case)
       const hashedPassword = await bcrypt.hash(
         password || payload.sub + "google",
         10
@@ -69,17 +110,6 @@ export const googleCallback = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to authenticate user" });
   }
 };
-import express, { Request, Response, NextFunction } from "express";
-import bcrypt from "bcryptjs";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import multer from "multer";
-import fs from "fs";
-import path from "path";
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-import User from "../models/userModel";
-import logger from "../logger";
-import cloudinary from "../config/cloudinary";
 
 dotenv.config();
 
@@ -162,21 +192,198 @@ export const sendVerificationEmail = async (email: string, token: string) => {
       secure: true,
     });
 
-    const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email?token=${token}`;
+    // Fix the URL format to ensure proper protocol format with colon
+    const frontendUrl = process.env.FRONTEND_URL || '';
+    let verificationLink = '';
+
+    // Properly format the URL with the correct protocol
+    if (frontendUrl.startsWith('http://') || frontendUrl.startsWith('https://')) {
+      verificationLink = `${frontendUrl}/auth/verify-email?token=${token}`;
+    } else {
+      // Add http:// protocol if missing
+      verificationLink = `http://${frontendUrl}/auth/verify-email?token=${token}`;
+    }
+
+    // Log the verification link for debugging
+    logger.info(`[DEBUG] Generated verification link: ${verificationLink}`);
+
+    // Get user details to personalize the email
+    const user = await User.findOne({ email });
+    const firstName = user ? user.firstName : '';
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Verify your email address",
+      subject: "Verify Your Email Address",
       html: `
-        <h1>Email Verification</h1>
-        <p>Click the link below to verify your email address:</p>
-        <a href="${verificationLink}">Verify Email</a>
-        <p>This link will expire in 24 hours.</p>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Email Verification</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+            
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            
+            body {
+              font-family: 'Poppins', sans-serif;
+              color: #333333;
+              line-height: 1.6;
+              background-color: #f4f4f9;
+              padding: 20px;
+            }
+            
+            .email-container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            
+            .email-header {
+              background-color: #5a3827;
+              padding: 30px 20px;
+              text-align: center;
+              border-bottom: 4px solid #6b4232;
+            }
+            
+            .email-header h1 {
+              color: white;
+              font-size: 28px;
+              font-weight: 600;
+              margin: 0;
+              letter-spacing: 0.5px;
+            }
+            
+            .email-body {
+              padding: 40px 30px;
+              text-align: center;
+              background-color: #fff;
+            }
+            
+            .email-body p {
+              margin-bottom: 20px;
+              font-size: 16px;
+              color: #555;
+            }
+            
+            .greeting {
+              font-size: 18px;
+              font-weight: 500;
+              margin-bottom: 25px;
+              color: #333;
+            }
+            
+            .verification-button {
+              display: inline-block;
+              background-color: #5a3827;
+              color: white;
+              text-decoration: none;
+              padding: 16px 40px;
+              border-radius: 50px;
+              font-weight: 600;
+              font-size: 16px;
+              margin: 30px 0;
+              box-shadow: 0 4px 12px rgba(90, 56, 39, 0.3);
+              transition: all 0.3s ease;
+              letter-spacing: 0.5px;
+              border: none;
+            }
+            
+            .verification-button:hover {
+              background-color: #6b4232;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(90, 56, 39, 0.4);
+            }
+            
+            .expiry-notice {
+              font-size: 14px;
+              color: #888;
+              margin-top: 25px;
+              padding-top: 20px;
+              border-top: 1px solid #eee;
+            }
+            
+            .email-footer {
+              background-color: #f9fafb;
+              padding: 20px;
+              text-align: center;
+              font-size: 13px;
+              color: #777;
+              border-top: 1px solid #eee;
+            }
+            
+            .logo {
+              margin-bottom: 15px;
+            }
+            
+            .logo img {
+              max-height: 50px;
+            }
+            
+            /* Responsive adjustments */
+            @media only screen and (max-width: 480px) {
+              .email-container {
+                border-radius: 8px;
+              }
+              
+              .email-header {
+                padding: 20px 15px;
+              }
+              
+              .email-header h1 {
+                font-size: 24px;
+              }
+              
+              .email-body {
+                padding: 25px 20px;
+              }
+              
+              .verification-button {
+                padding: 14px 30px;
+                font-size: 15px;
+                width: 100%;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <div class="email-header">
+              <h1>Email Verification</h1>
+            </div>
+            
+            <div class="email-body">
+              <p class="greeting">Hello${firstName ? ' ' + firstName : ''},</p>
+              <p>Thank you for registering with us. To complete your registration and verify your email address, please click on the button below:</p>
+              
+              <a href="${verificationLink}" class="verification-button" style="color: #ffffff; text-decoration: none;">Verify My Email</a>
+              
+              <div class="expiry-notice">
+                This link will expire in 24 hours for security reasons.
+              </div>
+            </div>
+            
+            <div class="email-footer">
+              <p>If you didn't request this verification, you can safely ignore this email.</p>
+              <p>&copy; ${new Date().getFullYear()} My Cake Shop. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
       `,
     };
 
     await transporter.sendMail(mailOptions);
-    logger.info(`[INFO] Verification email sent to: ${email}`);
+    logger.info(`[INFO] Verification email sent to: ${email} with link: ${verificationLink}`);
   } catch (error: any) {
     logger.error(`[ERROR] Failed to send verification email: ${error.message}`);
   }
