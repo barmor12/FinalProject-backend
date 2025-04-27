@@ -61,12 +61,11 @@ const updateUserProfilePic = (req, res) => __awaiter(void 0, void 0, void 0, fun
             return (0, authController_1.sendError)(res, "Invalid file type. Only images are allowed.", 400);
         }
         console.log("Uploading new profile picture...");
-        res.status(202).json({ message: "Uploading image..." });
         if (user.profilePic && user.profilePic.public_id) {
             yield cloudinary_1.default.uploader.destroy(user.profilePic.public_id);
         }
         const uploadResult = yield cloudinary_1.default.uploader.upload(req.file.path, {
-            folder: "users"
+            folder: "users",
         });
         console.log("Upload completed:", uploadResult.secure_url);
         user.profilePic = {

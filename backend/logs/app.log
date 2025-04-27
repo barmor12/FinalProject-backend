@@ -474,3 +474,14 @@
 2025-04-27T15:56:26.609Z [INFO]: [INFO] 2FA code sent to: barmor123456@gmail.com
 2025-04-27T15:56:37.196Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
 2025-04-27T15:56:39.715Z [INFO]: [INFO] 2FA code sent to: barmor123456@gmail.com
+2025-04-27T16:32:26.637Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-27T16:32:29.372Z [INFO]: [INFO] 2FA code sent to: barmor123456@gmail.com
+2025-04-27T16:33:00.205Z [INFO]: [INFO] Recipe unliked successfully: 68027ce4cc4f78aba5f865c8 by user: 67e41b5e1d469490c76f4ac0
+2025-04-27T16:33:01.341Z [INFO]: [INFO] Recipe liked successfully: 68027ce4cc4f78aba5f865c8 by user: 67e41b5e1d469490c76f4ac0
+2025-04-27T16:33:03.356Z [INFO]: [INFO] Recipe liked successfully: 6803984f25e92bfbcdd58fb4 by user: 67e41b5e1d469490c76f4ac0
+2025-04-27T16:34:26.698Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
+2025-04-27T16:34:28.230Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-04-27T16:34:30.381Z [INFO]: [INFO] 2FA code sent to: barmor123456@gmail.com
+2025-04-27T16:35:16.801Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
+2025-04-27T16:37:49.718Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
+2025-04-27T16:40:15.433Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
