@@ -11,7 +11,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const placeOrder = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { items, paymentMethod, address } = req.body;
+    const { items, paymentMethod, address, deliveryDate } = req.body;
     console.log("📨 Full Request Body:", JSON.stringify(req.body, null, 2));
 
     // Get userId from the authenticated user
@@ -25,9 +25,17 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     const userId = decoded.userId;
 
     // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים
-    if (!userId || !address || !items || items.length === 0) {
+    if (!userId || !address || !items || items.length === 0 || !deliveryDate) {
       console.error("❌ Error: Missing required fields.");
-      res.status(400).json({ error: "Address and items are required" });
+      res.status(400).json({ error: "Address, items, and delivery date are required" });
+      return;
+    }
+
+    // ✅ בדיקה: האם תאריך המשלוח הוא בעתיד?
+    const deliveryDateTime = new Date(deliveryDate);
+    if (deliveryDateTime <= new Date()) {
+      console.error("❌ Error: Delivery date mustttt be in the future");
+      res.status(400).json({ error: "Delivery date must be in the future" });
       return;
     }
 
@@ -91,6 +99,7 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
       totalRevenue,
       paymentMethod,
       status: "pending",
+      deliveryDate: deliveryDateTime,
     });
 
     // ✅ שמירת ההזמנה במסד הנתונים
@@ -121,6 +130,25 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     } else {
       res.status(500).json({ error: "Failed to place order due to an unknown error" });
     }
+  }
+};
+export const getOrdersByDate = async (req: Request, res: Response) => {
+  try {
+    const { date } = req.query; // date בפורמט YYYY-MM-DD
+    if (!date) {
+      res.status(400).json({ message: "Date is required in format YYYY-MM-DD" });
+      return;
+    }
+
+    const orders = await Order.find({
+      deliveryDate: date
+    }).populate('user', 'firstName lastName email');
+
+    res.json(orders);
+    console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
+  } catch (error) {
+    console.error('Error fetching orders by date:', error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -724,6 +752,55 @@ export const getUserOrders = async (req: Request, res: Response): Promise<void> 
         : "Failed to fetch user orders.";
 
     res.status(500).json({ error: errorMessage });
+  }
+};
+
+export const getOrdersByMonth = async (req: Request, res: Response) => {
+  try {
+    const { month, year } = req.query; // month should be 1-12, year should be YYYY
+    if (!month || !year) {
+      res.status(400).json({ message: "Month and year are required" });
+      return;
+    }
+
+    // Convert month and year to numbers
+    const monthNum = parseInt(month as string);
+    const yearNum = parseInt(year as string);
+
+    // Validate month and year
+    if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
+      res.status(400).json({ message: "Invalid month. Must be between 1 and 12" });
+      return;
+    }
+
+    if (isNaN(yearNum) || yearNum < 2000 || yearNum > 2100) {
+      res.status(400).json({ message: "Invalid year" });
+      return;
+    }
+
+    // Create start and end dates for the month
+    const startDate = new Date(yearNum, monthNum - 1, 1); // First day of month
+    const endDate = new Date(yearNum, monthNum, 0); // Last day of month
+
+    // Find all orders in the specified month
+    const orders = await Order.find({
+      deliveryDate: {
+        $gte: startDate,
+        $lte: endDate
+      }
+    })
+      .populate('user', 'firstName lastName email')
+      .populate({
+        path: 'items.cake',
+        select: 'name price image'
+      })
+      .populate('address');
+
+    console.log("✅ Orders retrieved for month:", JSON.stringify(orders, null, 2));
+    res.json(orders);
+  } catch (error) {
+    console.error('Error fetching orders by month:', error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

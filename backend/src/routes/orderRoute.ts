@@ -12,6 +12,8 @@ import {
   getUserOrders,
   getOrderById,
   sendOrderUpdateEmailHandler,
+  getOrdersByDate,
+  getOrdersByMonth,
 } from "../controllers/ordersController";
 import authenticateMiddleware from "../common/authMiddleware";
 
@@ -36,10 +38,11 @@ router.post(
   upload.single("image"),
   saveDraftOrder
 );
+router.get('/orders-by-date', authenticateMiddleware, getOrdersByDate);
+router.get('/orders-by-month', authenticateMiddleware, getOrdersByMonth);
 
 router.put("/:orderId/status", updateOrderStatus); // עדכון סטטוס
 router.delete("/delete/:orderId", deleteOrder); // מחיקת הזמנה
-router.get("/:orderId", getOrderById); // שליפת הזמנה לפי ID
 
 
 // שכפול הזמנה
@@ -58,5 +61,6 @@ router.get("/", authenticateMiddleware, getDecorations); // GET /decorations
 
 router.get("/user/:userId", authenticateMiddleware, getUserOrders); // קריאה לפי `userId`
 
+router.get("/:orderId", getOrderById); // שליפת הזמנה לפי ID
 
 export default router;
