@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toggleOrderPriority = exports.getUserById = exports.getAllUsers = exports.updateUser = exports.updateOrder = exports.getStats = exports.getAllOrders = void 0;
 const orderModel_1 = __importDefault(require("../models/orderModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield orderModel_1.default.find();
@@ -77,8 +77,8 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const updateData = req.body;
         if (updateData.password) {
             console.log("Password update requested");
-            const salt = yield bcrypt_1.default.genSalt(10);
-            const hashedPassword = yield bcrypt_1.default.hash(updateData.password, salt);
+            const salt = yield bcryptjs_1.default.genSalt(10);
+            const hashedPassword = yield bcryptjs_1.default.hash(updateData.password, salt);
             updateData.password = hashedPassword;
         }
         const user = yield userModel_1.default.findByIdAndUpdate(userId, updateData, { new: true });

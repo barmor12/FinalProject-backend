@@ -14,6 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resetPassword = exports.forgotPassword = exports.verifyEmail = exports.logout = exports.refresh = exports.get2FAStatus = exports.login = exports.disable2FA = exports.verify2FACode = exports.enable2FA = exports.register = exports.updatePassword = exports.sendError = exports.sendVerificationEmail = exports.getTokenFromRequest = exports.upload = exports.enforceHttps = exports.googleCallback = void 0;
 const google_auth_library_1 = require("google-auth-library");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const multer_1 = __importDefault(require("multer"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const userModel_1 = __importDefault(require("../models/userModel"));
+const logger_1 = __importDefault(require("../logger"));
+const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const client = new google_auth_library_1.OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_token, password } = req.body;
@@ -28,27 +36,45 @@ const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 .status(400)
                 .json({ error: "Failed to get payload from token" });
         }
+        if (!payload.email) {
+            return res
+                .status(400)
+                .json({ error: "Google account must have an email" });
+        }
         let user = yield userModel_1.default.findOne({ googleId: payload.sub });
         if (!user) {
             user = yield userModel_1.default.findOne({ email: payload.email });
             if (user) {
+                logger_1.default.info(`[INFO] Linking existing user account (${user._id}) with Google ID (${payload.sub})`);
                 user.googleId = payload.sub;
+                if (!user.profilePic && payload.picture) {
+                    user.profilePic = {
+                        url: payload.picture,
+                        public_id: `google_${payload.sub}`,
+                    };
+                }
                 yield user.save();
             }
             else {
+                logger_1.default.info(`[INFO] Creating new user from Google login: ${payload.email}`);
                 const hashedPassword = yield bcryptjs_1.default.hash(password || payload.sub + "google", 10);
                 user = new userModel_1.default({
                     googleId: payload.sub,
                     email: payload.email,
-                    nickname: payload.name,
                     firstName: payload.given_name || "Google",
                     lastName: payload.family_name || "User",
-                    profilePic: payload.picture,
+                    profilePic: payload.picture
+                        ? {
+                            url: payload.picture,
+                            public_id: `google_${payload.sub}`,
+                        }
+                        : undefined,
                     password: hashedPassword,
                     role: "user",
                     isVerified: true,
                 });
                 yield user.save();
+                logger_1.default.info(`[INFO] New user created from Google login: ${user._id}`);
             }
         }
         else if (!user.password) {
@@ -59,6 +85,16 @@ const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const tokens = yield generateTokens(user._id.toString(), user.role);
         user.refresh_tokens.push(tokens.refreshToken);
         yield user.save();
+        if (user.twoFactorEnabled) {
+            yield generateAndSend2FACode(user.email);
+            return res.status(200).json({
+                message: "2FA code sent to email",
+                requires2FA: true,
+                tokens,
+                role: user.role,
+                userId: user._id.toString(),
+            });
+        }
         res.status(200).json({
             message: "User logged in successfully via Google",
             accessToken: tokens.accessToken,
@@ -73,14 +109,6 @@ const googleCallback = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.googleCallback = googleCallback;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const multer_1 = __importDefault(require("multer"));
-const nodemailer_1 = __importDefault(require("nodemailer"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const userModel_1 = __importDefault(require("../models/userModel"));
-const logger_1 = __importDefault(require("../logger"));
-const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 dotenv_1.default.config();
 const enforceHttps = (req, res, next) => {
     if (req.headers["x-forwarded-proto"] !== "https") {
@@ -133,20 +161,190 @@ const sendVerificationEmail = (email, token) => __awaiter(void 0, void 0, void 0
             },
             secure: true,
         });
-        const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email?token=${token}`;
+        const frontendUrl = process.env.FRONTEND_URL || "";
+        let verificationLink = "";
+        if (frontendUrl.startsWith("http://") ||
+            frontendUrl.startsWith("https://")) {
+            verificationLink = `${frontendUrl}/auth/verify-email?token=${token}`;
+        }
+        else {
+            verificationLink = `http://${frontendUrl}/auth/verify-email?token=${token}`;
+        }
+        logger_1.default.info(`[DEBUG] Generated verification link: ${verificationLink}`);
+        const user = yield userModel_1.default.findOne({ email });
+        const firstName = user ? user.firstName : "";
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
-            subject: "Verify your email address",
+            subject: "Verify Your Email Address",
             html: `
-        <h1>Email Verification</h1>
-        <p>Click the link below to verify your email address:</p>
-        <a href="${verificationLink}">Verify Email</a>
-        <p>This link will expire in 24 hours.</p>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Email Verification</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+            
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            
+            body {
+              font-family: 'Poppins', sans-serif;
+              color: #333333;
+              line-height: 1.6;
+              background-color: #f4f4f9;
+              padding: 20px;
+            }
+            
+            .email-container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            
+            .email-header {
+              background-color: #5a3827;
+              padding: 30px 20px;
+              text-align: center;
+              border-bottom: 4px solid #6b4232;
+            }
+            
+            .email-header h1 {
+              color: white;
+              font-size: 28px;
+              font-weight: 600;
+              margin: 0;
+              letter-spacing: 0.5px;
+            }
+            
+            .email-body {
+              padding: 40px 30px;
+              text-align: center;
+              background-color: #fff;
+            }
+            
+            .email-body p {
+              margin-bottom: 20px;
+              font-size: 16px;
+              color: #555;
+            }
+            
+            .greeting {
+              font-size: 18px;
+              font-weight: 500;
+              margin-bottom: 25px;
+              color: #333;
+            }
+            
+            .verification-button {
+              display: inline-block;
+              background-color: #5a3827;
+              color: white;
+              text-decoration: none;
+              padding: 16px 40px;
+              border-radius: 50px;
+              font-weight: 600;
+              font-size: 16px;
+              margin: 30px 0;
+              box-shadow: 0 4px 12px rgba(90, 56, 39, 0.3);
+              transition: all 0.3s ease;
+              letter-spacing: 0.5px;
+              border: none;
+            }
+            
+            .verification-button:hover {
+              background-color: #6b4232;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(90, 56, 39, 0.4);
+            }
+            
+            .expiry-notice {
+              font-size: 14px;
+              color: #888;
+              margin-top: 25px;
+              padding-top: 20px;
+              border-top: 1px solid #eee;
+            }
+            
+            .email-footer {
+              background-color: #f9fafb;
+              padding: 20px;
+              text-align: center;
+              font-size: 13px;
+              color: #777;
+              border-top: 1px solid #eee;
+            }
+            
+            .logo {
+              margin-bottom: 15px;
+            }
+            
+            .logo img {
+              max-height: 50px;
+            }
+            
+            /* Responsive adjustments */
+            @media only screen and (max-width: 480px) {
+              .email-container {
+                border-radius: 8px;
+              }
+              
+              .email-header {
+                padding: 20px 15px;
+              }
+              
+              .email-header h1 {
+                font-size: 24px;
+              }
+              
+              .email-body {
+                padding: 25px 20px;
+              }
+              
+              .verification-button {
+                padding: 14px 30px;
+                font-size: 15px;
+                width: 100%;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <div class="email-header">
+              <h1>Email Verification</h1>
+            </div>
+            
+            <div class="email-body">
+              <p class="greeting">Hello${firstName ? " " + firstName : ""},</p>
+              <p>Thank you for registering with us. To complete your registration and verify your email address, please click on the button below:</p>
+              
+              <a href="${verificationLink}" class="verification-button" style="color: #ffffff; text-decoration: none;">Verify My Email</a>
+              
+              <div class="expiry-notice">
+                This link will expire in 24 hours for security reasons.
+              </div>
+            </div>
+            
+            <div class="email-footer">
+              <p>If you didn't request this verification, you can safely ignore this email.</p>
+              <p>&copy; ${new Date().getFullYear()} My Cake Shop. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
       `,
         };
         yield transporter.sendMail(mailOptions);
-        logger_1.default.info(`[INFO] Verification email sent to: ${email}`);
+        logger_1.default.info(`[INFO] Verification email sent to: ${email} with link: ${verificationLink}`);
     }
     catch (error) {
         logger_1.default.error(`[ERROR] Failed to send verification email: ${error.message}`);

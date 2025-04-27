@@ -1,6 +1,6 @@
-export declare const googleCallback: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 import express, { Request, Response, NextFunction } from "express";
 import multer from "multer";
+export declare const googleCallback: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 export declare const enforceHttps: (req: Request, res: Response, next: NextFunction) => express.Response<any, Record<string, any>> | undefined;
 export declare const upload: multer.Multer;
 export declare const getTokenFromRequest: (req: Request) => string | null;

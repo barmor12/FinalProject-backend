@@ -30,7 +30,9 @@ export const googleCallback = async (req: Request, res: Response) => {
     }
 
     if (!payload.email) {
-      return res.status(400).json({ error: "Google account must have an email" });
+      return res
+        .status(400)
+        .json({ error: "Google account must have an email" });
     }
 
     // First check if user exists by googleId
@@ -42,7 +44,9 @@ export const googleCallback = async (req: Request, res: Response) => {
 
       if (user) {
         // User exists with this email but not linked to Google
-        logger.info(`[INFO] Linking existing user account (${user._id}) with Google ID (${payload.sub})`);
+        logger.info(
+          `[INFO] Linking existing user account (${user._id}) with Google ID (${payload.sub})`
+        );
 
         // Link Google ID to the existing account
         user.googleId = payload.sub;
@@ -51,14 +55,16 @@ export const googleCallback = async (req: Request, res: Response) => {
         if (!user.profilePic && payload.picture) {
           user.profilePic = {
             url: payload.picture,
-            public_id: `google_${payload.sub}`
+            public_id: `google_${payload.sub}`,
           };
         }
 
         await user.save();
       } else {
         // No user exists with this email, create a new one
-        logger.info(`[INFO] Creating new user from Google login: ${payload.email}`);
+        logger.info(
+          `[INFO] Creating new user from Google login: ${payload.email}`
+        );
 
         const hashedPassword = await bcrypt.hash(
           password || payload.sub + "google",
@@ -70,10 +76,12 @@ export const googleCallback = async (req: Request, res: Response) => {
           email: payload.email,
           firstName: payload.given_name || "Google",
           lastName: payload.family_name || "User",
-          profilePic: payload.picture ? {
-            url: payload.picture,
-            public_id: `google_${payload.sub}`
-          } : undefined,
+          profilePic: payload.picture
+            ? {
+                url: payload.picture,
+                public_id: `google_${payload.sub}`,
+              }
+            : undefined,
           password: hashedPassword,
           role: "user",
           isVerified: true, // Google users are automatically verified
@@ -96,6 +104,19 @@ export const googleCallback = async (req: Request, res: Response) => {
     // Associate refresh token for persistence
     user.refresh_tokens.push(tokens.refreshToken);
     await user.save();
+
+    // If user has 2FA enabled, send code and return special response
+    if (user.twoFactorEnabled) {
+      await generateAndSend2FACode(user.email);
+
+      return res.status(200).json({
+        message: "2FA code sent to email",
+        requires2FA: true,
+        tokens,
+        role: user.role,
+        userId: user._id.toString(),
+      });
+    }
 
     // Return tokens in the exact same format as regular login
     res.status(200).json({
@@ -193,11 +214,14 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     });
 
     // Fix the URL format to ensure proper protocol format with colon
-    const frontendUrl = process.env.FRONTEND_URL || '';
-    let verificationLink = '';
+    const frontendUrl = process.env.FRONTEND_URL || "";
+    let verificationLink = "";
 
     // Properly format the URL with the correct protocol
-    if (frontendUrl.startsWith('http://') || frontendUrl.startsWith('https://')) {
+    if (
+      frontendUrl.startsWith("http://") ||
+      frontendUrl.startsWith("https://")
+    ) {
       verificationLink = `${frontendUrl}/auth/verify-email?token=${token}`;
     } else {
       // Add http:// protocol if missing
@@ -209,7 +233,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 
     // Get user details to personalize the email
     const user = await User.findOne({ email });
-    const firstName = user ? user.firstName : '';
+    const firstName = user ? user.firstName : "";
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -362,7 +386,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
             </div>
             
             <div class="email-body">
-              <p class="greeting">Hello${firstName ? ' ' + firstName : ''},</p>
+              <p class="greeting">Hello${firstName ? " " + firstName : ""},</p>
               <p>Thank you for registering with us. To complete your registration and verify your email address, please click on the button below:</p>
               
               <a href="${verificationLink}" class="verification-button" style="color: #ffffff; text-decoration: none;">Verify My Email</a>
@@ -383,7 +407,9 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     };
 
     await transporter.sendMail(mailOptions);
-    logger.info(`[INFO] Verification email sent to: ${email} with link: ${verificationLink}`);
+    logger.info(
+      `[INFO] Verification email sent to: ${email} with link: ${verificationLink}`
+    );
   } catch (error: any) {
     logger.error(`[ERROR] Failed to send verification email: ${error.message}`);
   }
