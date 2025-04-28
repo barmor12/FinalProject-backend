@@ -18,7 +18,16 @@ const orderSchema = new mongoose.Schema({
     default: "draft",
   },
   isPriority: { type: Boolean, default: false }, // Field to mark priority orders
-  deliveryDate: { type: Date },
+  deliveryDate: {
+    type: Date,
+    required: true,
+    validate: {
+      validator: function (value: Date) {
+        return value > new Date();
+      },
+      message: 'Delivery date must be in the future'
+    }
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
