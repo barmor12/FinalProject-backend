@@ -18,7 +18,7 @@ import addressRoute from "./routes/addressRoute";
 import discountRoutes from "./routes/discountRoute";
 import emailRoute from "./routes/emailRoute";
 import statisticsRoutes from "./routes/statisticsRoutes";
-
+import expenseRoute from "./routes/expensesRoute";
 import "./passport";
 import path from "path";
 
@@ -59,6 +59,8 @@ app.use("/address", addressRoute);
 app.use("/inventory", inventoryRoute);
 app.use("/sendEmail", emailRoute);
 app.use("/statistics", statisticsRoutes);
+app.use('/expenses', expenseRoute);
+
 import fs from "fs";
 const uploadsPath = path.join(__dirname, "../src/uploads");
 fs.readdir(uploadsPath, (err, files) => {

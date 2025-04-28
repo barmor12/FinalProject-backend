@@ -485,3 +485,10 @@
 2025-04-27T16:35:16.801Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
 2025-04-27T16:37:49.718Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
 2025-04-27T16:40:15.433Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
+2025-04-28T16:37:48.553Z [INFO]: [INFO] Statistics retrieved successfully
+2025-04-28T17:15:06.293Z [INFO]: [INFO] Statistics retrieved successfully
+2025-04-28T17:15:07.626Z [ERROR]: [ERROR] Failed to generate financial report: Cannot read properties of null (reading 'cost')
+2025-04-28T17:16:34.068Z [ERROR]: [ERROR] Failed to generate financial report: Cannot read properties of null (reading 'cost')
+2025-04-28T17:17:04.391Z [INFO]: [INFO] Financial report sent to avieles100@gmail.com
+2025-04-28T17:21:02.125Z [INFO]: [INFO] Statistics retrieved successfully
+2025-04-28T17:21:07.035Z [INFO]: [INFO] Statistics retrieved successfully
