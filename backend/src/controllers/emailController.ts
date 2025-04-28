@@ -5,31 +5,31 @@ import User from "../models/userModel"; // נניח שיש לך מודל של י
 
 // ודא שיש לך את המשתנים המתאימים בסביבת ההרצה: EMAIL_USER, EMAIL_PASSWORD, REVIEW_URL (קישור לטופס ביקורת)
 export const sendReviewEmail = async (req: Request, res: Response): Promise<void> => {
-    try {
-        // קבלת נתונים מהבקשה
-        console.log("Sending review Email....");
-        const { customerEmail, orderId } = req.body;
-        if (!customerEmail || !orderId) {
-            res.status(400).json({ error: "Missing required fields: customerEmail and orderId" });
-            return;
-        }
+  try {
+    // קבלת נתונים מהבקשה
+    console.log("Sending review Email....");
+    const { customerEmail, orderId } = req.body;
+    if (!customerEmail || !orderId) {
+      res.status(400).json({ error: "Missing required fields: customerEmail and orderId" });
+      return;
+    }
 
-        // יצירת טרנספורטור לשליחת המייל
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            auth: {
-                user: process.env.EMAIL_USER,        // כתובת המייל המגדירה את השליחה
-                pass: process.env.EMAIL_PASSWORD,      // הסיסמה של חשבון המייל
-            },
-            secure: true,
-        });
+    // יצירת טרנספורטור לשליחת המייל
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,        // כתובת המייל המגדירה את השליחה
+        pass: process.env.EMAIL_PASSWORD,      // הסיסמה של חשבון המייל
+      },
+      secure: true,
+    });
 
-        // יצירת תוכן המייל – ניתן לשנות את העיצוב והתוכן כרצונך
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: customerEmail,
-            subject: `We'd love your review for Order #${orderId.slice(-6)}`,
-            html: `
+    // יצירת תוכן המייל – ניתן לשנות את העיצוב והתוכן כרצונך
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: customerEmail,
+      subject: `We'd love your review for Order #${orderId.slice(-6)}`,
+      html: `
         <!DOCTYPE html>
         <html lang="en">
           <head>
@@ -76,44 +76,42 @@ export const sendReviewEmail = async (req: Request, res: Response): Promise<void
           </body>
         </html>
       `,
-        };
+    };
 
-        // שליחת המייל
-        await transporter.sendMail(mailOptions);
-        console.log(`✅ Review email sent to ${customerEmail}`);
-        res.status(200).json({ success: true, message: "Review email sent successfully!" });
-    } catch (error) {
-        console.error("❌ Error sending review email:", error);
-        res.status(500).json({ error: "Failed to send review email." });
-    }
+    // שליחת המייל
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Review email sent to ${customerEmail}`);
+    res.status(200).json({ success: true, message: "Review email sent successfully!" });
+  } catch (error) {
+    console.error("❌ Error sending review email:", error);
+    res.status(500).json({ error: "Failed to send review email." });
+  }
 };
 
 
-
-
 export const sendEmailToUser = async (req: Request, res: Response) => {
-    const { customerEmail, managerMessage } = req.body;
+  const { customerEmail, managerMessage } = req.body;
 
-    if (!customerEmail || !managerMessage?.trim()) {
-        res.status(400).json({ error: "Missing email or message content" });
-        return;
-    }
+  if (!customerEmail || !managerMessage?.trim()) {
+    res.status(400).json({ error: "Missing email or message content" });
+    return;
+  }
 
-    try {
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASSWORD,
-            },
-        });
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: customerEmail,
-            subject: "📬 Message from Admin",
-            text: managerMessage, // גרסה פשוטה לגיבוי
-            html: `
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: customerEmail,
+      subject: "📬 Message from Admin",
+      text: managerMessage, // גרסה פשוטה לגיבוי
+      html: `
           <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
             <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
               <h2 style="color: #6b4226; margin-bottom: 20px;">Message from Admin</h2>
@@ -123,51 +121,51 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
             </div>
           </div>
         `,
-        };
+    };
 
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: "Email sent successfully" });
-    } catch (err: any) {
-        console.error("Error sending email:", err);
-        res.status(500).json({ error: "Failed to send email" });
-    }
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (err: any) {
+    console.error("Error sending email:", err);
+    res.status(500).json({ error: "Failed to send email" });
+  }
 };
 
 
 export const deleteUserWithEmail = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    console.log("first");
-    try {
-        const user = await User.findById(id);
-        if (!user) {
-            res.status(404).json({ error: "User not found" });
-            return;
-        }
+  const { id } = req.params;
+  console.log("first");
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
 
-        // שמירת האימייל לפני המחיקה
-        const userEmail = user.email;
-        const userFullName = `${user.firstName} ${user.lastName}`;
+    // שמירת האימייל לפני המחיקה
+    const userEmail = user.email;
+    const userFullName = `${user.firstName} ${user.lastName}`;
 
-        // מחיקת המשתמש בפועל
-        await User.findByIdAndDelete(id);
-        console.log("user deleted");
-        console.log("Email credentials:", process.env.EMAIL_USER, process.env.EMAIL_PASSWORD);
+    // מחיקת המשתמש בפועל
+    await User.findByIdAndDelete(id);
+    console.log("user deleted");
+    console.log("Email credentials:", process.env.EMAIL_USER, process.env.EMAIL_PASSWORD);
 
-        // שליחת מייל לאחר המחיקה
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASSWORD,
-            },
-        });
+    // שליחת מייל לאחר המחיקה
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
 
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: userEmail,
-            subject: "🗑️ Your Account Has Been Deleted",
-            text: `Hi ${userFullName}, your account was deleted.`, // רק לגיבוי
-            html: `
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: userEmail,
+      subject: "🗑️ Your Account Has Been Deleted",
+      text: `Hi ${userFullName}, your account was deleted.`, // רק לגיבוי
+      html: `
               <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
                 <div style="max-width: 600px; margin: auto; background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                   <h2 style="color: #d9534f;">Account Deletion Notice</h2>
@@ -179,16 +177,16 @@ export const deleteUserWithEmail = async (req: Request, res: Response) => {
                 </div>
               </div>
             `,
-        };
+    };
 
 
-        await transporter.sendMail(mailOptions);
-        console.log("User deleted and email sent");
-        res.status(200).json({ message: "User deleted and email sent" });
-        return;
-    } catch (err: any) {
-        console.error("Error deleting user:", err);
-        res.status(500).json({ error: "Failed to delete user" });
-        return;
-    }
+    await transporter.sendMail(mailOptions);
+    console.log("User deleted and email sent");
+    res.status(200).json({ message: "User deleted and email sent" });
+    return;
+  } catch (err: any) {
+    console.error("Error deleting user:", err);
+    res.status(500).json({ error: "Failed to delete user" });
+    return;
+  }
 };
