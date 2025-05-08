@@ -485,3 +485,350 @@
 2025-04-27T16:35:16.801Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
 2025-04-27T16:37:49.718Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
 2025-04-27T16:40:15.433Z [ERROR]: [ERROR] Failed to update profile picture (Status: 500)
+2025-05-08T09:49:31.160Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-08T09:54:22.361Z [INFO]: [INFO] Password reset email sent to: barmor123456@gmail.com
+2025-05-08T09:55:11.784Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-08T09:56:32.807Z [INFO]: [INFO] Attempting to register user: barmor1@gmail.com
+2025-05-08T09:56:33.017Z [INFO]: [INFO] Uploading profile image to Cloudinary...
+2025-05-08T09:56:36.119Z [INFO]: [INFO] Profile image uploaded successfully
+2025-05-08T09:56:36.341Z [INFO]: [DEBUG] Generated verification link: http://10.0.0.24:3000/auth/verify-email?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgxOTYsImV4cCI6MTc0Njc4NDU5Nn0.HJfvg6HP6kHzjZ2H6Sw9G7WqHefZgSwVn9d19livg7s
+2025-05-08T09:56:37.807Z [INFO]: [INFO] Verification email sent to: barmor1@gmail.com with link: http://10.0.0.24:3000/auth/verify-email?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgxOTYsImV4cCI6MTc0Njc4NDU5Nn0.HJfvg6HP6kHzjZ2H6Sw9G7WqHefZgSwVn9d19livg7s
+2025-05-08T09:56:37.807Z [INFO]: [INFO] User registered successfully: barmor1@gmail.com
+2025-05-08T09:57:55.745Z [INFO]: [INFO] Login attempt for email: barm1@gmail.com
+2025-05-08T09:57:55.863Z [INFO]: [INFO] User fetched during login: null
+2025-05-08T09:57:55.864Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-05-08T09:58:08.375Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T09:58:08.495Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: false,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T09:56:36.215Z,
+  __v: 0
+}
+2025-05-08T09:58:08.586Z [INFO]: [DEBUG] Generated verification link: http://10.0.0.24:3000/auth/verify-email?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgyODgsImV4cCI6MTc0Njc4NDY4OH0.9_SkmM8OeW22XXMjJ_1NX0VqCrcAKalX2ev_taJblBo
+2025-05-08T09:58:10.090Z [INFO]: [INFO] Verification email sent to: barmor1@gmail.com with link: http://10.0.0.24:3000/auth/verify-email?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgyODgsImV4cCI6MTc0Njc4NDY4OH0.9_SkmM8OeW22XXMjJ_1NX0VqCrcAKalX2ev_taJblBo
+2025-05-08T09:58:10.090Z [ERROR]: [ERROR] Email not verified. A new verification email has been sent. (Status: 400)
+2025-05-08T09:58:46.596Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T09:58:46.717Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T09:56:36.215Z,
+  __v: 0
+}
+2025-05-08T09:58:46.806Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T09:58:46.807Z [INFO]: [INFO] Generated tokens for user: barmor1@gmail.com
+2025-05-08T09:59:27.118Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T09:59:27.238Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgzMjYsImV4cCI6MTc0NzMwMzEyNn0.mSeDtnwOVSTzhZREwrvLuif3QvDATSVUHV_GzPiLlZg'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T09:58:46.807Z,
+  __v: 1
+}
+2025-05-08T09:59:27.331Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T09:59:27.332Z [INFO]: [INFO] Generated tokens for user: barmor1@gmail.com
+2025-05-08T10:08:56.408Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:08:56.409Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:08:56.415Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:08:56.415Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:08:56.525Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:08:56.530Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:08:56.652Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "681c7fd4a451395b13376437" version 2 modifiedPaths "refresh_tokens"
+2025-05-08T10:08:56.652Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-05-08T10:08:56.653Z [INFO]: [INFO] Refresh token process completed for userId: 681c7fd4a451395b13376437
+2025-05-08T10:09:24.103Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T10:09:24.222Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgzMjYsImV4cCI6MTc0NzMwMzEyNn0.mSeDtnwOVSTzhZREwrvLuif3QvDATSVUHV_GzPiLlZg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTg5MzYsImV4cCI6MTc0NzMwMzczNn0.g9YJGTTXDxOhHyPnN0IqgALHgzf7XrooQppDpXcHuLg'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T10:08:56.527Z,
+  __v: 3
+}
+2025-05-08T10:09:24.313Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:09:24.313Z [INFO]: [INFO] Generated tokens for user: barmor1@gmail.com
+2025-05-08T10:12:50.296Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:12:50.296Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:12:50.320Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:12:50.320Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:12:50.435Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:12:50.439Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:12:50.654Z [INFO]: [INFO] Refresh token process completed for userId: 681c7fd4a451395b13376437
+2025-05-08T10:12:50.654Z [ERROR]: [ERROR] Refresh token error: No matching document found for id "681c7fd4a451395b13376437" version 4 modifiedPaths "refresh_tokens"
+2025-05-08T10:12:50.654Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-05-08T10:13:53.754Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T10:13:53.876Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgzMjYsImV4cCI6MTc0NzMwMzEyNn0.mSeDtnwOVSTzhZREwrvLuif3QvDATSVUHV_GzPiLlZg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTg5MzYsImV4cCI6MTc0NzMwMzczNn0.g9YJGTTXDxOhHyPnN0IqgALHgzf7XrooQppDpXcHuLg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTkxNzAsImV4cCI6MTc0NzMwMzk3MH0.1W5EpbhVrWVJDRVemBQ_diHjRWUQ9lZsD8yzXejc6Ko'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T10:12:50.440Z,
+  __v: 5
+}
+2025-05-08T10:13:53.971Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:13:53.971Z [INFO]: [INFO] Generated tokens for user: barmor1@gmail.com
+2025-05-08T10:15:08.555Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:15:08.556Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:15:08.673Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:15:08.798Z [INFO]: [INFO] Refresh token process completed for userId: 681c7fd4a451395b13376437
+2025-05-08T10:16:00.164Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:16:00.164Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:16:00.281Z [ERROR]: [ERROR] Invalid refresh token (Status: 403)
+2025-05-08T10:16:25.192Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T10:16:25.310Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgzMjYsImV4cCI6MTc0NzMwMzEyNn0.mSeDtnwOVSTzhZREwrvLuif3QvDATSVUHV_GzPiLlZg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTg5MzYsImV4cCI6MTc0NzMwMzczNn0.g9YJGTTXDxOhHyPnN0IqgALHgzf7XrooQppDpXcHuLg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTkxNzAsImV4cCI6MTc0NzMwMzk3MH0.1W5EpbhVrWVJDRVemBQ_diHjRWUQ9lZsD8yzXejc6Ko',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTkzMDgsImV4cCI6MTc0NzMwNDEwOH0.UfVFDrT2mmVNJDu6x316ZF6Nrc5EXmMS1R3JP1QJGC4'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T10:15:08.674Z,
+  __v: 7
+}
+2025-05-08T10:16:25.403Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:16:25.404Z [INFO]: [INFO] Generated tokens for user: barmor1@gmail.com
+2025-05-08T10:17:10.446Z [INFO]: [INFO] Refresh token process started
+2025-05-08T10:17:10.447Z [INFO]: [INFO] Refresh token verified for userId: 681c7fd4a451395b13376437
+2025-05-08T10:17:10.695Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T10:17:10.822Z [INFO]: [INFO] Refresh token process completed for userId: 681c7fd4a451395b13376437
+2025-05-08T10:20:23.756Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-08T10:29:13.748Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-08T10:29:13.867Z [INFO]: [INFO] User fetched during login: null
+2025-05-08T10:29:13.867Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-05-08T10:53:43.088Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-08T11:02:34.293Z [INFO]: [INFO] Login attempt for email: barmor1@gmail.com
+2025-05-08T11:02:34.411Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1746698195/users/eoyvlewq3tvvpjmpxqff.jpg',
+    public_id: 'users/eoyvlewq3tvvpjmpxqff'
+  },
+  _id: new ObjectId('681c7fd4a451395b13376437'),
+  email: 'barmor1@gmail.com',
+  password: '$2a$10$2CHIdRkIXSRsx2eOdgnnCOYe/YYi8hsqaI.iYcoO4cQ9lYWSNi6SC',
+  firstName: 'jirafa',
+  lastName: 'jiraf',
+  role: 'user',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTgzMjYsImV4cCI6MTc0NzMwMzEyNn0.mSeDtnwOVSTzhZREwrvLuif3QvDATSVUHV_GzPiLlZg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTg5MzYsImV4cCI6MTc0NzMwMzczNn0.g9YJGTTXDxOhHyPnN0IqgALHgzf7XrooQppDpXcHuLg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTkxNzAsImV4cCI6MTc0NzMwMzk3MH0.1W5EpbhVrWVJDRVemBQ_diHjRWUQ9lZsD8yzXejc6Ko',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTkzMDgsImV4cCI6MTc0NzMwNDEwOH0.UfVFDrT2mmVNJDu6x316ZF6Nrc5EXmMS1R3JP1QJGC4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFjN2ZkNGE0NTEzOTViMTMzNzY0MzciLCJpYXQiOjE3NDY2OTk0MzAsImV4cCI6MTc0NzMwNDIzMH0._doj5hduh7gyxpcJUzjnFF0I9GGi4WlT_bKLujUgq4M'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-05-08T09:56:36.215Z,
+  updatedAt: 2025-05-08T10:17:10.697Z,
+  __v: 9
+}
+2025-05-08T11:02:34.505Z [INFO]: [INFO] Generating tokens for userId: 681c7fd4a451395b13376437, role: user
+2025-05-08T11:02:34.506Z [INFO]: [INFO] Generated tokens for user: barmor1@gmail.com
+2025-05-08T11:04:49.955Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-08T11:05:45.308Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-08T11:05:45.526Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-04-28T11:53:06.762Z,
+  __v: 4
+}
+2025-05-08T11:05:45.622Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-05-08T11:05:51.940Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-08T11:05:52.059Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-04-28T11:53:06.762Z,
+  __v: 4
+}
+2025-05-08T11:05:52.152Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-05-08T11:05:59.165Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-08T11:05:59.282Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-04-28T11:53:06.762Z,
+  __v: 4
+}
+2025-05-08T11:05:59.367Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-08T11:05:59.368Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-08T11:06:09.234Z [INFO]: [INFO] Statistics retrieved successfully
+2025-05-08T11:06:21.816Z [INFO]: [INFO] Statistics retrieved successfully
+2025-05-08T11:06:25.043Z [ERROR]: [ERROR] Failed to generate financial report: No recipients defined
+2025-05-08T11:59:13.435Z [INFO]: [INFO] Logout process started
+2025-05-08T11:59:13.839Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-08T12:04:55.306Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-08T12:17:24.059Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-08T12:17:24.179Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-08T11:59:13.708Z,
+  __v: 6
+}
+2025-05-08T12:17:24.255Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-05-08T12:17:34.049Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-08T12:17:34.169Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-08T11:59:13.708Z,
+  __v: 6
+}
+2025-05-08T12:17:34.249Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-08T12:17:34.258Z [INFO]: [INFO] Generated tokens for user: admin

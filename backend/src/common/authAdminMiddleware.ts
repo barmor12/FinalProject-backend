@@ -49,7 +49,6 @@ const authenticateAdminMiddleware = async (
     // חיפוש המשתמש בבסיס הנתונים
     const user = await User.findById(userId);
 
-
     if (!user) {
       console.error("[ERROR] User not found for ID:", userId);
       return sendError(res, "User not found", 404);
