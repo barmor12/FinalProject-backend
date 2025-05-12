@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema(
     twoFactorEnabled: { type: Boolean, default: false },
     twoFactorCode: { type: String },
     twoFactorExpires: { type: Date },
+
+    pushTokens: {
+      type: [String],
+      default: []
+    },
   },
   { timestamps: true }
 );
