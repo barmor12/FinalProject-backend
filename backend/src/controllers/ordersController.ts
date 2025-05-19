@@ -30,10 +30,15 @@ export const placeOrder = async (
     ) as JwtPayload;
     const userId = decoded.userId;
 
-    // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים (תאריך משלוח לא חובה אם Self Pickup)
-    if (!userId || !address || !items || items.length === 0) {
+    // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים (כתובת חובה רק אם שיטת משלוח היא "Standard Delivery (2-3 days)")
+    if (
+      !userId ||
+      !items ||
+      items.length === 0 ||
+      (req.body.shippingMethod === "Standard Delivery (2-3 days)" && !address)
+    ) {
       console.error("❌ Error: Missing required fields.");
-      res.status(400).json({ error: "Address and items are required" });
+      res.status(400).json({ error: "Missing required fields" });
       return;
     }
 
@@ -56,17 +61,20 @@ export const placeOrder = async (
       return;
     }
 
-    // ✅ בדיקה: האם הכתובת קיימת ומשויכת לאותו משתמש?
-    const userAddress = await Address.findById(address);
-    if (!userAddress || userAddress.userId.toString() !== userId) {
-      console.error(
-        "❌ Error: Address not found or doesn't belong to user:",
-        address
-      );
-      res
-        .status(404)
-        .json({ error: "Address not found or does not belong to user" });
-      return;
+    // ✅ בדיקה: האם הכתובת קיימת ומשויכת לאותו משתמש? (רק אם address קיים)
+    let userAddress = null;
+    if (address) {
+      userAddress = await Address.findById(address);
+      if (!userAddress || userAddress.userId.toString() !== userId) {
+        console.error(
+          "❌ Error: Address not found or doesn't belong to user:",
+          address
+        );
+        res
+          .status(404)
+          .json({ error: "Address not found or does not belong to user" });
+        return;
+      }
     }
 
     // ✅ בדיקה: האם כל העוגות קיימות?
@@ -132,7 +140,7 @@ export const placeOrder = async (
       orderIdStr,
       totalPrice,
       mappedItems,
-      userAddress.fullName,
+      userAddress?.fullName || "N/A",
       user.firstName,
       "https://example.com"
     );
