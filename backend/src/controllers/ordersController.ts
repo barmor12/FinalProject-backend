@@ -9,7 +9,10 @@ import nodemailer from "nodemailer";
 import Address from "../models/addressModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-export const placeOrder = async (req: Request, res: Response): Promise<void> => {
+export const placeOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { items, paymentMethod, address, deliveryDate } = req.body;
     console.log("📨 Full Request Body:", JSON.stringify(req.body, null, 2));
@@ -21,22 +24,28 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as JwtPayload;
     const userId = decoded.userId;
 
-    // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים
-    if (!userId || !address || !items || items.length === 0 || !deliveryDate) {
+    // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים (תאריך משלוח לא חובה אם Self Pickup)
+    if (!userId || !address || !items || items.length === 0) {
       console.error("❌ Error: Missing required fields.");
-      res.status(400).json({ error: "Address, items, and delivery date are required" });
+      res.status(400).json({ error: "Address and items are required" });
       return;
     }
 
-    // ✅ בדיקה: האם תאריך המשלוח הוא בעתיד?
-    const deliveryDateTime = new Date(deliveryDate);
-    if (deliveryDateTime <= new Date()) {
-      console.error("❌ Error: Delivery date mustttt be in the future");
-      res.status(400).json({ error: "Delivery date must be in the future" });
-      return;
+    // בדיקת תאריך משלוח רק אם שיטת המשלוח היא Standard Delivery (2-3 days)
+    const deliveryDateTime = deliveryDate ? new Date(deliveryDate) : null;
+
+    if (req.body.shippingMethod === "Standard Delivery (2-3 days)") {
+      if (!deliveryDateTime || deliveryDateTime <= new Date()) {
+        console.error("❌ Error: Delivery date must be in the future");
+        res.status(400).json({ error: "Delivery date must be in the future" });
+        return;
+      }
     }
 
     // ✅ בדיקה: האם המשתמש קיים?
@@ -50,8 +59,13 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     // ✅ בדיקה: האם הכתובת קיימת ומשויכת לאותו משתמש?
     const userAddress = await Address.findById(address);
     if (!userAddress || userAddress.userId.toString() !== userId) {
-      console.error("❌ Error: Address not found or doesn't belong to user:", address);
-      res.status(404).json({ error: "Address not found or does not belong to user" });
+      console.error(
+        "❌ Error: Address not found or doesn't belong to user:",
+        address
+      );
+      res
+        .status(404)
+        .json({ error: "Address not found or does not belong to user" });
       return;
     }
 
@@ -60,7 +74,10 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     const cakes = await Cake.find({ _id: { $in: cakeIds } });
 
     if (cakes.length !== items.length) {
-      console.error("❌ Error: One or more cakes not found.", { expected: items.length, found: cakes.length });
+      console.error("❌ Error: One or more cakes not found.", {
+        expected: items.length,
+        found: cakes.length,
+      });
       res.status(404).json({ error: "One or more cakes not found" });
       return;
     }
@@ -68,27 +85,29 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     // ✅ חישוב מחיר כולל ורווח
     let totalPrice = 0;
     let totalRevenue = 0;
-    const mappedItems = items.map((i: any) => {
-      const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
-      if (!foundCake) return null;
+    const mappedItems = items
+      .map((i: any) => {
+        const foundCake = cakes.find((c) => c._id.toString() === i.cakeId);
+        if (!foundCake) return null;
 
-      const itemPrice = foundCake.price * i.quantity;
-      const itemCost = foundCake.cost * i.quantity;
-      const itemRevenue = itemPrice - itemCost;
+        const itemPrice = foundCake.price * i.quantity;
+        const itemCost = foundCake.cost * i.quantity;
+        const itemRevenue = itemPrice - itemCost;
 
-      totalPrice += itemPrice;
-      totalRevenue += itemRevenue;
+        totalPrice += itemPrice;
+        totalRevenue += itemRevenue;
 
-      totalPrice = parseFloat(totalPrice.toFixed(2));
-      totalRevenue = parseFloat(totalRevenue.toFixed(2));
+        totalPrice = parseFloat(totalPrice.toFixed(2));
+        totalRevenue = parseFloat(totalRevenue.toFixed(2));
 
-      return {
-        cake: foundCake._id,
-        quantity: i.quantity,
-        price: foundCake.price,
-        cakeName: foundCake.name,
-      };
-    }).filter(Boolean);
+        return {
+          cake: foundCake._id,
+          quantity: i.quantity,
+          price: foundCake.price,
+          cakeName: foundCake.name,
+        };
+      })
+      .filter(Boolean);
 
     // ✅ יצירת אובייקט הזמנה
     const order = new Order({
@@ -128,7 +147,9 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Failed to place order due to an unknown error" });
+      res
+        .status(500)
+        .json({ error: "Failed to place order due to an unknown error" });
     }
   }
 };
@@ -136,18 +157,20 @@ export const getOrdersByDate = async (req: Request, res: Response) => {
   try {
     const { date } = req.query; // date בפורמט YYYY-MM-DD
     if (!date) {
-      res.status(400).json({ message: "Date is required in format YYYY-MM-DD" });
+      res
+        .status(400)
+        .json({ message: "Date is required in format YYYY-MM-DD" });
       return;
     }
 
     const orders = await Order.find({
-      deliveryDate: date
-    }).populate('user', 'firstName lastName email');
+      deliveryDate: date,
+    }).populate("user", "firstName lastName email");
 
     res.json(orders);
     console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
   } catch (error) {
-    console.error('Error fetching orders by date:', error);
+    console.error("Error fetching orders by date:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -281,15 +304,15 @@ export const sendOrderConfirmationEmail = async (
         </thead>
         <tbody>
           ${orderItems
-          .map(
-            (item: any) => `
+            .map(
+              (item: any) => `
               <tr>
                 <td>${item.cakeName}</td>
                 <td>${item.quantity}</td>
                 <td>$${item.price}</td>
               </tr>`
-          )
-          .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     </div>
@@ -317,7 +340,6 @@ export const sendOrderConfirmationEmail = async (
     console.error("Error sending order confirmation email:", error);
   }
 };
-
 
 export const getAllOrders = async (
   req: Request,
@@ -422,7 +444,6 @@ export const duplicateOrder = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to reorder cart" });
   }
 };
-
 
 export const applyDiscountCode = async (req: Request, res: Response) => {
   const { orderId, discountCode } = req.body;
@@ -552,12 +573,20 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     const { orderId } = req.params;
     const { status } = req.body;
 
-    if (!["draft", "pending", "confirmed", "delivered", "cancelled"].includes(status)) {
+    if (
+      !["draft", "pending", "confirmed", "delivered", "cancelled"].includes(
+        status
+      )
+    ) {
       res.status(400).json({ error: "Invalid status value" });
       return;
     }
 
-    const order = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
@@ -593,14 +622,16 @@ export const deleteOrder = async (req: Request, res: Response) => {
       message: "Order deleted successfully",
       deletedOrderId: order._id, // אפשר להחזיר גם את פרטי ההזמנה שנמחקה אם רוצים
     });
-
   } catch (error) {
     console.error("❌ Error deleting order:", error);
     res.status(500).json({ error: "Failed to delete order" });
   }
 };
 
-export const sendOrderUpdateEmailHandler = async (req: Request, res: Response) => {
+export const sendOrderUpdateEmailHandler = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { orderId } = req.params;
     const { customerEmail, orderStatus, managerMessage, hasMsg } = req.body;
@@ -635,7 +666,9 @@ export const sendOrderUpdateEmailHandler = async (req: Request, res: Response) =
     let emailContent = `
       <h2>Order Update</h2>
       <p>Hello,</p>
-      <p>Your order <strong>#${orderId.slice(-6)}</strong> has been updated to: <strong>${orderStatus}</strong>.</p>
+      <p>Your order <strong>#${orderId.slice(
+        -6
+      )}</strong> has been updated to: <strong>${orderStatus}</strong>.</p>
       <p>${statusMessages[orderStatus]}</p>
     `;
 
@@ -659,7 +692,9 @@ export const sendOrderUpdateEmailHandler = async (req: Request, res: Response) =
     await transporter.sendMail(mailOptions);
     console.log(`[INFO] Order update email sent to: ${customerEmail}`);
 
-    res.status(200).json({ success: true, message: "Email sent successfully!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Email sent successfully!" });
     return;
   } catch (error: any) {
     console.error(`[ERROR] Failed to send email: ${error.message}`);
@@ -667,9 +702,6 @@ export const sendOrderUpdateEmailHandler = async (req: Request, res: Response) =
     return;
   }
 };
-
-
-
 
 export const getOrderById = async (req: Request, res: Response) => {
   try {
@@ -686,7 +718,7 @@ export const getOrderById = async (req: Request, res: Response) => {
       .populate("user", "firstName lastName email")
       .populate({
         path: "items.cake",
-        select: "name image"
+        select: "name image",
       })
       .populate("address");
 
@@ -699,14 +731,18 @@ export const getOrderById = async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Error) {
       console.error("❌ Error fetching order:", error);
-      res.status(500).json({ error: "Failed to fetch order", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to fetch order", details: error.message });
     } else {
       res.status(500).json({ error: "Unknown error occurred" });
     }
   }
-
 };
-export const getUserOrders = async (req: Request, res: Response): Promise<void> => {
+export const getUserOrders = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { userId } = req.params;
 
@@ -769,7 +805,9 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
 
     // Validate month and year
     if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
-      res.status(400).json({ message: "Invalid month. Must be between 1 and 12" });
+      res
+        .status(400)
+        .json({ message: "Invalid month. Must be between 1 and 12" });
       return;
     }
 
@@ -786,22 +824,23 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
     const orders = await Order.find({
       deliveryDate: {
         $gte: startDate,
-        $lte: endDate
-      }
+        $lte: endDate,
+      },
     })
-      .populate('user', 'firstName lastName email')
+      .populate("user", "firstName lastName email")
       .populate({
-        path: 'items.cake',
-        select: 'name price image'
+        path: "items.cake",
+        select: "name price image",
       })
-      .populate('address');
+      .populate("address");
 
-    console.log("✅ Orders retrieved for month:", JSON.stringify(orders, null, 2));
+    console.log(
+      "✅ Orders retrieved for month:",
+      JSON.stringify(orders, null, 2)
+    );
     res.json(orders);
   } catch (error) {
-    console.error('Error fetching orders by month:', error);
+    console.error("Error fetching orders by month:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
-
-
