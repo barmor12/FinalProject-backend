@@ -12,8 +12,12 @@ export const notificationsRouter = Router();
 notificationsRouter.post(
   "/register",
   authenticateMiddleware,
-  async (req: Request, res: Response) => {
-    const userId = (req as any).user.id;
+  async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as any).user?.userId || (req as any).user?.id;
+    if (!userId) {
+      res.status(400).json({ error: "Missing userId" });
+      return;
+    }
     const { token } = req.body;
     if (!Expo.isExpoPushToken(token)) {
       res.status(400).json({ error: "Invalid push token" });
@@ -32,7 +36,12 @@ notificationsRouter.post(
 notificationsRouter.post(
   "/send",
   authenticateMiddleware,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
+    const userId = (req as any).user?.userId || (req as any).user?.id;
+    if (!userId) {
+      res.status(400).json({ error: "Missing userId" });
+      return;
+    }
     const { title, message, type } = req.body as {
       title: string;
       message: string;
@@ -62,7 +71,7 @@ notificationsRouter.post(
     }
 
     await NotificationLog.create({
-      userId: (req as any).user.id,
+      userId,
       type: type as any,
       title,
       body: message,
@@ -70,7 +79,6 @@ notificationsRouter.post(
     });
 
     res.json({ ok: true, sentTo: sentCount });
-    return;
   }
 );
 

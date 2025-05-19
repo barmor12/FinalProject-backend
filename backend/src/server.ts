@@ -18,7 +18,7 @@ import addressRoute from "./routes/addressRoute";
 import discountRoutes from "./routes/discountRoute";
 import emailRoute from "./routes/emailRoute";
 import statisticsRoutes from "./routes/statisticsRoutes";
-
+import { notificationsRouter } from "./routes/notifications";
 import "./passport";
 import path from "path";
 
@@ -58,6 +58,7 @@ app.use("/user", userRoute);
 app.use("/address", addressRoute);
 app.use("/inventory", inventoryRoute);
 app.use("/sendEmail", emailRoute);
+app.use("/notifications", notificationsRouter);
 app.use("/statistics", statisticsRoutes);
 import fs from "fs";
 const uploadsPath = path.join(__dirname, "../src/uploads");
