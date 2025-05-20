@@ -40,6 +40,11 @@ const orderSchema = new mongoose.Schema({
       message: "Delivery date must be today or in the future",
     },
   },
+  shippingMethod: {
+    type: String,
+    enum: ["Standard Delivery (2-3 days)", "Self Pickup"],
+    required: false,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

@@ -598,32 +598,38 @@ export const getDecorations = async (
 export const updateOrderStatus = async (req: Request, res: Response) => {
   try {
     const { orderId } = req.params;
-    const { status } = req.body;
+    const { status, shippingMethod, deliveryDate, address } = req.body;
 
-    if (
-      !["draft", "pending", "confirmed", "delivered", "cancelled"].includes(
-        status
-      )
-    ) {
-      res.status(400).json({ error: "Invalid status value" });
-      return;
+    const updateFields: any = {};
+    if (status) {
+      if (
+        !["draft", "pending", "confirmed", "delivered", "cancelled"].includes(
+          status
+        )
+      ) {
+        res.status(400).json({ error: "Invalid status value" });
+        return;
+      }
+      updateFields.status = status;
     }
 
-    const order = await Order.findByIdAndUpdate(
-      orderId,
-      { status },
-      { new: true }
-    );
+    if (shippingMethod) updateFields.shippingMethod = shippingMethod;
+    if (deliveryDate) updateFields.deliveryDate = new Date(deliveryDate);
+    if (address) updateFields.address = address;
+
+    const order = await Order.findByIdAndUpdate(orderId, updateFields, {
+      new: true,
+    });
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
       return;
     }
 
-    res.json({ message: "Order status updated successfully", order });
+    res.json({ message: "Order updated successfully", order });
   } catch (error) {
     console.error("❌ Error updating order:", error);
-    res.status(500).json({ error: "Failed to update order status" });
+    res.status(500).json({ error: "Failed to update order" });
   }
 };
 

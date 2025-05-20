@@ -23,12 +23,15 @@ import authenticateAdminMiddleware from "../common/authAdminMiddleware";
 
 const router = express.Router();
 
-
 // הצגת כל ההזמנות
 
 router.get("/orders", authenticateMiddleware, getAllOrders);
 router.post("/create", authenticateMiddleware, placeOrder);
-router.post("/:orderId/send-email", authenticateMiddleware, sendOrderUpdateEmailHandler);
+router.post(
+  "/:orderId/send-email",
+  authenticateMiddleware,
+  sendOrderUpdateEmailHandler
+);
 
 // שמירת טיוטת הזמנה עם העלאת תמונה
 router.post(
@@ -38,12 +41,11 @@ router.post(
   upload.single("image"),
   saveDraftOrder
 );
-router.get('/orders-by-date', authenticateMiddleware, getOrdersByDate);
-router.get('/orders-by-month', authenticateMiddleware, getOrdersByMonth);
+router.get("/orders-by-date", authenticateMiddleware, getOrdersByDate);
+router.get("/orders-by-month", authenticateMiddleware, getOrdersByMonth);
 
 router.put("/:orderId/status", updateOrderStatus); // עדכון סטטוס
 router.delete("/delete/:orderId", deleteOrder); // מחיקת הזמנה
-
 
 // שכפול הזמנה
 router.post("/duplicate", authenticateMiddleware, duplicateOrder);
