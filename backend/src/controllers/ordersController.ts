@@ -90,6 +90,18 @@ export const placeOrder = async (
       return;
     }
 
+    // ✅ בדיקה: אין הזמנה מעבר למלאי הקיים
+    for (const item of items) {
+      const cake = cakes.find((c) => c._id.toString() === item.cakeId);
+      if (!cake) continue;
+      if (cake.stock < item.quantity) {
+        res.status(400).json({
+          error: `Only ${cake.stock} units available for ${cake.name}`,
+        });
+        return;
+      }
+    }
+
     // ✅ חישוב מחיר כולל ורווח
     let totalPrice = 0;
     let totalRevenue = 0;
@@ -107,6 +119,13 @@ export const placeOrder = async (
 
         totalPrice = parseFloat(totalPrice.toFixed(2));
         totalRevenue = parseFloat(totalRevenue.toFixed(2));
+
+        // ✅ הפחתת מלאי בפועל
+        if (foundCake.stock !== undefined) {
+          foundCake.stock -= i.quantity;
+          if (foundCake.stock < 0) foundCake.stock = 0;
+          foundCake.save(); // שמירה של המלאי החדש
+        }
 
         return {
           cake: foundCake._id,
