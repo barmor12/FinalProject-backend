@@ -638,29 +638,41 @@ export const deleteOrder = async (req: Request, res: Response) => {
   try {
     const { orderId } = req.params;
 
-    // ✅ בדיקת תקינות ה-ID לפני שאילתת MongoDB
     if (!mongoose.Types.ObjectId.isValid(orderId)) {
       res.status(400).json({ error: "Invalid order ID" });
       return;
     }
 
-    const order = await Order.findByIdAndDelete(orderId);
+    // מצא את ההזמנה עם פרטי העוגות
+    const order = await Order.findById(orderId).populate("items.cake");
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
       return;
     }
 
+    // החזר מלאי לכל עוגה
+    for (const item of order.items) {
+      const cake = item.cake as any;
+      if (cake && cake._id && typeof item.quantity === "number") {
+        await Cake.findByIdAndUpdate(cake._id, {
+          $inc: { stock: item.quantity },
+        });
+      }
+    }
+
+    // מחק את ההזמנה
+    await Order.findByIdAndDelete(orderId);
+
     res.status(200).json({
-      message: "Order deleted successfully",
-      deletedOrderId: order._id, // אפשר להחזיר גם את פרטי ההזמנה שנמחקה אם רוצים
+      message: "Order deleted successfully and stock updated",
+      deletedOrderId: order._id,
     });
   } catch (error) {
     console.error("❌ Error deleting order:", error);
     res.status(500).json({ error: "Failed to delete order" });
   }
 };
-
 export const sendOrderUpdateEmailHandler = async (
   req: Request,
   res: Response
