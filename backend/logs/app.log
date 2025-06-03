@@ -832,3 +832,487 @@
 }
 2025-05-08T12:17:34.249Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
 2025-05-08T12:17:34.258Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-19T23:15:41.682Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: admin
+2025-05-19T23:15:46.130Z [INFO]: [INFO] Logout process started
+2025-05-19T23:15:46.622Z [INFO]: [INFO] User logged out successfully: 67e41b5e1d469490c76f4ac0
+2025-05-19T23:33:11.343Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: admin
+2025-05-19T23:33:15.232Z [INFO]: [INFO] Logout process started
+2025-05-19T23:33:15.680Z [INFO]: [INFO] User logged out successfully: 67e41b5e1d469490c76f4ac0
+2025-05-19T23:47:23.212Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: admin
+2025-05-19T23:47:25.718Z [INFO]: [INFO] Logout process started
+2025-05-19T23:47:26.155Z [INFO]: [INFO] User logged out successfully: 67e41b5e1d469490c76f4ac0
+2025-05-20T14:40:06.369Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: admin
+2025-05-20T14:40:19.653Z [INFO]: [INFO] Statistics retrieved successfully
+2025-05-20T14:40:36.250Z [INFO]: [INFO] Logout process started
+2025-05-20T14:40:36.736Z [INFO]: [INFO] User logged out successfully: 67e41b5e1d469490c76f4ac0
+2025-05-20T14:40:50.088Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T14:40:50.273Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-19T19:55:07.076Z,
+  __v: 58,
+  pushTokens: []
+}
+2025-05-20T14:40:50.343Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T14:40:50.344Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-20T14:41:15.346Z [INFO]: [INFO] Logout process started
+2025-05-20T14:41:15.710Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-20T14:41:23.229Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-20T14:41:55.653Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T14:41:55.848Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-20T14:41:15.506Z,
+  __v: 60,
+  pushTokens: []
+}
+2025-05-20T14:41:55.938Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T14:41:55.939Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-20T14:42:06.704Z [INFO]: [INFO] Logout process started
+2025-05-20T14:42:07.028Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-20T14:42:15.092Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-20T14:42:40.567Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T14:42:40.745Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-20T14:42:06.888Z,
+  __v: 62,
+  pushTokens: []
+}
+2025-05-20T14:42:40.813Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T14:42:40.814Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-20T14:56:49.843Z [INFO]: [INFO] Logout process started
+2025-05-20T14:56:50.157Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-20T14:56:57.954Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-20T15:21:33.822Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T15:21:33.993Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-20T14:56:50.006Z,
+  __v: 64,
+  pushTokens: []
+}
+2025-05-20T15:21:34.093Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T15:21:34.094Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-20T15:22:47.021Z [INFO]: [INFO] Logout process started
+2025-05-20T15:22:47.348Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-20T15:22:55.380Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-20T17:54:37.910Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T17:54:38.066Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-20T15:22:47.175Z,
+  __v: 66,
+  pushTokens: []
+}
+2025-05-20T17:54:38.167Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T17:54:38.169Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-20T18:05:10.300Z [INFO]: [INFO] Logout process started
+2025-05-20T18:05:10.639Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-20T18:05:19.917Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-20T18:05:49.115Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T18:05:49.255Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-20T18:05:10.478Z,
+  __v: 68,
+  pushTokens: []
+}
+2025-05-20T18:05:49.321Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T18:05:49.322Z [INFO]: [INFO] Generated tokens for user: admin
+2025-05-20T18:14:59.984Z [INFO]: [INFO] Statistics retrieved successfully
+2025-05-20T18:16:21.556Z [INFO]: [INFO] Statistics retrieved successfully
+2025-05-20T18:17:52.724Z [INFO]: [INFO] Statistics retrieved successfully
+2025-05-20T18:17:53.392Z [INFO]: [INFO] Logout process started
+2025-05-20T18:17:53.695Z [INFO]: [INFO] User logged out successfully: 680e611c04f230a3daed010c
+2025-05-20T18:18:02.454Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-05-20T18:41:25.104Z [INFO]: [INFO] Login attempt for email: admin
+2025-05-20T18:41:25.258Z [INFO]: [INFO] User fetched during login: {
+  profilePic: {
+    url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+    public_id: 'users/default_profile_image'
+  },
+  _id: new ObjectId('680e611c04f230a3daed010c'),
+  email: 'admin',
+  password: '$2b$10$a6W9VdoyaP/LTGXhTaZagOk5q/Hebgk0aF1CitbY.T87Ncjs33Zve',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  favorites: [],
+  refresh_tokens: [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDY3MDY2NTQsImV4cCI6MTc0NzMxMTQ1NH0.-3YPcc9l1JJ08zNAwMHx0M2tkn5ovL25yi5YHkUhE-g',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODBlNjExYzA0ZjIzMGEzZGFlZDAxMGMiLCJpYXQiOjE3NDc0MDc3MjIsImV4cCI6MTc0ODAxMjUyMn0.aragt1in3oZOIJofqOnjdtvYHKGg-LkxMdXNDnh0rUE'
+  ],
+  isVerified: true,
+  addresses: [],
+  twoFactorEnabled: false,
+  createdAt: 2025-04-27T12:00:00.000Z,
+  updatedAt: 2025-05-20T18:17:53.554Z,
+  __v: 70,
+  pushTokens: []
+}
+2025-05-20T18:41:25.353Z [INFO]: [INFO] Generating tokens for userId: 680e611c04f230a3daed010c, role: admin
+2025-05-20T18:41:25.354Z [INFO]: [INFO] Generated tokens for user: admin
+2025-06-03T13:20:10.429Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-06-03T15:55:26.220Z [INFO]: [INFO] Refresh token process started
+2025-06-03T15:55:26.225Z [ERROR]: [ERROR] Refresh token error: jwt expired
+2025-06-03T15:55:26.226Z [ERROR]: [ERROR] Failed to refresh token (Status: 500)
+2025-06-03T15:55:44.919Z [INFO]: [INFO] Generating tokens for userId: 67e41b5e1d469490c76f4ac0, role: user
+2025-06-03T16:35:42.555Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:35:42.556Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:35:42.556Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:35:42.565Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:35:42.565Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:35:42.569Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:35:42.569Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:35:52.537Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:35:52.537Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:35:52.538Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:35:52.545Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:35:52.545Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:35:52.547Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:35:52.548Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:49:07.224Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:49:07.224Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:49:07.225Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:49:07.227Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:49:07.227Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:49:07.230Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:49:07.230Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:49:40.460Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:49:40.461Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:49:40.461Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:49:40.464Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:49:40.464Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:49:40.467Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:49:40.467Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:50:11.608Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:50:11.608Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:50:11.608Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:50:11.610Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:50:11.610Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:50:11.613Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:50:11.697Z [INFO]: [DEBUG] Generated verification link: http://10.0.0.24:3000/auth/verify-email?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyMTIzIiwiaWF0IjoxNzQ4OTY5NDExLCJleHAiOjE3NDkwNTU4MTF9.Y35VEfdezord5SeNW5ZuJ8PvPLEF3j6GKcCgLoue5S0
+2025-06-03T16:50:13.284Z [INFO]: [INFO] Verification email sent to: test@example.com with link: http://10.0.0.24:3000/auth/verify-email?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyMTIzIiwiaWF0IjoxNzQ4OTY5NDExLCJleHAiOjE3NDkwNTU4MTF9.Y35VEfdezord5SeNW5ZuJ8PvPLEF3j6GKcCgLoue5S0
+2025-06-03T16:50:13.284Z [INFO]: [INFO] User registered successfully: test@example.com
+2025-06-03T16:50:13.289Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:50:13.289Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:50:13.292Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:50:13.293Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:50:13.293Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:50:13.297Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:50:13.297Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:50:13.297Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:50:13.299Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:50:40.222Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:50:40.299Z [INFO]: [INFO] New user created from Google login: 683f27e0302d9339e62ec8a7
+2025-06-03T16:50:40.299Z [INFO]: [INFO] Generating tokens for userId: 683f27e0302d9339e62ec8a7, role: user
+2025-06-03T16:50:40.309Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:50:40.315Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:50:40.315Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:50:40.315Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:50:40.317Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:50:40.317Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:50:40.318Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:50:40.319Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:50:40.319Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:50:40.321Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:50:40.321Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:50:40.323Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:50:40.323Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:50:40.323Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:50:40.327Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:50:40.327Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:50:40.327Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:50:40.329Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:51:14.863Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:51:14.943Z [INFO]: [INFO] New user created from Google login: 683f280270b0a460fbb5ac2a
+2025-06-03T16:51:14.944Z [INFO]: [INFO] Generating tokens for userId: 683f280270b0a460fbb5ac2a, role: user
+2025-06-03T16:51:14.952Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:51:14.957Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:51:14.957Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:51:14.958Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:51:14.959Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:51:14.959Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:51:14.961Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:51:14.962Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:51:14.962Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:51:14.964Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:51:14.964Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:51:14.980Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:51:14.981Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:51:14.981Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:51:15.011Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:51:15.011Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:51:15.011Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:51:15.012Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:51:21.008Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:51:21.083Z [INFO]: [INFO] New user created from Google login: 683f28097d783408acc2a2a4
+2025-06-03T16:51:21.084Z [INFO]: [INFO] Generating tokens for userId: 683f28097d783408acc2a2a4, role: user
+2025-06-03T16:51:21.092Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:51:21.099Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:51:21.099Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:51:21.100Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:51:21.102Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:51:21.102Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:51:21.104Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:51:21.104Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:51:21.105Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:51:21.106Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:51:21.106Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:51:21.108Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:51:21.108Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:51:21.108Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:51:21.110Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:51:21.110Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:51:21.110Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:51:21.112Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:52:36.295Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:52:36.376Z [INFO]: [INFO] New user created from Google login: 683f285439b9899f63e4bdc2
+2025-06-03T16:52:36.376Z [INFO]: [INFO] Generating tokens for userId: 683f285439b9899f63e4bdc2, role: user
+2025-06-03T16:52:36.392Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:52:36.458Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:52:36.458Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:52:36.458Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:52:36.461Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:52:36.461Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:52:36.464Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:52:36.465Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:52:36.465Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:52:36.469Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:52:36.469Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:52:36.472Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:52:36.472Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:52:36.472Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:52:36.476Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:52:36.477Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:52:36.477Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:52:36.478Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:54:06.634Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:54:06.707Z [INFO]: [INFO] New user created from Google login: 683f28ae8ba19dc01a4e22c9
+2025-06-03T16:54:06.707Z [INFO]: [INFO] Generating tokens for userId: 683f28ae8ba19dc01a4e22c9, role: user
+2025-06-03T16:54:06.715Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:54:06.756Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:54:06.756Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:54:06.756Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:54:06.758Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:54:06.758Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:54:06.760Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:54:06.760Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:54:06.760Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:54:06.762Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:54:06.762Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:54:06.765Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:54:06.765Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:54:06.765Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:54:06.767Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:54:06.767Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:54:06.767Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:54:06.768Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:54:44.733Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:54:44.806Z [INFO]: [INFO] New user created from Google login: 683f28d4d194a04d7c9e4c64
+2025-06-03T16:54:44.806Z [INFO]: [INFO] Generating tokens for userId: 683f28d4d194a04d7c9e4c64, role: user
+2025-06-03T16:54:44.814Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:54:44.853Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:54:44.853Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:54:44.853Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:54:44.855Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:54:44.855Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:54:44.856Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:54:44.857Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:54:44.857Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:54:44.858Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:54:44.859Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:54:44.861Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:54:44.861Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:54:44.861Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:54:44.863Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:54:44.863Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:54:44.863Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:54:44.864Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:55:13.705Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:55:13.779Z [INFO]: [INFO] New user created from Google login: 683f28f16298507c036777cc
+2025-06-03T16:55:13.779Z [INFO]: [INFO] Generating tokens for userId: 683f28f16298507c036777cc, role: user
+2025-06-03T16:55:13.787Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:55:13.826Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:55:13.826Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:55:13.826Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:55:13.828Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:55:13.828Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:55:13.830Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:55:13.830Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:55:13.830Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:55:13.832Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:55:13.832Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:55:13.834Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:55:13.834Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:55:13.834Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:55:13.836Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:55:13.836Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:55:13.836Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:55:13.837Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:55:48.742Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:55:48.818Z [INFO]: [INFO] New user created from Google login: 683f29148e62a7c4487a5124
+2025-06-03T16:55:48.818Z [INFO]: [INFO] Generating tokens for userId: 683f29148e62a7c4487a5124, role: user
+2025-06-03T16:55:48.827Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:55:48.871Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:55:48.871Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:55:48.871Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:55:48.873Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:55:48.873Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:55:48.875Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:55:48.875Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:55:48.875Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:55:48.877Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:55:48.877Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:55:48.879Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:55:48.879Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:55:48.880Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:55:48.881Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:55:48.882Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:55:48.882Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:55:48.883Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:58:21.507Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:58:21.585Z [INFO]: [INFO] New user created from Google login: 683f29adad2e56ca1c888c09
+2025-06-03T16:58:21.585Z [INFO]: [INFO] Generating tokens for userId: 683f29adad2e56ca1c888c09, role: user
+2025-06-03T16:58:21.594Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:58:21.633Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:58:21.634Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:58:21.634Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:58:21.635Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:58:21.636Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:58:21.637Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:58:21.638Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:58:21.638Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:58:21.639Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:58:21.640Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:58:21.641Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:58:21.642Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:58:21.642Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:58:21.644Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:58:21.644Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:58:21.644Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:58:21.645Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-06-03T16:59:49.215Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-06-03T16:59:49.288Z [INFO]: [INFO] New user created from Google login: 683f2a050bd7ea3f1802f3cc
+2025-06-03T16:59:49.288Z [INFO]: [INFO] Generating tokens for userId: 683f2a050bd7ea3f1802f3cc, role: user
+2025-06-03T16:59:49.298Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:59:49.336Z [INFO]: [INFO] Attempting to register user: undefined
+2025-06-03T16:59:49.336Z [WARN]: [WARN] Registration failed: Missing fields
+2025-06-03T16:59:49.336Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-06-03T16:59:49.338Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:59:49.338Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-06-03T16:59:49.340Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-06-03T16:59:49.340Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-06-03T16:59:49.341Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-06-03T16:59:49.342Z [INFO]: [INFO] Login attempt for email: undefined
+2025-06-03T16:59:49.342Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-06-03T16:59:49.344Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-06-03T16:59:49.345Z [INFO]: [INFO] User fetched during login: null
+2025-06-03T16:59:49.345Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-06-03T16:59:49.346Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-06-03T16:59:49.347Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-06-03T16:59:49.347Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-06-03T16:59:49.348Z [INFO]: [INFO] Generated tokens for user: test@example.com

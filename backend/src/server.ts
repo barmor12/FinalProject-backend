@@ -29,7 +29,6 @@ console.log(
 );
 const app = express();
 app.enable("strict routing");
-const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -77,9 +76,10 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Failed to connect to MongoDB", err));
 
-// Create HTTP Server
+const port: number = Number(process.env.PORT) || 3000;
 const server = http.createServer(app);
-server.listen(port, () => {
+
+server.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });
 export { server, app };
