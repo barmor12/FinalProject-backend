@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 io(server);
 
 // הפעלת השרת
-server.listen(port, () => {
+server.listen(Number(port), "0.0.0.0", () => {
   console.log(`Server is running on port: ${port}`);
 });
+export default server;
