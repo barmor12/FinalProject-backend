@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ES6", // שפת המטרה (JavaScript ES6)
     "module": "commonjs", // סוג המודול (CommonJS, מתאים ל-Node.js)
-    "lib": [
-      "ES6",
-      "DOM"
-    ], // ספריות סטנדרטיות לשימוש בפרויקט
+    "lib": ["ES6", "DOM"], // ספריות סטנדרטיות לשימוש בפרויקט
     "outDir": "./dist", // תיקיית פלט לקבצים המתוקמפלים
     "rootDir": "./src", // תיקיית המקור לקבצי TypeScript
     "removeComments": true, // הסרת הערות מהקוד המתוקמפל
@@ -21,31 +18,20 @@
     "baseUrl": "./", // הבסיס לייבוא מודולים
     "paths": {
       // קיצור נתיבים בייבוא
-      "@controllers/": [
-        "src/controllers/"
-      ],
-      "@routes/": [
-        "src/routes/"
-      ],
-      "@models/": [
-        "src/models/"
-      ],
-      "@common/": [
-        "src/common/"
-      ]
+      "@controllers/": ["src/controllers/"],
+      "@routes/": ["src/routes/"],
+      "@models/": ["src/models/"],
+      "@common/": ["src/common/"]
     },
     "declaration": true, // יצירת קבצי דקלרציה .d.ts
     "declarationDir": "./dist/types", // תיקיית פלט לקבצי דקלרציה
     "sourceMap": true, // יצירת מפות מקור
     "esModuleInterop": true, // תמיכה במודולים ES
     "forceConsistentCasingInFileNames": true, // מוודא אחידות באותיות קטנות/גדולות
-    "skipLibCheck": true // מדלג על בדיקת טיפוסים בספריות חיצוניות
+    "skipLibCheck": true, // מדלג על בדיקת טיפוסים בספריות חיצוניות
+    "types": ["jest", "node"]
   },
-  "include": [
-    "src"
-  ], // קבצים ותיקיות לכלול
-  "exclude": [
-    "node_modules",
-    "dist"
-  ] // קבצים ותיקיות לא לכלול
+
+  "include": ["src"], // קבצים ותיקיות לכלול
+  "exclude": ["node_modules", "dist"] // קבצים ותיקיות לא לכלול
 }

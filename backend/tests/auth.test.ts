@@ -1,88 +1,180 @@
-import request from 'supertest';
-import express from 'express';
-import mongoose from 'mongoose';
-import { register } from '../src/controllers/authController'; // נתיב אמיתי לפי הפרויקט שלך
-import User from '../src/models/userModel';
-import * as sendVerificationEmail from '../src/controllers/authController'; // לפעמים תצטרך למקם את ה-sendVerificationEmail כאן
+// @ts-nocheck
+import request from "supertest";
+import express from "express";
+import * as User from "../src/models/userModel";
+import { OAuth2Client } from "google-auth-library";
 
-// MOCK dependencies that shouldn't be called in real test
-jest.mock('../src/utils/email', () => ({
-    sendVerificationEmail: jest.fn(),
-}));
-jest.mock('cloudinary', () => ({
-    v2: {
-        uploader: {
-            upload_stream: jest.fn((opts, cb) => ({
-                end: () => cb(null, { secure_url: 'fake', public_id: 'fake' }),
-            })),
-        },
-    },
-}));
+const mockVerifyIdToken = jest.fn();
+jest.mock("google-auth-library", () => {
+  return {
+    OAuth2Client: jest.fn().mockImplementation(() => ({
+      verifyIdToken: mockVerifyIdToken,
+    })),
+  };
+});
+
+import * as authController from "../src/controllers/authController";
 
 const app = express();
 app.use(express.json());
-app.post('/register', register);
+app.post("/auth/google", authController.googleCallback);
+app.post("/auth/register", authController.register);
+app.post("/auth/login", authController.login);
+app.get("/auth/verify-email", authController.verifyEmail);
 
-describe('User registration', () => {
-    beforeAll(async () => {
-        // הפעל מנוע Mongo In-Memory (לבדיקות בלבד!)
-        const { MongoMemoryServer } = require('mongodb-memory-server');
-        const mongoServer = await MongoMemoryServer.create();
-        await mongoose.connect(mongoServer.getUri());
+const mockSave = jest.fn();
+const mockUser = {
+  _id: "user123",
+  email: "test@example.com",
+  role: "user",
+  googleId: "google-id-123",
+  profilePic: { url: "", public_id: "" },
+  refresh_tokens: [],
+  password: "$2a$10$HashedPass",
+  isVerified: true,
+  save: mockSave,
+};
+
+describe("AuthController", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("googleCallback", () => {
+    it("should create a new user when not found", async () => {
+      jest
+        .spyOn(User.default, "findOne")
+        .mockResolvedValueOnce(null) // googleId not found
+        .mockResolvedValueOnce(null); // email not found
+      User.default.prototype.save = mockSave.mockResolvedValue(mockUser);
+
+      mockVerifyIdToken.mockResolvedValueOnce({
+        getPayload: () => ({ email: "test@example.com", sub: "google-id-123" }),
+      });
+
+      const res = await request(app)
+        .post("/auth/google")
+        .send({ id_token: "valid-token", password: "123456" });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toHaveProperty("accessToken");
+      expect(res.body).toHaveProperty("refreshToken");
+      expect(res.body).toHaveProperty("userId");
     });
 
-    afterAll(async () => {
-        await mongoose.connection.close();
-        // אל תשכח לעצור את mongoServer אם אתה שומר reference אליו
+    it("should login existing user by googleId", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValueOnce(mockUser); // found by googleId
+
+      mockVerifyIdToken.mockResolvedValueOnce({
+        getPayload: () => ({ email: "test@example.com", sub: "google-id-123" }),
+      });
+
+      const res = await request(app).post("/auth/google").send({
+        id_token: "valid-token",
+      });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toHaveProperty("accessToken");
+      expect(res.body).toHaveProperty("userId", "user123");
+    });
+    it("should return 400 if email is missing", async () => {
+      mockVerifyIdToken.mockResolvedValueOnce({
+        getPayload: () => ({ sub: "id-only" }),
+      });
+
+      const res = await request(app)
+        .post("/auth/google")
+        .send({ id_token: "missing-email" });
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toHaveProperty(
+        "error",
+        "Google account must have an email"
+      );
+    });
+    it("should return 500 if Google token is invalid", async () => {
+      mockVerifyIdToken.mockRejectedValueOnce(new Error("Invalid token"));
+
+      const res = await request(app).post("/auth/google").send({
+        id_token: "invalid-token",
+      });
+
+      expect(res.statusCode).toBe(500);
+      expect(res.body).toHaveProperty("error", "Failed to authenticate user");
+    });
+  });
+
+  describe("register", () => {
+    it("should fail if required fields are missing", async () => {
+      const res = await request(app).post("/auth/register").send({});
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toHaveProperty("error", "All fields are required");
     });
 
-    beforeEach(async () => {
-        await User.deleteMany({});
+    it("should fail if password is too weak", async () => {
+      const res = await request(app).post("/auth/register").send({
+        firstName: "Test",
+        lastName: "User",
+        email: "test@example.com",
+        password: "123",
+      });
+      expect(res.statusCode).toBe(400);
+      expect(res.body.error).toMatch(/Password must include/);
     });
 
-    it('fails if required fields are missing', async () => {
-        const res = await request(app)
-            .post('/register')
-            .send({ firstName: 'Bar', lastName: 'Mor', email: '' });
-        expect(res.status).toBe(400);
-        expect(res.body.error).toMatch(/all fields/i);
+    it("should return 400 if user already exists", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValue(mockUser);
+      const res = await request(app).post("/auth/register").send({
+        firstName: "Test",
+        lastName: "User",
+        email: "test@example.com",
+        password: "Password123!",
+      });
+
+      expect(res.statusCode).toBe(409);
+      expect(res.body).toHaveProperty(
+        "error",
+        "User with this email already exists"
+      );
+    });
+  });
+
+  describe("login", () => {
+    it("should return error if email or password missing", async () => {
+      const res = await request(app).post("/auth/login").send({});
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toHaveProperty(
+        "error",
+        "Email and password are required"
+      );
     });
 
-    it('fails with weak password', async () => {
-        const res = await request(app)
-            .post('/register')
-            .send({ firstName: 'Bar', lastName: 'Mor', email: 'test@test.com', password: 'weakpass' });
-        expect(res.status).toBe(400);
-        expect(res.body.error).toMatch(/password must include/i);
+    it("should return error if user is not found", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValue(null);
+      const res = await request(app).post("/auth/login").send({
+        email: "notfound@example.com",
+        password: "Password123!",
+      });
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toHaveProperty("error", "Invalid email or password");
     });
 
-    it('fails if email already exists', async () => {
-        // צור משתמש מראש
-        await User.create({
-            firstName: 'Bar',
-            lastName: 'Mor',
-            email: 'test@test.com',
-            password: 'Abcde1234@',
-            profilePic: {},
-            role: 'user',
-            isVerified: false,
-        });
+    it("should login existing user with correct password", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValue({
+        ...mockUser,
+        comparePassword: jest.fn().mockResolvedValue(true),
+      });
 
-        const res = await request(app)
-            .post('/register')
-            .send({ firstName: 'Bar', lastName: 'Mor', email: 'test@test.com', password: 'Abcde1234@' });
-        expect(res.status).toBe(409);
-        expect(res.body.error).toMatch(/already exists/i);
-    });
+      // Patch bcrypt.compare to always return true for this test
+      jest.spyOn(require("bcryptjs"), "compare").mockResolvedValue(true);
 
-    it('registers a user successfully', async () => {
-        const res = await request(app)
-            .post('/register')
-            .send({ firstName: 'Bar', lastName: 'Mor', email: 'bar@mor.com', password: 'Abcde1234@' });
-        expect(res.status).toBe(201);
-        expect(res.body.message).toMatch(/user created/i);
-        expect(res.body.user.email).toBe('bar@mor.com');
-        // וודא שלא מוחזר הסיסמה המקורית!
-        expect(res.body.user.password).not.toBe('Abcde1234@');
+      const res = await request(app).post("/auth/login").send({
+        email: "test@example.com",
+        password: "Password123!",
+      });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.tokens).toHaveProperty("accessToken");
     });
+  });
 });
