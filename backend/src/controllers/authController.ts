@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import User from "../models/userModel";
 import logger from "../logger";
 import cloudinary from "../config/cloudinary";
+import CreditCard from "../models/creditCardModel";
+import crypto from "crypto";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 
@@ -78,9 +80,9 @@ export const googleCallback = async (req: Request, res: Response) => {
           lastName: payload.family_name || "User",
           profilePic: payload.picture
             ? {
-                url: payload.picture,
-                public_id: `google_${payload.sub}`,
-              }
+              url: payload.picture,
+              public_id: `google_${payload.sub}`,
+            }
             : undefined,
           password: hashedPassword,
           role: "user",
@@ -1224,6 +1226,254 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   logger.info(`[INFO] Password reset email sent to: ${email}`);
 };
 
+// Add a new credit card
+export const addCreditCard = async (req: Request, res: Response) => {
+  try {
+    console.log("first");
+    const { cardNumber, cardHolderName, expiryDate, isDefault } = req.body;
+    console.log(req.user);
+    const userId = (req.user as TokenPayload)?.userId;
+    console.log(userId);
+    if (!userId) {
+      res.status(401).json({ message: "User not authenticated" });
+      return;
+    }
+
+    // Validate card number (basic Luhn algorithm check)
+    if (!isValidCardNumber(cardNumber)) {
+      res.status(400).json({ message: "Invalid card number" });
+      return;
+    }
+
+    // Validate expiry date format (MM/YY)
+    if (!isValidExpiryDate(expiryDate)) {
+      res.status(400).json({ message: "Invalid expiry date format. Use MM/YY" });
+      return;
+    }
+
+    // Create hash of card number for validation
+    const cardHash = crypto
+      .createHash("sha256")
+      .update(cardNumber)
+      .digest("hex");
+
+    // Check if card already exists
+    const existingCard = await CreditCard.findOne({ userId, cardHash });
+    if (existingCard) {
+      res.status(400).json({ message: "This card is already registered" });
+      return;
+    }
+
+    // If this is set as default, unset any existing default card
+    if (isDefault) {
+      await CreditCard.updateMany(
+        { userId, isDefault: true },
+        { isDefault: false }
+      );
+    }
+
+    // Create new card
+    const card = new CreditCard({
+      userId,
+      cardNumber,
+      cardHolderName,
+      expiryDate,
+      isDefault: isDefault || false,
+      cardHash,
+      cardType: getCardType(cardNumber),
+    });
+
+    await card.save();
+
+    // Return card details (with masked number)
+    res.status(201).json({
+      message: "Credit card added successfully",
+      card: {
+        id: card._id,
+        cardNumber: card.cardNumber, // Will be masked due to getter
+        cardHolderName: card.cardHolderName,
+        expiryDate: card.expiryDate,
+        isDefault: card.isDefault,
+        cardType: card.cardType,
+      },
+    });
+  } catch (error: any) {
+    logger.error(`[ERROR] Failed to add credit card: ${error.message}`);
+    res.status(500).json({ message: "Failed to add credit card" });
+    return;
+  }
+};
+
+// Get all credit cards for a user
+export const getCreditCards = async (req: Request, res: Response) => {
+  try {
+    const userId = (req.user as TokenPayload)?.userId;
+
+    if (!userId) {
+      res.status(401).json({ message: "User not authenticated" });
+      return;
+    }
+
+    const cards = await CreditCard.find({ userId }).sort({ isDefault: -1, createdAt: -1 });
+
+    res.status(200).json({
+      cards: cards.map(card => ({
+        id: card._id,
+        cardNumber: card.cardNumber, // Will be masked due to getter
+        cardHolderName: card.cardHolderName,
+        expiryDate: card.expiryDate,
+        isDefault: card.isDefault,
+        cardType: card.cardType,
+      })),
+    });
+  } catch (error: any) {
+    logger.error(`[ERROR] Failed to get credit cards: ${error.message}`);
+    res.status(500).json({ message: "Failed to get credit cards" });
+    return;
+  }
+};
+
+// Set a card as default
+export const setDefaultCard = async (req: Request, res: Response) => {
+  try {
+    const { cardId } = req.params;
+    const userId = (req.user as TokenPayload)?.userId;
+
+    if (!userId) {
+      res.status(401).json({ message: "User not authenticated" });
+      return;
+    }
+
+    // Unset current default card
+    await CreditCard.updateMany(
+      { userId, isDefault: true },
+      { isDefault: false }
+    );
+
+    // Set new default card
+    const card = await CreditCard.findOneAndUpdate(
+      { _id: cardId, userId },
+      { isDefault: true },
+      { new: true }
+    );
+
+    if (!card) {
+      res.status(404).json({ message: "Card not found" });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Default card updated successfully",
+      card: {
+        id: card._id,
+        cardNumber: card.cardNumber,
+        cardHolderName: card.cardHolderName,
+        expiryDate: card.expiryDate,
+        isDefault: card.isDefault,
+        cardType: card.cardType,
+      },
+    });
+  } catch (error: any) {
+    logger.error(`[ERROR] Failed to set default card: ${error.message}`);
+    res.status(500).json({ message: "Failed to set default card" });
+    return;
+  }
+};
+
+// Delete a credit card
+export const deleteCreditCard = async (req: Request, res: Response) => {
+  try {
+    const { cardId } = req.params;
+    const userId = (req.user as TokenPayload)?.userId;
+
+    if (!userId) {
+      res.status(401).json({ message: "User not authenticated" });
+      return;
+    }
+
+    const card = await CreditCard.findOneAndDelete({ _id: cardId, userId });
+
+    if (!card) {
+      res.status(404).json({ message: "Card not found" });
+      return;
+    }
+
+    // If the deleted card was default, set the most recently added card as default
+    if (card.isDefault) {
+      const newDefaultCard = await CreditCard.findOne({ userId })
+        .sort({ createdAt: -1 });
+
+      if (newDefaultCard) {
+        newDefaultCard.isDefault = true;
+        await newDefaultCard.save();
+      }
+    }
+
+    res.status(200).json({ message: "Credit card deleted successfully" });
+    return;
+  } catch (error: any) {
+    logger.error(`[ERROR] Failed to delete credit card: ${error.message}`);
+    res.status(500).json({ message: "Failed to delete credit card" });
+    return;
+  }
+};
+
+// Helper functions
+// Validate credit card number using Luhn algorithm
+export function isValidCardNumber(cardNumber: string): boolean {
+  const cleanNumber = cardNumber.replace(/[\s-]/g, "");
+  if (!/^\d+$/.test(cleanNumber)) return false;
+
+  let sum = 0;
+  let double = false;
+
+  for (let i = cleanNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cleanNumber[i]);
+    if (double) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+    sum += digit;
+    double = !double;
+  }
+
+  return sum % 10 === 0;
+}
+
+// Validate expiry date in MM/YY format, and check it's not expired
+export function isValidExpiryDate(expiryDate: string): boolean {
+  if (!/^\d{2}\/\d{2}$/.test(expiryDate)) return false;
+
+  const [monthStr, yearStr] = expiryDate.split("/");
+  const month = parseInt(monthStr, 10);
+  const year = parseInt(yearStr, 10);
+
+  if (isNaN(month) || isNaN(year) || month < 1 || month > 12) return false;
+
+  const now = new Date();
+  const currentYear = now.getFullYear() % 100;
+  const currentMonth = now.getMonth() + 1;
+
+  // Not expired: year in future, or current year and month or later
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    return false;
+  }
+  return true;
+}
+
+// Detect card type (Visa, Mastercard, etc.)
+export function getCardType(cardNumber: string): string {
+  const cleanNumber = cardNumber.replace(/[\s-]/g, "");
+
+  if (/^4\d{12}(\d{3})?$/.test(cleanNumber)) return "Visa";
+  if (/^5[1-5]\d{14}$/.test(cleanNumber)) return "Mastercard";
+  if (/^3[47]\d{13}$/.test(cleanNumber)) return "American Express";
+  if (/^6(?:011|5\d{2})\d{12}$/.test(cleanNumber)) return "Discover";
+
+  return "Unknown";
+}
+
+
 export default {
   enforceHttps,
   register,
@@ -1242,4 +1492,8 @@ export default {
   disable2FA,
   verify2FACode,
   get2FAStatus,
+  addCreditCard,
+  getCreditCards,
+  setDefaultCard,
+  deleteCreditCard,
 };

@@ -15,14 +15,19 @@ import {
   disable2FA,
   verify2FACode,
   get2FAStatus,
+  addCreditCard,
+  getCreditCards,
+  setDefaultCard,
+  deleteCreditCard,
 } from "../controllers/authController";
+import authenticateMiddleware from "../common/authMiddleware";
 
 const router = express.Router();
 
 router.post('/register', upload.single('profileImage'), register);
 router.put("/update-password", updatePassword);
 router.post("/login", login);
-router.post("/logout", logout);
+router.post("/logout", authenticateMiddleware, logout);
 router.get("/verify-email", async (req, res, next) => {
   try {
     await verifyEmail(req, res);
@@ -58,5 +63,11 @@ router.post("/2fa/enable", enable2FA);
 router.post("/2fa/disable", disable2FA);
 router.post("/2fa/verify", verify2FACode);
 router.get("/2fa/status", get2FAStatus);
+
+// Credit card routes
+router.post("/add-credit-cards", authenticateMiddleware, addCreditCard);
+router.get("/credit-cards", authenticateMiddleware, getCreditCards);
+router.put("/credit-cards/:cardId/default", authenticateMiddleware, setDefaultCard);
+router.delete("/delete-credit-cards/:cardId", authenticateMiddleware, deleteCreditCard);
 
 export default router;
