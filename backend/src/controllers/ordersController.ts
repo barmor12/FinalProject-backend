@@ -218,13 +218,14 @@ export const sendOrderConfirmationEmail = async (
   try {
     // יצירת טרנספורטור לשליחת המייל
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      host: "stmp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
-        user: process.env.EMAIL_USER, // כתובת המייל ששולחת את המייל
-        pass: process.env.EMAIL_PASSWORD, // הסיסמא של המייל
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
-
     // יצירת תוכן המייל עם התייחסות לנתונים דינמיים
     const mailOptions = {
       from: process.env.EMAIL_USER, // מאיפה נשלח את המייל
@@ -693,12 +694,13 @@ export const sendOrderUpdateEmailHandler = async (
     }
 
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      host: "stmp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
-      secure: true,
     });
 
     const statusMessages: Record<string, string> = {

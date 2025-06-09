@@ -206,13 +206,19 @@ export const sendVerificationEmail = async (email: string, token: string) => {
       throw new Error("Email credentials are missing in .env file");
     }
 
+    console.log("=== EMAIL DEBUG ===");
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "***" : "undefined");
+    console.log("EMAIL_SERVICE:", process.env.EMAIL_SERVICE);
+
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      host: "stmp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
-      secure: true,
     });
 
     // Fix the URL format to ensure proper protocol format with colon
@@ -580,12 +586,13 @@ const generateAndSend2FACode = async (email: string) => {
   }
 
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: "stmp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
     },
-    secure: true,
   });
 
   const mailOptions = {
@@ -670,6 +677,7 @@ const generateAndSend2FACode = async (email: string) => {
   };
 
   await transporter.sendMail(mailOptions);
+
   logger.info(`[INFO] 2FA code sent to: ${email}`);
 };
 
@@ -1203,7 +1211,9 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   }
 
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: "stmp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
