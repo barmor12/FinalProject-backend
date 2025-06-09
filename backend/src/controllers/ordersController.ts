@@ -218,7 +218,7 @@ export const sendOrderConfirmationEmail = async (
   try {
     // יצירת טרנספורטור לשליחת המייל
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
@@ -694,7 +694,7 @@ export const sendOrderUpdateEmailHandler = async (
     }
 
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {

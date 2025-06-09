@@ -21,7 +21,7 @@ export const sendReviewEmail = async (
 
     // יצירת טרנספורטור לשליחת המייל
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
@@ -110,7 +110,7 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
@@ -118,7 +118,6 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: customerEmail,
@@ -172,7 +171,7 @@ export const deleteUserWithEmail = async (req: Request, res: Response) => {
 
     // שליחת מייל לאחר המחיקה
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {

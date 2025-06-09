@@ -212,7 +212,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     console.log("EMAIL_SERVICE:", process.env.EMAIL_SERVICE);
 
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
@@ -586,7 +586,7 @@ const generateAndSend2FACode = async (email: string) => {
   }
 
   const transporter = nodemailer.createTransport({
-    host: "stmp.gmail.com",
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
@@ -1211,7 +1211,7 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   }
 
   const transporter = nodemailer.createTransport({
-    host: "stmp.gmail.com",
+    host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {

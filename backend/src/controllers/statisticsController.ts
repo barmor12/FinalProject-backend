@@ -437,7 +437,7 @@ export const generateFinancialReport = async (req: Request, res: Response) => {
 
     // Create email transporter
     const transporter = nodemailer.createTransport({
-      host: "stmp.gmail.com",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
