@@ -1,0 +1,83 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm ci
+
+    - name: Create .env file
+      working-directory: ./backend
+      run: |
+        echo "NODE_ENV=test" > .env
+        echo "MONGODB_URI=mongodb://localhost:27017/cake_shop_test" >> .env
+        echo "ACCESS_TOKEN_SECRET=test_secret" >> .env
+        echo "REFRESH_TOKEN_SECRET=test_secret" >> .env
+        echo "EMAIL_SECRET=test_secret" >> .env
+        echo "EMAIL_USER=test@example.com" >> .env
+        echo "EMAIL_PASSWORD=test_password" >> .env
+        echo "GOOGLE_CLIENT_ID_IOS=test_client_id" >> .env
+        echo "FRONTEND_URL=http://localhost:3000" >> .env
+        echo "CLOUDINARY_CLOUD_NAME=test_cloud" >> .env
+        echo "CLOUDINARY_API_KEY=test_key" >> .env
+        echo "CLOUDINARY_API_SECRET=test_secret" >> .env
+
+    - name: Run linting
+      working-directory: ./backend
+      run: npm run lint
+
+    - name: Build TypeScript
+      working-directory: ./backend
+      run: npm run build
+
+    - name: Run tests
+      working-directory: ./backend
+      run: npm test
+
+    - name: Build Docker image
+      working-directory: ./backend
+      run: docker build -t cake-shop-backend .
+
+    - name: Run Docker container
+      working-directory: ./backend
+      run: |
+        docker run -d --name cake-shop-backend -p 3000:3000 cake-shop-backend
+        sleep 10  # Wait for the application to start
+
+    - name: Health check
+      run: |
+        curl -f http://localhost:3000/health || exit 1
+
+    - name: Cleanup
+      if: always()
+      run: |
+        docker stop cake-shop-backend || true
+        docker rm cake-shop-backend || true 

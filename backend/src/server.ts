@@ -29,6 +29,7 @@ console.log(
 );
 const app = express();
 app.enable("strict routing");
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -70,16 +71,55 @@ fs.readdir(uploadsPath, (err, files) => {
 });
 app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 
+// Health check endpoint
+app.get('/health', async (req, res) => {
+  try {
+    // Check database connection
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+
+    // Get memory usage
+    const memoryUsage = process.memoryUsage();
+
+    // Get uptime
+    const uptime = process.uptime();
+
+    res.status(200).json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      services: {
+        database: {
+          status: dbStatus,
+          readyState: mongoose.connection.readyState
+        }
+      },
+      system: {
+        memory: {
+          heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)}MB`,
+          heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)}MB`,
+          rss: `${Math.round(memoryUsage.rss / 1024 / 1024)}MB`
+        },
+        uptime: `${Math.round(uptime)}s`
+      },
+      version: process.env.npm_package_version || '1.0.0'
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Health check failed',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
 // Database Connection
 mongoose
   .connect(process.env.MONGO_URI!)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Failed to connect to MongoDB", err));
 
-const port: number = Number(process.env.PORT) || 3000;
+// Create HTTP Server
 const server = http.createServer(app);
-
-server.listen(port, "0.0.0.0", () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 export { server, app };
