@@ -42,6 +42,8 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
     let cart = await Cart.findOne({ user: userId });
     if (!cart) cart = new Cart({ user: userId, items: [] });
 
+    if (!cart.items) cart.items = [];
+
     const existingItem = cart.items.find(
       (item) => item.cake.toString() === cakeId
     );
