@@ -21,6 +21,8 @@ app.post("/auth/google", authController.googleCallback);
 app.post("/auth/register", authController.register);
 app.post("/auth/login", authController.login);
 app.get("/auth/verify-email", authController.verifyEmail);
+app.post("/auth/forgot-password", authController.forgotPassword);
+app.post("/auth/reset-password", authController.resetPassword);
 
 const mockSave = jest.fn();
 const mockUser = {
@@ -175,6 +177,117 @@ describe("AuthController", () => {
 
       expect(res.statusCode).toBe(200);
       expect(res.body.tokens).toHaveProperty("accessToken");
+    });
+  });
+
+  describe("verifyEmail", () => {
+    it("should verify user email if token is valid", async () => {
+      const mockToken = require("jsonwebtoken").sign(
+        { userId: "user123" },
+        process.env.EMAIL_SECRET!
+      );
+
+      jest.spyOn(User.default, "findById").mockResolvedValueOnce({
+        isVerified: false,
+        save: jest.fn(),
+      });
+
+      const res = await request(app).get(
+        `/auth/verify-email?token=${mockToken}`
+      );
+      expect(res.statusCode).toBe(200);
+      expect(res.text).toContain("Your email has been successfully verified");
+    });
+
+    it("should return error for invalid token", async () => {
+      const res = await request(app).get(
+        "/auth/verify-email?token=invalid-token"
+      );
+      expect(res.statusCode).toBe(400);
+      expect(res.text).toContain("Invalid or Expired Token");
+    });
+  });
+
+  describe("forgotPassword", () => {
+    it("should return 400 if email is missing", async () => {
+      const res = await request(app).post("/auth/forgot-password").send({});
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toHaveProperty("error", "Email is required");
+    });
+
+    it("should return 404 if user not found", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValue(null);
+      const res = await request(app)
+        .post("/auth/forgot-password")
+        .send({ email: "test@example.com" });
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("error", "User not found");
+    });
+
+    it("should send reset code if user exists", async () => {
+      // Skip mocking internal function, just test overall response
+      jest.spyOn(User.default, "findOne").mockResolvedValueOnce({
+        email: "test@example.com",
+        save: jest.fn(),
+      });
+
+      const res = await request(app)
+        .post("/auth/forgot-password")
+        .send({ email: "test@example.com" });
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toHaveProperty("message", "Reset code sent to email");
+    });
+  });
+
+  describe("resetPassword", () => {
+    it("should return 400 if any field is missing", async () => {
+      const res = await request(app).post("/auth/reset-password").send({});
+      expect(res.statusCode).toBe(400);
+    });
+
+    it("should return 404 if user not found", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValue(null);
+      const res = await request(app).post("/auth/reset-password").send({
+        email: "notfound@example.com",
+        code: "123456",
+        newPassword: "Password123!",
+      });
+      expect(res.statusCode).toBe(404);
+      expect(res.body).toHaveProperty("error", "User not found");
+    });
+
+    it("should return 400 for invalid or expired reset code", async () => {
+      jest.spyOn(User.default, "findOne").mockResolvedValue({
+        resetToken: "000000",
+        resetExpires: new Date(Date.now() - 1000),
+      });
+
+      const res = await request(app).post("/auth/reset-password").send({
+        email: "test@example.com",
+        code: "123456",
+        newPassword: "Password123!",
+      });
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toHaveProperty("error", "Invalid or expired reset code");
+    });
+
+    it("should reset password with valid code", async () => {
+      const save = jest.fn();
+      const user = {
+        resetToken: "123456",
+        resetExpires: new Date(Date.now() + 1000 * 60),
+        save,
+      };
+      jest.spyOn(User.default, "findOne").mockResolvedValue(user);
+      jest.spyOn(User.default, "updateOne").mockResolvedValue({});
+
+      const res = await request(app).post("/auth/reset-password").send({
+        email: "test@example.com",
+        code: "123456",
+        newPassword: "Password123!",
+      });
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toHaveProperty("message", "Password reset successfully");
     });
   });
 });
