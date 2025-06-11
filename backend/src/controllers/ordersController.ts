@@ -623,14 +623,16 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
       new: true,
     });
 
-    // 🔔 שליחת פוש נוטיפיקציה אם למשתמש יש טוקן
-    if (order) {
-      const tokenDoc = await NotificationToken.findOne({ user: order.user });
-      if (tokenDoc?.token) {
+    // Load token and send notification if exists
+    if (order && order.user && order.user._id) {
+      const tokenDoc = await NotificationToken.findOne({
+        userId: order.user._id,
+      });
+      if (tokenDoc && tokenDoc.token) {
         await sendOrderStatusChangeNotification(
           tokenDoc.token,
           order._id.toString(),
-          order.status
+          updateFields.status
         );
       }
     }
