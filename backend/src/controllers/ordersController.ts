@@ -235,9 +235,9 @@ export const sendOrderConfirmationEmail = async (
     });
     // יצירת תוכן המייל עם התייחסות לנתונים דינמיים
     const mailOptions = {
-      from: process.env.EMAIL_USER, // מאיפה נשלח את המייל
-      to: customerEmail, // כתובת המייל של הלקוח
-      subject: `Order Confirmation - Order #${orderId}`, // נושא המייל
+      from: `"Bakey" <${process.env.EMAIL_USER}>`,
+      to: customerEmail,
+      subject: `Order Confirmation - Order #${orderId}`,
       html: `
         <!DOCTYPE html>
 <html lang="en">
@@ -339,15 +339,15 @@ export const sendOrderConfirmationEmail = async (
         </thead>
         <tbody>
           ${orderItems
-            .map(
-              (item: any) => `
+          .map(
+            (item: any) => `
               <tr>
                 <td>${item.cakeName}</td>
                 <td>${item.quantity}</td>
                 <td>$${item.price}</td>
               </tr>`
-            )
-            .join("")}
+          )
+          .join("")}
         </tbody>
       </table>
     </div>
@@ -742,8 +742,8 @@ export const sendOrderUpdateEmailHandler = async (
       <h2>Order Update</h2>
       <p>Hello,</p>
       <p>Your order <strong>#${orderId.slice(
-        -6
-      )}</strong> has been updated to: <strong>${orderStatus}</strong>.</p>
+      -6
+    )}</strong> has been updated to: <strong>${orderStatus}</strong>.</p>
       <p>${statusMessages[orderStatus]}</p>
     `;
 
@@ -758,7 +758,7 @@ export const sendOrderUpdateEmailHandler = async (
     emailContent += `<p>Thank you for ordering with us!</p>`;
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject: `Order #${orderId.slice(-6)} Status Update`,
       html: emailContent,

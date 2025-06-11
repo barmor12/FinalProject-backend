@@ -32,7 +32,7 @@ export const sendReviewEmail = async (
 
     // יצירת תוכן המייל – ניתן לשנות את העיצוב והתוכן כרצונך
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject: `We'd love your review for Order #${orderId.slice(-6)}`,
       html: `
@@ -75,12 +75,11 @@ export const sendReviewEmail = async (
             <div class="container">
               <h2 class="header">Thank you for your order!</h2>
               <p>Your order <strong>#${orderId.slice(
-                -6
-              )}</strong> has been delivered.</p>
+        -6
+      )}</strong> has been delivered.</p>
               <p>We would love to hear your feedback. Please click the button below to leave a review:</p>
-              <a class="button" href="${
-                process.env.REVIEW_URL || "https://example.com/review"
-              }">Leave a Review</a>
+              <a class="button" href="${process.env.REVIEW_URL || "https://example.com/review"
+        }">Leave a Review</a>
               <p>Thank you for shopping with us!</p>
             </div>
           </body>
@@ -119,7 +118,7 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
       },
     });
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
       subject: "📬 Message from Admin",
       text: managerMessage, // גרסה פשוטה לגיבוי
@@ -128,9 +127,9 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
             <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
               <h2 style="color: #6b4226; margin-bottom: 20px;">Message from Admin</h2>
               <p style="font-size: 16px; color: #333;">${managerMessage.replace(
-                /\n/g,
-                "<br>"
-              )}</p>
+        /\n/g,
+        "<br>"
+      )}</p>
               <hr style="margin: 30px 0;" />
               <p style="font-size: 14px; color: #888;">This message was sent to you by the admin team.</p>
             </div>
@@ -181,7 +180,7 @@ export const deleteUserWithEmail = async (req: Request, res: Response) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: userEmail,
       subject: "🗑️ Your Account Has Been Deleted",
       text: `Hi ${userFullName}, your account was deleted.`, // רק לגיבוי

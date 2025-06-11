@@ -244,7 +244,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     const firstName = user ? user.firstName : "";
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Verify Your Email Address",
       html: `
@@ -406,7 +406,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
             
             <div class="email-footer">
               <p>If you didn't request this verification, you can safely ignore this email.</p>
-              <p>&copy; ${new Date().getFullYear()} My Cake Shop. All rights reserved.</p>
+              <p>&copy; ${new Date().getFullYear()} Bakey. All rights reserved.</p>
             </div>
           </div>
         </body>
@@ -596,7 +596,7 @@ const generateAndSend2FACode = async (email: string) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `"Bakey" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Your 2FA Verification Code",
     html: `
@@ -1058,41 +1058,183 @@ export const verifyEmail = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).send(`
         <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>Email Verification</title>
-        </head>
-        <body>
-          <div class="container">
-            <div class="icon">❌</div>
-            <div class="title error glow">User Not Found</div>
-            <div class="message">Please ensure you are registered.</div>
-          </div>
-        </body>
-        </html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email Verification – User Not Found</title>
+  <style>
+    :root {
+      --brand-brown: #6b4226;
+      --brand-beige: #f9f3ea;
+      --accent-red:  #ff4d6d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--brand-beige);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--brand-brown);
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      padding: 48px 32px 40px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .badge {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 28px;
+    }
+    .badge svg {
+      width: 54px;
+      height: 54px;
+      stroke: #fff;
+      stroke-width: 6px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    @keyframes fadeIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">
+      <!-- X icon -->
+      <svg viewBox="0 0 24 24">
+        <line x1="6"  y1="6"  x2="18" y2="18"></line>
+        <line x1="6"  y1="18" x2="18" y2="6"></line>
+      </svg>
+    </div>
+    <h1>User not found</h1>
+    <p>Please ensure you are registered.</p>
+  </div>
+</body>
+</html>
+
       `);
     }
 
     if (user.isVerified) {
-      return res.status(200).send(`
+      return res.status(200).send(
+        `
         <!DOCTYPE html>
         <html lang="en">
         <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>Email Verified</title>
+          <style>
+            :root {
+              --brand-brown: #6b4226;
+              --brand-beige: #f9f3ea;
+              --accent-green: #32c671;
+            }
+        
+            * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+            body {
+              font-family: 'Inter', Arial, sans-serif;
+              background: var(--brand-beige);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: 100vh;
+              color: var(--brand-brown);
+            }
+        
+            .card {
+              background: #fff;
+              border-radius: 16px;
+              box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+              max-width: 420px;
+              width: 90%;
+              text-align: center;
+              padding: 48px 32px 40px;
+              animation: fadeIn 0.5s ease;
+            }
+        
+            .badge {
+              width: 90px;
+              height: 90px;
+              border-radius: 50%;
+              background: var(--accent-green);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: 0 auto 28px;
+            }
+            .badge svg {
+              width: 54px;
+              height: 54px;
+              stroke: #fff;
+              stroke-width: 6px;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+              fill: none;
+            }
+        
+            h1 {
+              font-size: 28px;
+              font-weight: 800;
+              margin-bottom: 14px;
+            }
+            p {
+              font-size: 18px;
+              line-height: 1.45;
+            }
+        
+            @keyframes fadeIn {
+              from { transform: translateY(12px); opacity: 0; }
+              to   { transform: translateY(0);   opacity: 1; }
+            }
+          </style>
         </head>
         <body>
-          <div class="container">
-            <div class="icon">✅</div>
-            <div class="title success glow">Email Already Verified</div>
-            <div class="message">Your email has already been verified.</div>
+          <div class="card">
+            <div class="badge">
+              <!-- Checkmark -->
+              <svg viewBox="0 0 24 24"><polyline points="4 12 9 17 20 6"/></svg>
+            </div>
+            <h1>Email already verified</h1>
+            <p>Your email has already been verified.</p>
           </div>
         </body>
         </html>
-      `);
+        `
+      );
     }
 
     user.isVerified = true;
@@ -1100,38 +1242,180 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
     return res.status(200).send(`
       <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Email Verified</title>
-      </head>
-      <body>
-        <div class="container">
-          <div class="icon">🎉</div>
-          <div class="title success glow">Thank You!</div>
-          <div class="message">Your email has been successfully verified!</div>
-        </div>
-      </body>
-      </html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email Verified</title>
+  <style>
+    :root {
+      --brand-brown: #6b4226;
+      --brand-beige: #f9f3ea;
+      --accent-green: #32c671;
+    }
+
+    /* reset קטן כדי שיהיה עקבי בכל דפדפן */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--brand-beige);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--brand-brown);
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      padding: 48px 32px 40px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    /* עיגול ירוק עם טיק */
+    .badge {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 28px;
+    }
+    .badge svg {
+      width: 54px;
+      height: 54px;
+      stroke: #fff;
+      stroke-width: 6px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    @keyframes fadeIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">
+      <svg viewBox="0 0 24 24"><polyline points="4 12 9 17 20 6"/></svg>
+    </div>
+    <h1>Thank you!</h1>
+    <p>Your email has been successfully verified.</p>
+  </div>
+</body>
+</html>
+    
     `);
   } catch (error) {
     return res.status(400).send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Email Verification</title>
-      </head>
-      <body>
-        <div class="container">
-          <div class="icon">⚠️</div>
-          <div class="title error glow">Invalid or Expired Token</div>
-          <div class="message">Please request a new verification email.</div>
-        </div>
-      </body>
-      </html>
+     <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email Verification – Error</title>
+  <style>
+    :root {
+      --brand-brown: #6b4226;
+      --brand-beige: #f9f3ea;
+      --accent-red:  #ff4d6d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--brand-beige);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--brand-brown);
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      padding: 48px 32px 40px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .badge {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 28px;
+    }
+    .badge svg {
+      width: 54px;
+      height: 54px;
+      stroke: #fff;
+      stroke-width: 6px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    @keyframes fadeIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">
+      <!-- סימן קריאה -->
+      <svg viewBox="0 0 24 24">
+        <line x1="12" y1="5"  x2="12" y2="15"></line>
+        <circle cx="12" cy="19" r="1.5"></circle>
+      </svg>
+    </div>
+    <h1>Invalid or expired token</h1>
+    <p>Please request a new verification email.</p>
+  </div>
+</body>
+</html>
+
     `);
   }
 };
@@ -1221,15 +1505,87 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `"Bakey" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Password Reset Code",
     html: `
-      <h1>Password Reset Request</h1>
-      <p>Use the following code to reset your password:</p>
-      <h2>${resetCode}</h2>
-      <p>This code will expire in 15 minutes.</p>
-    `,
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Password Reset</title>
+      <style>
+        /* צבעי המותג */
+        :root {
+          --brand-brown: #6b4226;
+          --brand-beige: #f9f3ea;
+          --accent-blue: #3a7cff;
+        }
+    
+        body {
+          margin: 0;
+          background: var(--brand-beige);
+          font-family: Arial, sans-serif;
+          color: var(--brand-brown);
+        }
+    
+        .wrapper {
+          width: 100%;
+          padding: 40px 0;
+          display: flex;
+          justify-content: center;
+        }
+    
+        .card {
+          width: 90%;
+          max-width: 480px;
+          background: #ffffff;
+          border-radius: 16px;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+          padding: 48px 32px 40px;
+          text-align: center;
+        }
+    
+        h1 {
+          font-size: 26px;
+          font-weight: 800;
+          margin-bottom: 20px;
+        }
+    
+        p {
+          font-size: 16px;
+          margin-bottom: 28px;
+          line-height: 1.45;
+        }
+    
+        .code-box {
+          display: inline-block;
+          background: var(--accent-blue);
+          color: #fff;
+          padding: 14px 24px;
+          border-radius: 8px;
+          font-size: 22px;
+          font-weight: 700;
+          letter-spacing: 2px;
+        }
+    
+        @media (max-width: 420px) {
+          h1 { font-size: 22px; }
+          p  { font-size: 15px; }
+          .code-box { font-size: 20px; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="wrapper">
+        <div class="card">
+          <h1>Password Reset Request</h1>
+          <p>Use the following code to reset your password:</p>
+          <div class="code-box">${resetCode}</div>
+          <p>This code will expire in 15&nbsp;minutes.</p>
+        </div>
+      </div>
+
+`
   };
 
   await transporter.sendMail(mailOptions);
