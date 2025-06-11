@@ -33,9 +33,9 @@ jobs:
       working-directory: ./backend
       run: npm run lint
 
-    - name: Build TypeScript
+    - name: TypeScript type check (no emit)
       working-directory: ./backend
-      run: npm run build
+      run: npx tsc --noEmit
 
     - name: Run tests
       working-directory: ./backend
