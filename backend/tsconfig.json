@@ -32,6 +32,6 @@
     "types": ["jest", "node"]
   },
 
-  "include": ["src"], // קבצים ותיקיות לכלול
+  "include": ["src", "tests"], // קבצים ותיקיות לכלול (כולל תיקיית הטסטים)
   "exclude": ["node_modules", "dist"] // קבצים ותיקיות לא לכלול
 }

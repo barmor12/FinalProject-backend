@@ -1,7 +1,7 @@
 // @ts-nocheck
 import request from "supertest";
 import express from "express";
-import * as User from "../src/models/userModel";
+import * as User from "../models/userModel";
 import { OAuth2Client } from "google-auth-library";
 
 const mockVerifyIdToken = jest.fn();
@@ -13,7 +13,7 @@ jest.mock("google-auth-library", () => {
   };
 });
 
-import * as authController from "../src/controllers/authController";
+import * as authController from "../controllers/authController";
 
 const app = express();
 app.use(express.json());
