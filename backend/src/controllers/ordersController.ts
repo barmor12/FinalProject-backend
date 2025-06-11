@@ -8,7 +8,8 @@ import Cart from "../models/cartModel";
 import nodemailer from "nodemailer";
 import Address from "../models/addressModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
-
+import NotificationToken from "../models/notificationToken";
+import { sendOrderStatusChangeNotification } from "../utils/pushNotifications";
 export const placeOrder = async (
   req: Request,
   res: Response
@@ -621,6 +622,18 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     const order = await Order.findByIdAndUpdate(orderId, updateFields, {
       new: true,
     });
+
+    // 🔔 שליחת פוש נוטיפיקציה אם למשתמש יש טוקן
+    if (order) {
+      const tokenDoc = await NotificationToken.findOne({ user: order.user });
+      if (tokenDoc?.token) {
+        await sendOrderStatusChangeNotification(
+          tokenDoc.token,
+          order._id.toString(),
+          order.status
+        );
+      }
+    }
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });

@@ -39,6 +39,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/passport": "^1.0.17",
     "@types/pdfkit": "^0.13.9",
+    "axios": "^1.9.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.6.0",
