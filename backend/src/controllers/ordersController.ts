@@ -10,6 +10,12 @@ import Address from "../models/addressModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import NotificationToken from "../models/notificationToken";
 import { sendOrderStatusChangeNotification } from "../utils/pushNotifications";
+
+// Helper function to get push token for user
+async function getPushTokenForUser(userId: string) {
+  const tokenDoc = await NotificationToken.findOne({ userId });
+  return tokenDoc ? tokenDoc.token : null;
+}
 export const placeOrder = async (
   req: Request,
   res: Response
@@ -621,21 +627,28 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 
     const order = await Order.findByIdAndUpdate(orderId, updateFields, {
       new: true,
-    });
+    }).populate("user", "_id email firstName lastName"); // populate user for token lookup
 
-    // Load token and send notification if exists
+    // --- Push Notification logic and logging ---
     if (order && order.user && order.user._id) {
-      const tokenDoc = await NotificationToken.findOne({
-        userId: order.user._id,
-      });
-      if (tokenDoc && tokenDoc.token) {
+      // Logging user id
+      // @ts-ignore
+      console.log("🧠 order.user._id:", order.user._id);
+      // @ts-ignore
+      const pushToken = await getPushTokenForUser(order.user._id);
+      console.log("📲 טוקן שנמצא:", pushToken);
+      if (pushToken) {
         await sendOrderStatusChangeNotification(
-          tokenDoc.token,
+          pushToken,
           order._id.toString(),
           updateFields.status
         );
+        console.log("🚀 שלחתי התראה ללקוח על שינוי סטטוס!");
+      } else {
+        console.log("⚠️ אין טוקן ללקוח, לא נשלחה התראה.");
       }
     }
+    // --- End Push Notification logic ---
 
     if (!order) {
       res.status(404).json({ error: "Order not found" });
