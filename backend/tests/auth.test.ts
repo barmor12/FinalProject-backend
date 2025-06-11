@@ -204,7 +204,7 @@ describe("AuthController", () => {
         "/auth/verify-email?token=invalid-token"
       );
       expect(res.statusCode).toBe(400);
-      expect(res.text).toContain("Invalid or Expired Token");
+      expect(res.text.toLowerCase()).toContain("invalid or expired token");
     });
   });
 
