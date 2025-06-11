@@ -1,17 +1,17 @@
-name: Backend CI
+name: Backend CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - 'backend/**'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - 'backend/**'
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     services:
@@ -21,7 +21,8 @@ jobs:
           - 27017:27017
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -34,27 +35,27 @@ jobs:
       working-directory: ./backend
       run: npm ci
 
-    - name: Create .env file
+    - name: Create test .env
       working-directory: ./backend
       run: |
         echo "NODE_ENV=test" > .env
-        echo "MONGODB_URI=mongodb://localhost:27017/cake_shop_test" >> .env
+        echo "MONGODB_URI=mongodb://localhost:27017/test_db" >> .env
         echo "ACCESS_TOKEN_SECRET=test_secret" >> .env
         echo "REFRESH_TOKEN_SECRET=test_secret" >> .env
         echo "EMAIL_SECRET=test_secret" >> .env
         echo "EMAIL_USER=test@example.com" >> .env
         echo "EMAIL_PASSWORD=test_password" >> .env
-        echo "GOOGLE_CLIENT_ID_IOS=test_client_id" >> .env
+        echo "GOOGLE_CLIENT_ID=test_client_id" >> .env
         echo "FRONTEND_URL=http://localhost:3000" >> .env
         echo "CLOUDINARY_CLOUD_NAME=test_cloud" >> .env
         echo "CLOUDINARY_API_KEY=test_key" >> .env
         echo "CLOUDINARY_API_SECRET=test_secret" >> .env
 
-    - name: Run linting
+    - name: Run lint
       working-directory: ./backend
       run: npm run lint
 
-    - name: Build TypeScript
+    - name: Build project
       working-directory: ./backend
       run: npm run build
 
@@ -62,22 +63,16 @@ jobs:
       working-directory: ./backend
       run: npm test
 
-    - name: Build Docker image
-      working-directory: ./backend
-      run: docker build -t cake-shop-backend .
-
-    - name: Run Docker container
-      working-directory: ./backend
-      run: |
-        docker run -d --name cake-shop-backend -p 3000:3000 cake-shop-backend
-        sleep 10  # Wait for the application to start
-
-    - name: Health check
-      run: |
-        curl -f http://localhost:3000/health || exit 1
-
-    - name: Cleanup
-      if: always()
-      run: |
-        docker stop cake-shop-backend || true
-        docker rm cake-shop-backend || true 
+    - name: Deploy to PM2 on Server
+      if: github.ref == 'refs/heads/main'
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PROD_HOST }}
+        username: ${{ secrets.PROD_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /var/www/FinalProject-backend/backend
+          git pull origin main
+          npm install
+          npm run build
+          pm2 reload CakeBackend || pm2 start ecosystem.config.js
