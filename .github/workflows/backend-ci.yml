@@ -2,23 +2,17 @@ name: Backend CI/CD
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
     paths:
       - 'backend/**'
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
     paths:
       - 'backend/**'
 
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
-
-    services:
-      mongodb:
-        image: mongo:latest
-        ports:
-          - 27017:27017
 
     steps:
     - name: Checkout code
@@ -35,27 +29,11 @@ jobs:
       working-directory: ./backend
       run: npm ci
 
-    - name: Create test .env
-      working-directory: ./backend
-      run: |
-        echo "NODE_ENV=test" > .env
-        echo "MONGODB_URI=mongodb://localhost:27017/test_db" >> .env
-        echo "ACCESS_TOKEN_SECRET=test_secret" >> .env
-        echo "REFRESH_TOKEN_SECRET=test_secret" >> .env
-        echo "EMAIL_SECRET=test_secret" >> .env
-        echo "EMAIL_USER=test@example.com" >> .env
-        echo "EMAIL_PASSWORD=test_password" >> .env
-        echo "GOOGLE_CLIENT_ID=test_client_id" >> .env
-        echo "FRONTEND_URL=http://localhost:3000" >> .env
-        echo "CLOUDINARY_CLOUD_NAME=test_cloud" >> .env
-        echo "CLOUDINARY_API_KEY=test_key" >> .env
-        echo "CLOUDINARY_API_SECRET=test_secret" >> .env
-
-    - name: Run lint
+    - name: Lint
       working-directory: ./backend
       run: npm run lint
 
-    - name: Build project
+    - name: Build TypeScript
       working-directory: ./backend
       run: npm run build
 
@@ -63,16 +41,16 @@ jobs:
       working-directory: ./backend
       run: npm test
 
-    - name: Deploy to PM2 on Server
-      if: github.ref == 'refs/heads/main'
-      uses: appleboy/ssh-action@v1.0.0
+    - name: Setup SSH key
+      uses: webfactory/ssh-agent@v0.9.0
       with:
-        host: ${{ secrets.PROD_HOST }}
-        username: ${{ secrets.PROD_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+
+    - name: Deploy to production server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
           cd /var/www/FinalProject-backend/backend
           git pull origin main
           npm install
-          npm run build
-          pm2 reload CakeBackend || pm2 start ecosystem.config.js
+          pm2 restart CakeBackend
+        EOF
