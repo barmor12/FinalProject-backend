@@ -47,26 +47,35 @@ notificationsRouter.post(
       message: string;
       type: string;
     };
-    const tokens = (await PushToken.find({ token: { $ne: null } }))
-      .map((t) => t.token)
-      .filter((t) => Expo.isExpoPushToken(t));
+    // Get all token docs so we can use .token and potentially other info
+    const tokens = await PushToken.find({ token: { $ne: null } });
 
-    // Group messages by experienceId to avoid PUSH_TOO_MANY_EXPERIENCE_IDS
-    const messagesByExperience: { [experienceId: string]: any[] } = {};
+    // Group messages by Expo project experienceId
+    const groupedMessages: Record<string, any[]> = {};
 
-    for (const token of tokens) {
-      const experienceId =
-        token.includes("E3gJ0EKS") || token.includes("4vnC75Kl")
-          ? "@avieles100/CakeBusinessApp"
-          : "@barmor12/CakeBusinessApp";
+    for (const tokenDoc of tokens) {
+      const token = tokenDoc.token;
+      if (!Expo.isExpoPushToken(token)) continue;
 
-      if (!messagesByExperience[experienceId]) {
-        messagesByExperience[experienceId] = [];
+      // Determine projectId/experienceId from the token value
+      let projectId = "@default";
+      if (
+        token.includes("P95Qo1E7GAqqIOYxfBXveY") ||
+        token.includes("dYa9pnHufwSNzsqM37S7QQ")
+      ) {
+        projectId = "@barmor12/CakeBusinessApp";
+      } else if (
+        token.includes("E3gJ0EKS9DTbctstQkmTG2") ||
+        token.includes("4vnC75Kl5-G41y-MaKGN7o")
+      ) {
+        projectId = "@avieles100/CakeBusinessApp";
       }
 
-      messagesByExperience[experienceId].push({
+      if (!groupedMessages[projectId]) groupedMessages[projectId] = [];
+
+      groupedMessages[projectId].push({
         to: token,
-        sound: "default" as const,
+        sound: "default",
         title,
         body: message,
         data: { type },
@@ -74,23 +83,22 @@ notificationsRouter.post(
     }
 
     // Flatten all messages to check if there are any messages to send
-    const allMessages = Object.values(messagesByExperience).flat();
+    const allMessages = Object.values(groupedMessages).flat();
     if (allMessages.length === 0) {
       return res.status(400).json({ error: "No push tokens available" });
     }
 
     let sentCount = 0;
-    for (const experienceId in messagesByExperience) {
-      const chunks = expo.chunkPushNotifications(
-        messagesByExperience[experienceId]
-      );
+    // Send notifications per projectId (experience)
+    for (const [projectId, messages] of Object.entries(groupedMessages)) {
+      const chunks = expo.chunkPushNotifications(messages);
       for (const chunk of chunks) {
         try {
           const tickets = await expo.sendPushNotificationsAsync(chunk);
           sentCount += tickets.length;
-        } catch (err) {
-          const tickets = await expo.sendPushNotificationsAsync(chunk);
-          sentCount += tickets.length;
+          console.log(`✅ נשלחו התראות ל-${projectId}`);
+        } catch (error) {
+          console.error(`❌ שגיאה בשליחת התראות ל-${projectId}:`, error);
         }
       }
     }
