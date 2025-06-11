@@ -12,7 +12,7 @@ export const notificationsRouter = Router();
 notificationsRouter.post(
   "/register",
   authenticateMiddleware,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<any> => {
     const userId = (req as any).user?.userId || (req as any).user?.id;
     if (!userId) {
       res.status(400).json({ error: "Missing userId" });
@@ -25,7 +25,7 @@ notificationsRouter.post(
     }
     await PushToken.findOneAndUpdate(
       { token },
-      { userId, token },
+      { userId, token, sentAt: new Date() },
       { upsert: true, new: true }
     );
     res.json({ ok: true });
@@ -36,7 +36,7 @@ notificationsRouter.post(
 notificationsRouter.post(
   "/send",
   authenticateMiddleware,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<any> => {
     const userId = (req as any).user?.userId || (req as any).user?.id;
     if (!userId) {
       res.status(400).json({ error: "Missing userId" });
@@ -47,26 +47,51 @@ notificationsRouter.post(
       message: string;
       type: string;
     };
-    const tokens = (await PushToken.find()).map((t) => t.token);
+    const tokens = (await PushToken.find({ token: { $ne: null } }))
+      .map((t) => t.token)
+      .filter((t) => Expo.isExpoPushToken(t));
 
-    const messages = tokens.map((token) => ({
-      to: token,
-      sound: "default" as const,
-      title,
-      body: message,
-      data: { type },
-    }));
+    // Group messages by experienceId to avoid PUSH_TOO_MANY_EXPERIENCE_IDS
+    const messagesByExperience: { [experienceId: string]: any[] } = {};
 
-    const chunks = expo.chunkPushNotifications(messages);
+    for (const token of tokens) {
+      const experienceId =
+        token.includes("E3gJ0EKS") || token.includes("4vnC75Kl")
+          ? "@avieles100/CakeBusinessApp"
+          : "@barmor12/CakeBusinessApp";
+
+      if (!messagesByExperience[experienceId]) {
+        messagesByExperience[experienceId] = [];
+      }
+
+      messagesByExperience[experienceId].push({
+        to: token,
+        sound: "default" as const,
+        title,
+        body: message,
+        data: { type },
+      });
+    }
+
+    // Flatten all messages to check if there are any messages to send
+    const allMessages = Object.values(messagesByExperience).flat();
+    if (allMessages.length === 0) {
+      return res.status(400).json({ error: "No push tokens available" });
+    }
+
     let sentCount = 0;
-    for (const chunk of chunks) {
-      try {
-        const tickets = await expo.sendPushNotificationsAsync(chunk);
-        sentCount += tickets.length;
-      } catch {
-        // retry once
-        const tickets = await expo.sendPushNotificationsAsync(chunk);
-        sentCount += tickets.length;
+    for (const experienceId in messagesByExperience) {
+      const chunks = expo.chunkPushNotifications(
+        messagesByExperience[experienceId]
+      );
+      for (const chunk of chunks) {
+        try {
+          const tickets = await expo.sendPushNotificationsAsync(chunk);
+          sentCount += tickets.length;
+        } catch (err) {
+          const tickets = await expo.sendPushNotificationsAsync(chunk);
+          sentCount += tickets.length;
+        }
       }
     }
 
@@ -76,7 +101,9 @@ notificationsRouter.post(
       title,
       body: message,
       sentTo: sentCount,
+      sentAt: new Date(),
     });
+    console.log("📨 Notification sent:", { title, message, sentTo: sentCount });
 
     res.json({ ok: true, sentTo: sentCount });
   }
@@ -86,7 +113,7 @@ notificationsRouter.post(
 notificationsRouter.get(
   "/recent",
   authenticateMiddleware,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<any> => {
     const logs = await NotificationLog.find().sort({ sentAt: -1 }).limit(20);
     res.json(logs);
   }
