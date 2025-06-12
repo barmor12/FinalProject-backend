@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,9 +10,9 @@ const userSchema = new mongoose.Schema(
       url: { type: String }, // הקישור הישיר לתמונה ב-Cloudinary
       public_id: { type: String }, // מזהה התמונה לניהול עתידי
     },
-    role: { type: String, default: "user" },
+    role: { type: String, default: 'user' },
     googleId: { type: String },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cake" }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cake' }],
     refresh_tokens: [String],
     isVerified: { type: Boolean, default: false },
     resetToken: { type: String },
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
 
 
     // 🔥 מחליפים כתובת ומספר טלפון בהפנייה לסכמת Address
-    addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
+    addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }],
 
     // 2FA related fields
     twoFactorEnabled: { type: Boolean, default: false },
@@ -30,4 +30,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model('User', userSchema);

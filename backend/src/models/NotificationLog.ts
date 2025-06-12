@@ -1,10 +1,10 @@
-import { Schema, model, Document, Types } from "mongoose";
+import { Schema, model, Document, Types } from 'mongoose';
 
 export type NotificationType =
-  | "orderStatus"
-  | "promotion"
-  | "newProduct"
-  | "all";
+  | 'orderStatus'
+  | 'promotion'
+  | 'newProduct'
+  | 'all';
 
 export interface INotificationLog extends Document {
   userId: Types.ObjectId;
@@ -16,10 +16,10 @@ export interface INotificationLog extends Document {
 }
 
 const notificationLogSchema = new Schema<INotificationLog>({
-  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   type: {
     type: String,
-    enum: ["orderStatus", "promotion", "newProduct", "all"],
+    enum: ['orderStatus', 'promotion', 'newProduct', 'all'],
     required: true,
   },
   title: { type: String, required: true },
@@ -29,6 +29,6 @@ const notificationLogSchema = new Schema<INotificationLog>({
 });
 
 export const NotificationLog = model<INotificationLog>(
-  "NotificationLog",
+  'NotificationLog',
   notificationLogSchema
 );

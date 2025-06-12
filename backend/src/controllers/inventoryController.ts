@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import Product from "../models/inventoryModel";
+import { Request, Response } from 'express';
+import Product from '../models/inventoryModel';
 import Cake from '../models/cakeModel';
-import cloudinary from "../config/cloudinary";
+import cloudinary from '../config/cloudinary';
 
 export const getAllProducts = async (req: Request, res: Response) => {
   const products = await Product.find();
@@ -28,7 +28,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
     // חיפוש המוצר במסד הנתונים
     const cake = await Cake.findById(cakeId);
     if (!cake) {
-      res.status(404).json({ error: "Product not found" });
+      res.status(404).json({ error: 'Product not found' });
       return; // ✅ עצירת המשך הקוד אם המוצר לא נמצא
     }
 
@@ -41,10 +41,10 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
     // מחיקת המוצר מהמסד נתונים
     await Cake.findByIdAndDelete(cakeId);
 
-    res.json({ success: true, message: "Product and image deleted successfully" });
+    res.json({ success: true, message: 'Product and image deleted successfully' });
   } catch (error) {
-    console.error("❌ Error deleting product:", error);
-    res.status(500).json({ error: "Failed to delete product" });
+    console.error('❌ Error deleting product:', error);
+    res.status(500).json({ error: 'Failed to delete product' });
   }
 };
 
@@ -52,24 +52,24 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
 
 export const deleteProducts = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log("🔍 Received Request Body:", req.body); // הדפסת תוכן הבקשה
+    console.log('🔍 Received Request Body:', req.body); // הדפסת תוכן הבקשה
 
     const { productIds } = req.body;
 
     if (!Array.isArray(productIds) || productIds.length === 0) {
-      res.status(400).json({ error: "Invalid productIds array" });
+      res.status(400).json({ error: 'Invalid productIds array' });
       return;
     }
 
-    console.log("✅ Valid productIds:", productIds);
+    console.log('✅ Valid productIds:', productIds);
 
     // חיפוש המוצרים במסד הנתונים
     const cakes = await Cake.find({ _id: { $in: productIds } });
 
-    console.log("🎂 Cakes found:", cakes);
+    console.log('🎂 Cakes found:', cakes);
 
     if (cakes.length === 0) {
-      res.status(404).json({ error: "No products found" });
+      res.status(404).json({ error: 'No products found' });
       return;
     }
 
@@ -86,9 +86,9 @@ export const deleteProducts = async (req: Request, res: Response): Promise<void>
     // מחיקת המוצרים מהמסד נתונים
     await Cake.deleteMany({ _id: { $in: productIds } });
 
-    res.json({ success: true, message: "Products deleted successfully" });
+    res.json({ success: true, message: 'Products deleted successfully' });
   } catch (error) {
-    console.error("❌ Error deleting products:", error);
-    res.status(500).json({ error: "Failed to delete product" });
+    console.error('❌ Error deleting products:', error);
+    res.status(500).json({ error: 'Failed to delete product' });
   }
 };

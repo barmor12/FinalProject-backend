@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import Cake from '../models/cakeModel';
-import User from "../models/userModel";
+import User from '../models/userModel';
 import cloudinary from '../config/cloudinary';
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
   const { name, description, price, cost, ingredients, stock, imageUrl } = req.body;
-  console.log("body: ", req.body);
+  console.log('body: ', req.body);
 
   // Check required fields
   if (!name || !description || !price || !cost || !ingredients) {
@@ -33,7 +33,7 @@ export const addCake = async (req: Request, res: Response): Promise<void> => {
     // Handle image: either from file upload or URL in request body
     if (req.file) {
       // If image is uploaded via form
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: "cakes" });
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'cakes' });
       imageData = {
         url: uploadResult.secure_url,
         public_id: uploadResult.public_id
@@ -99,7 +99,7 @@ export const updateCake = async (req: Request, res: Response): Promise<void> => 
       if (cake.image?.public_id) {
         await cloudinary.uploader.destroy(cake.image.public_id);
       }
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: "cakes" });
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'cakes' });
       cake.image = {
         url: uploadResult.secure_url,
         public_id: uploadResult.public_id
@@ -155,27 +155,27 @@ export const deleteCake = async (req: Request, res: Response): Promise<void> => 
 export const getFavorites = async (req: Request, res: Response): Promise<void> => {
   const { userId } = req.params;
   if (!userId) {
-    res.status(400).json({ error: "User ID is required" });
+    res.status(400).json({ error: 'User ID is required' });
     return;
   }
 
   try {
-    const user = await User.findById(userId).populate("favorites");
+    const user = await User.findById(userId).populate('favorites');
     if (!user) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
     res.status(200).json({ favorites: user.favorites });
   } catch (error) {
-    console.error("Failed to fetch favorites:", error);
-    res.status(500).json({ error: "Failed to fetch favorites" });
+    console.error('Failed to fetch favorites:', error);
+    res.status(500).json({ error: 'Failed to fetch favorites' });
   }
 };
 export const addToFavorites = async (req: Request, res: Response): Promise<void> => {
   const { userId, cakeId } = req.body;
   if (!userId || !cakeId) {
-    res.status(400).json({ error: "User ID and Cake ID are required" });
+    res.status(400).json({ error: 'User ID and Cake ID are required' });
     return;
   }
 
@@ -183,13 +183,13 @@ export const addToFavorites = async (req: Request, res: Response): Promise<void>
     // חיפוש משתמש
     const user = await User.findById(userId);
     if (!user) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
     // בדיקה אם העוגה כבר קיימת ברשימת המועדפים
     if (user.favorites.includes(cakeId)) {
-      res.status(400).json({ error: "Cake is already in favorites" });
+      res.status(400).json({ error: 'Cake is already in favorites' });
       return;
     }
 
@@ -197,7 +197,7 @@ export const addToFavorites = async (req: Request, res: Response): Promise<void>
     user.favorites.push(cakeId);
     await user.save();
 
-    res.status(200).json({ message: "Cake added to favorites" });
+    res.status(200).json({ message: 'Cake added to favorites' });
   } catch (err) {
     console.error('Failed to add cake to favorites:', err);
     res.status(500).json({ error: 'Failed to add cake to favorites' });
@@ -207,7 +207,7 @@ export const removeFromFavorites = async (req: Request, res: Response): Promise<
   const { userId, cakeId } = req.body;
 
   if (!userId || !cakeId) {
-    res.status(400).json({ error: "User ID and Cake ID are required" });
+    res.status(400).json({ error: 'User ID and Cake ID are required' });
     return;
   }
 
@@ -215,14 +215,14 @@ export const removeFromFavorites = async (req: Request, res: Response): Promise<
     // חיפוש משתמש
     const user = await User.findById(userId);
     if (!user) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
     // הסרת העוגה מהמועדפים
     const index = user.favorites.indexOf(cakeId);
     if (index === -1) {
-      res.status(400).json({ error: "Cake not in favorites" });
+      res.status(400).json({ error: 'Cake not in favorites' });
       return;
     }
 
@@ -230,7 +230,7 @@ export const removeFromFavorites = async (req: Request, res: Response): Promise<
     user.favorites.splice(index, 1);
     await user.save();
 
-    res.status(200).json({ message: "Cake removed from favorites" });
+    res.status(200).json({ message: 'Cake removed from favorites' });
   } catch (err) {
     console.error('Failed to remove cake from favorites:', err);
     res.status(500).json({ error: 'Failed to remove cake from favorites' });
@@ -248,7 +248,7 @@ export const updateStock = async (req: Request, res: Response) => {
     );
 
     if (!cake) {
-      res.status(404).json({ message: "Cake not found" });
+      res.status(404).json({ message: 'Cake not found' });
       return;
     }
 

@@ -1,19 +1,19 @@
-import request from "supertest";
-import { app, server } from "../server"; // ודא שזה הנתיב הנכון לאפליקציית האקספרס שלך
+import request from 'supertest';
+import { app, server } from '../server'; // ודא שזה הנתיב הנכון לאפליקציית האקספרס שלך
 
-jest.mock("../models/inventoryModel", () => ({
-  find: jest.fn(() => Promise.resolve([{ _id: "123", name: "Mock Product" }])),
+jest.mock('../models/inventoryModel', () => ({
+  find: jest.fn(() => Promise.resolve([{ _id: '123', name: 'Mock Product' }])),
   findByIdAndUpdate: jest.fn((id, body) =>
     Promise.resolve({ _id: id, ...body })
   ),
 }));
 
-jest.mock("../models/cakeModel", () => {
+jest.mock('../models/cakeModel', () => {
   const cakes: {
     [key: string]: { _id: string; image?: { public_id: string } };
   } = {
-    "123": { _id: "123" },
-    withImage: { _id: "withImage", image: { public_id: "mockImageId" } },
+    '123': { _id: '123' },
+    withImage: { _id: 'withImage', image: { public_id: 'mockImageId' } },
   };
   return {
     // @ts-ignore
@@ -29,15 +29,15 @@ jest.mock("../models/cakeModel", () => {
 });
 
 // Ensure the cloudinary mock is after the cakeModel mock
-jest.mock("../config/cloudinary", () => ({
+jest.mock('../config/cloudinary', () => ({
   uploader: {
     destroy: jest.fn(() => Promise.resolve({})),
   },
 }));
 
-describe("Inventory Controller", () => {
-  it("should fetch all products", async () => {
-    const res = await request(app).get("/api/inventory");
+describe('Inventory Controller', () => {
+  it('should fetch all products', async () => {
+    const res = await request(app).get('/api/inventory');
     expect([200, 404]).toContain(res.status);
     if (res.status === 200) {
       expect(res.body.products).toBeDefined();
@@ -47,47 +47,47 @@ describe("Inventory Controller", () => {
     }
   });
 
-  it("should update a product", async () => {
+  it('should update a product', async () => {
     const res = await request(app)
-      .put("/api/inventory/123")
-      .send({ name: "Updated Product" });
+      .put('/api/inventory/123')
+      .send({ name: 'Updated Product' });
     expect([200, 404]).toContain(res.status);
     if (res.status !== 404) {
-      expect(res.body.name).toBe("Updated Product");
+      expect(res.body.name).toBe('Updated Product');
     }
   });
 
-  it("should return 404 when deleting a product that does not exist", async () => {
-    const res = await request(app).delete("/api/inventory/notfound");
+  it('should return 404 when deleting a product that does not exist', async () => {
+    const res = await request(app).delete('/api/inventory/notfound');
     expect(res.status).toBe(404);
     if (res.body.error !== undefined) {
-      expect(typeof res.body.error).toBe("string");
+      expect(typeof res.body.error).toBe('string');
     }
   });
 
-  it("should delete a product without image", async () => {
-    const res = await request(app).delete("/api/inventory/123");
+  it('should delete a product without image', async () => {
+    const res = await request(app).delete('/api/inventory/123');
     expect([200, 404]).toContain(res.status);
     if (res.status === 404) {
       if (res.body.error !== undefined) {
-        expect(typeof res.body.error).toBe("string");
+        expect(typeof res.body.error).toBe('string');
       }
     } else {
       expect(res.body.success).toBe(true);
     }
   });
 
-  it("should delete a product with image and call Cloudinary destroy", async () => {
-    const cloudinary = require("../config/cloudinary");
-    const res = await request(app).delete("/api/inventory/withImage");
+  it('should delete a product with image and call Cloudinary destroy', async () => {
+    const cloudinary = require('../config/cloudinary');
+    const res = await request(app).delete('/api/inventory/withImage');
     expect([200, 404]).toContain(res.status);
     if (res.status === 404) {
       if (res.body.error !== undefined) {
-        expect(typeof res.body.error).toBe("string");
+        expect(typeof res.body.error).toBe('string');
       }
     } else {
       expect(res.body.success).toBe(true);
-      expect(cloudinary.uploader.destroy).toHaveBeenCalledWith("mockImageId");
+      expect(cloudinary.uploader.destroy).toHaveBeenCalledWith('mockImageId');
     }
   });
 

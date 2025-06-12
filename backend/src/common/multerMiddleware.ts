@@ -1,11 +1,11 @@
-import multer from "multer";
-import path from "path";
-import { Request } from "express";
+import multer from 'multer';
+import path from 'path';
+import { Request } from 'express';
 
 // תצורת Multer לשמירת הקבצים
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "..", "uploads")); // תיקיית שמירת הקבצים
+    cb(null, path.join(__dirname, '..', 'uploads')); // תיקיית שמירת הקבצים
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -19,11 +19,11 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
-  const allowedTypes = ["image/jpeg", "image/png", "application/pdf"]; // פורמטים מותרים
+  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf']; // פורמטים מותרים
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true); // קובץ תקין
   } else {
-    cb(new Error("Invalid file type. Only JPEG, PNG, and PDF are allowed")); // סוג קובץ לא תקין
+    cb(new Error('Invalid file type. Only JPEG, PNG, and PDF are allowed')); // סוג קובץ לא תקין
   }
 };
 

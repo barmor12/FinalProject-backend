@@ -1,26 +1,26 @@
-import { Router, Request, Response } from "express";
-import { Expo } from "expo-server-sdk";
-import { PushToken } from "../models/PushToken";
-import { NotificationLog } from "../models/NotificationLog";
-import { sendOrderStatusChangeNotification } from "../services/notificationService";
-import authenticateMiddleware from "../common/authMiddleware";
+import { Router, Request, Response } from 'express';
+import { Expo } from 'expo-server-sdk';
+import { PushToken } from '../models/PushToken';
+import { NotificationLog } from '../models/NotificationLog';
+import { sendOrderStatusChangeNotification } from '../services/notificationService';
+import authenticateMiddleware from '../common/authMiddleware';
 
 const expo = new Expo();
 export const notificationsRouter = Router();
 
 // POST /notifications/register
 notificationsRouter.post(
-  "/register",
+  '/register',
   authenticateMiddleware,
   async (req: Request, res: Response): Promise<any> => {
     const userId = (req as any).user?.userId || (req as any).user?.id;
     if (!userId) {
-      res.status(400).json({ error: "Missing userId" });
+      res.status(400).json({ error: 'Missing userId' });
       return;
     }
     const { token } = req.body;
     if (!Expo.isExpoPushToken(token)) {
-      res.status(400).json({ error: "Invalid push token" });
+      res.status(400).json({ error: 'Invalid push token' });
       return;
     }
     await PushToken.findOneAndUpdate(
@@ -34,12 +34,12 @@ notificationsRouter.post(
 
 // POST /notifications/send
 notificationsRouter.post(
-  "/send",
+  '/send',
   authenticateMiddleware,
   async (req: Request, res: Response): Promise<any> => {
     const userId = (req as any).user?.userId || (req as any).user?.id;
     if (!userId) {
-      res.status(400).json({ error: "Missing userId" });
+      res.status(400).json({ error: 'Missing userId' });
       return;
     }
     const { title, message, type } = req.body as {
@@ -58,24 +58,24 @@ notificationsRouter.post(
       if (!Expo.isExpoPushToken(token)) continue;
 
       // Determine projectId/experienceId from the token value
-      let projectId = "@default";
+      let projectId = '@default';
       if (
-        token.includes("P95Qo1E7GAqqIOYxfBXveY") ||
-        token.includes("dYa9pnHufwSNzsqM37S7QQ")
+        token.includes('P95Qo1E7GAqqIOYxfBXveY') ||
+        token.includes('dYa9pnHufwSNzsqM37S7QQ')
       ) {
-        projectId = "@barmor12/CakeBusinessApp";
+        projectId = '@barmor12/CakeBusinessApp';
       } else if (
-        token.includes("E3gJ0EKS9DTbctstQkmTG2") ||
-        token.includes("4vnC75Kl5-G41y-MaKGN7o")
+        token.includes('E3gJ0EKS9DTbctstQkmTG2') ||
+        token.includes('4vnC75Kl5-G41y-MaKGN7o')
       ) {
-        projectId = "@avieles100/CakeBusinessApp";
+        projectId = '@avieles100/CakeBusinessApp';
       }
 
       if (!groupedMessages[projectId]) groupedMessages[projectId] = [];
 
       groupedMessages[projectId].push({
         to: token,
-        sound: "default",
+        sound: 'default',
         title,
         body: message,
         data: { type },
@@ -85,7 +85,7 @@ notificationsRouter.post(
     // Flatten all messages to check if there are any messages to send
     const allMessages = Object.values(groupedMessages).flat();
     if (allMessages.length === 0) {
-      return res.status(400).json({ error: "No push tokens available" });
+      return res.status(400).json({ error: 'No push tokens available' });
     }
 
     let sentCount = 0;
@@ -111,7 +111,7 @@ notificationsRouter.post(
       sentTo: sentCount,
       sentAt: new Date(),
     });
-    console.log("📨 Notification sent:", { title, message, sentTo: sentCount });
+    console.log('📨 Notification sent:', { title, message, sentTo: sentCount });
 
     res.json({ ok: true, sentTo: sentCount });
   }
@@ -119,7 +119,7 @@ notificationsRouter.post(
 
 // GET /notifications/recent
 notificationsRouter.get(
-  "/recent",
+  '/recent',
   authenticateMiddleware,
   async (req: Request, res: Response): Promise<any> => {
     const logs = await NotificationLog.find().sort({ sentAt: -1 }).limit(20);

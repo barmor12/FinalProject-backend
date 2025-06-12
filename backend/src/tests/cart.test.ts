@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import * as cartController from "../controllers/cartController";
-import Cart from "../models/cartModel";
-import Cake from "../models/cakeModel";
+import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import * as cartController from '../controllers/cartController';
+import Cart from '../models/cartModel';
+import Cake from '../models/cakeModel';
 
-jest.mock("../models/cartModel");
-jest.mock("../models/cakeModel");
-jest.mock("jsonwebtoken");
+jest.mock('../models/cartModel');
+jest.mock('../models/cakeModel');
+jest.mock('jsonwebtoken');
 
 const mockSend = jest.fn();
 const mockStatus = jest.fn(() => ({ json: mockSend }));
@@ -21,9 +21,9 @@ const mockRes = {
   populate: jest.fn().mockResolvedValue(null),
 }));
 
-describe("CartController", () => {
-  const mockUserId = "user123";
-  const mockToken = "mockToken";
+describe('CartController', () => {
+  const mockUserId = 'user123';
+  const mockToken = 'mockToken';
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -34,8 +34,8 @@ describe("CartController", () => {
     }));
   });
 
-  describe("addToCart", () => {
-    it("should return 400 if cakeId or quantity is missing", async () => {
+  describe('addToCart', () => {
+    it('should return 400 if cakeId or quantity is missing', async () => {
       const mockReq = {
         headers: { authorization: `Bearer ${mockToken}` },
         body: {},
@@ -44,35 +44,35 @@ describe("CartController", () => {
       await cartController.addToCart(mockReq, mockRes);
       expect(mockStatus).toHaveBeenCalledWith(400);
       expect(mockSend).toHaveBeenCalledWith({
-        error: "Cake ID and quantity are required",
+        error: 'Cake ID and quantity are required',
       });
     });
   });
 
-  describe("updateCartItem", () => {
-    it("should return 404 if cart not found", async () => {
+  describe('updateCartItem', () => {
+    it('should return 404 if cart not found', async () => {
       const mockReq = {
         headers: { authorization: `Bearer ${mockToken}` },
-        body: { itemId: "item123", quantity: 2 },
+        body: { itemId: 'item123', quantity: 2 },
       } as Request;
 
       (Cart.findOne as jest.Mock).mockResolvedValue(null);
 
       await cartController.updateCartItem(mockReq, mockRes);
       expect(mockStatus).toHaveBeenCalledWith(404);
-      expect(mockSend).toHaveBeenCalledWith({ error: "Cart not found" });
+      expect(mockSend).toHaveBeenCalledWith({ error: 'Cart not found' });
     });
 
-    it("should update item quantity if item exists", async () => {
+    it('should update item quantity if item exists', async () => {
       const mockReq = {
         headers: { authorization: `Bearer ${mockToken}` },
-        body: { itemId: "item123", quantity: 3 },
+        body: { itemId: 'item123', quantity: 3 },
       } as Request;
 
       const mockCart = {
         items: [
-          { _id: "item123", quantity: 1 },
-          { _id: "item456", quantity: 2 },
+          { _id: 'item123', quantity: 1 },
+          { _id: 'item456', quantity: 2 },
         ],
         save: jest.fn().mockResolvedValue(true),
       };
@@ -86,8 +86,8 @@ describe("CartController", () => {
     });
   });
 
-  describe("getCart", () => {
-    it("should return empty cart if not found", async () => {
+  describe('getCart', () => {
+    it('should return empty cart if not found', async () => {
       const mockReq = {
         headers: { authorization: `Bearer ${mockToken}` },
       } as Request;
@@ -102,17 +102,17 @@ describe("CartController", () => {
     });
   });
 
-  describe("removeFromCart", () => {
-    it("should remove item from cart if exists", async () => {
+  describe('removeFromCart', () => {
+    it('should remove item from cart if exists', async () => {
       const mockReq = {
         headers: { authorization: `Bearer ${mockToken}` },
-        body: { itemId: "item123" },
+        body: { itemId: 'item123' },
       } as Request;
 
       const mockCart = {
         items: [
-          { _id: "item123", quantity: 1 },
-          { _id: "item456", quantity: 2 },
+          { _id: 'item123', quantity: 1 },
+          { _id: 'item456', quantity: 2 },
         ],
         save: jest.fn().mockResolvedValue(true),
       };
@@ -121,7 +121,7 @@ describe("CartController", () => {
 
       await cartController.removeFromCart(mockReq, mockRes);
       expect(mockCart.items.length).toBe(1);
-      expect(mockCart.items[0]._id).toBe("item456");
+      expect(mockCart.items[0]._id).toBe('item456');
       expect(mockCart.save).toHaveBeenCalled();
       expect(mockStatus).toHaveBeenCalledWith(200);
     });

@@ -1,25 +1,25 @@
-import { Request, Response } from "express";
-import Address from "../models/addressModel";
-import User from "../models/userModel";
-import mongoose from "mongoose";
+import { Request, Response } from 'express';
+import Address from '../models/addressModel';
+import User from '../models/userModel';
+import mongoose from 'mongoose';
 
 export const getUserAddresses = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user?.userId || req.body.userId;
-        console.log("🔍 User ID from request:", userId);
+        console.log('🔍 User ID from request:', userId);
 
         if (!userId) {
-            res.status(401).json({ message: "Unauthorized. No user found." });
+            res.status(401).json({ message: 'Unauthorized. No user found.' });
             return;
         }
 
         const addresses = await Address.find({ userId });
-        console.log("🔍 Found Addresses:", addresses);
+        console.log('🔍 Found Addresses:', addresses);
 
         res.json(addresses);
     } catch (error) {
-        console.error("❌ Error fetching addresses:", error);
-        res.status(500).json({ message: "Failed to fetch addresses.", error });
+        console.error('❌ Error fetching addresses:', error);
+        res.status(500).json({ message: 'Failed to fetch addresses.', error });
     }
 };
 
@@ -29,7 +29,7 @@ export const addAddress = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user?.userId || req.body.userId;
         if (!userId) {
-            res.status(401).json({ message: "Unauthorized. No user found." });
+            res.status(401).json({ message: 'Unauthorized. No user found.' });
             return;
         }
 
@@ -51,10 +51,10 @@ export const addAddress = async (req: Request, res: Response) => {
             { new: true }
         );
 
-        res.status(201).json({ message: "Address added successfully.", address: newAddress });
+        res.status(201).json({ message: 'Address added successfully.', address: newAddress });
     } catch (error) {
-        console.error("❌ Error adding address:", error);
-        res.status(500).json({ message: "Failed to add address.", error });
+        console.error('❌ Error adding address:', error);
+        res.status(500).json({ message: 'Failed to add address.', error });
     }
 };
 
@@ -63,14 +63,14 @@ export const setDefaultAddress = async (req: Request, res: Response) => {
         const { addressId } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(addressId)) {
-            res.status(400).json({ error: "Invalid address ID" });
+            res.status(400).json({ error: 'Invalid address ID' });
             return;
         }
 
         const address = await Address.findById(addressId);
 
         if (!address) {
-            res.status(404).json({ error: "Address not found" });
+            res.status(404).json({ error: 'Address not found' });
             return;
         }
 
@@ -81,10 +81,10 @@ export const setDefaultAddress = async (req: Request, res: Response) => {
         address.isDefault = true;
         await address.save();
 
-        res.status(200).json({ message: "Default address updated successfully", address });
+        res.status(200).json({ message: 'Default address updated successfully', address });
     } catch (error) {
-        console.error("❌ Error setting default address:", error);
-        res.status(500).json({ error: "Failed to update default address" });
+        console.error('❌ Error setting default address:', error);
+        res.status(500).json({ error: 'Failed to update default address' });
     }
 };
 
@@ -93,7 +93,7 @@ export const updateAddress = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user?.userId || req.body.userId;
         if (!userId) {
-            res.status(401).json({ message: "Unauthorized. No user found." });
+            res.status(401).json({ message: 'Unauthorized. No user found.' });
             return;
         }
 
@@ -102,7 +102,7 @@ export const updateAddress = async (req: Request, res: Response) => {
 
         const existingAddress = await Address.findOne({ _id: addressId, userId });
         if (!existingAddress) {
-            res.status(404).json({ message: "Address not found or does not belong to the user." });
+            res.status(404).json({ message: 'Address not found or does not belong to the user.' });
             return;
         }
 
@@ -116,10 +116,10 @@ export const updateAddress = async (req: Request, res: Response) => {
             { new: true }
         );
 
-        res.json({ message: "Address updated successfully.", address: updatedAddress });
+        res.json({ message: 'Address updated successfully.', address: updatedAddress });
     } catch (error) {
-        console.error("❌ Error updating address:", error);
-        res.status(500).json({ message: "Failed to update address.", error });
+        console.error('❌ Error updating address:', error);
+        res.status(500).json({ message: 'Failed to update address.', error });
     }
 };
 
@@ -128,7 +128,7 @@ export const deleteAddress = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user?.userId || req.body.userId;
         if (!userId) {
-            res.status(401).json({ message: "Unauthorized. No user found." });
+            res.status(401).json({ message: 'Unauthorized. No user found.' });
             return;
         }
 
@@ -136,14 +136,14 @@ export const deleteAddress = async (req: Request, res: Response) => {
 
         const existingAddress = await Address.findOne({ _id: addressId, userId });
         if (!existingAddress) {
-            res.status(404).json({ message: "Address not found or does not belong to the user." });
+            res.status(404).json({ message: 'Address not found or does not belong to the user.' });
             return;
         }
 
         await Address.findByIdAndDelete(addressId);
-        res.json({ message: "Address deleted successfully." });
+        res.json({ message: 'Address deleted successfully.' });
     } catch (error) {
-        console.error("❌ Error deleting address:", error);
-        res.status(500).json({ message: "Failed to delete address.", error });
+        console.error('❌ Error deleting address:', error);
+        res.status(500).json({ message: 'Failed to delete address.', error });
     }
 };

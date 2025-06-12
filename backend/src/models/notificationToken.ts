@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const notificationTokenSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
       unique: true,
     },
@@ -16,4 +16,4 @@ const notificationTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("NotificationToken", notificationTokenSchema);
+export default mongoose.model('NotificationToken', notificationTokenSchema);

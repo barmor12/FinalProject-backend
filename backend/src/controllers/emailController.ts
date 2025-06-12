@@ -1,7 +1,7 @@
 // controllers/userController.ts
-import { Request, Response } from "express";
-import nodemailer from "nodemailer";
-import User from "../models/userModel"; // נניח שיש לך מודל של יוזר
+import { Request, Response } from 'express';
+import nodemailer from 'nodemailer';
+import User from '../models/userModel'; // נניח שיש לך מודל של יוזר
 
 // ודא שיש לך את המשתנים המתאימים בסביבת ההרצה: EMAIL_USER, EMAIL_PASSWORD, REVIEW_URL (קישור לטופס ביקורת)
 export const sendReviewEmail = async (
@@ -10,18 +10,18 @@ export const sendReviewEmail = async (
 ): Promise<void> => {
   try {
     // קבלת נתונים מהבקשה
-    console.log("Sending review Email....");
+    console.log('Sending review Email....');
     const { customerEmail, orderId } = req.body;
     if (!customerEmail || !orderId) {
       res
         .status(400)
-        .json({ error: "Missing required fields: customerEmail and orderId" });
+        .json({ error: 'Missing required fields: customerEmail and orderId' });
       return;
     }
 
     // יצירת טרנספורטור לשליחת המייל
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -78,7 +78,7 @@ export const sendReviewEmail = async (
         -6
       )}</strong> has been delivered.</p>
               <p>We would love to hear your feedback. Please click the button below to leave a review:</p>
-              <a class="button" href="${process.env.REVIEW_URL || "https://example.com/review"
+              <a class="button" href="${process.env.REVIEW_URL || 'https://example.com/review'
         }">Leave a Review</a>
               <p>Thank you for shopping with us!</p>
             </div>
@@ -92,10 +92,10 @@ export const sendReviewEmail = async (
     console.log(`✅ Review email sent to ${customerEmail}`);
     res
       .status(200)
-      .json({ success: true, message: "Review email sent successfully!" });
+      .json({ success: true, message: 'Review email sent successfully!' });
   } catch (error) {
-    console.error("❌ Error sending review email:", error);
-    res.status(500).json({ error: "Failed to send review email." });
+    console.error('❌ Error sending review email:', error);
+    res.status(500).json({ error: 'Failed to send review email.' });
   }
 };
 
@@ -103,13 +103,13 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
   const { customerEmail, managerMessage } = req.body;
 
   if (!customerEmail || !managerMessage?.trim()) {
-    res.status(400).json({ error: "Missing email or message content" });
+    res.status(400).json({ error: 'Missing email or message content' });
     return;
   }
 
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -120,7 +120,7 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
     const mailOptions = {
       from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
-      subject: "📬 Message from Admin",
+      subject: '📬 Message from Admin',
       text: managerMessage, // גרסה פשוטה לגיבוי
       html: `
           <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
@@ -128,7 +128,7 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
               <h2 style="color: #6b4226; margin-bottom: 20px;">Message from Admin</h2>
               <p style="font-size: 16px; color: #333;">${managerMessage.replace(
         /\n/g,
-        "<br>"
+        '<br>'
       )}</p>
               <hr style="margin: 30px 0;" />
               <p style="font-size: 14px; color: #888;">This message was sent to you by the admin team.</p>
@@ -138,20 +138,20 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
     };
 
     await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: "Email sent successfully" });
+    res.status(200).json({ message: 'Email sent successfully' });
   } catch (err: any) {
-    console.error("Error sending email:", err);
-    res.status(500).json({ error: "Failed to send email" });
+    console.error('Error sending email:', err);
+    res.status(500).json({ error: 'Failed to send email' });
   }
 };
 
 export const deleteUserWithEmail = async (req: Request, res: Response) => {
   const { id } = req.params;
-  console.log("first");
+  console.log('first');
   try {
     const user = await User.findById(id);
     if (!user) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
@@ -161,16 +161,16 @@ export const deleteUserWithEmail = async (req: Request, res: Response) => {
 
     // מחיקת המשתמש בפועל
     await User.findByIdAndDelete(id);
-    console.log("user deleted");
+    console.log('user deleted');
     console.log(
-      "Email credentials:",
+      'Email credentials:',
       process.env.EMAIL_USER,
       process.env.EMAIL_PASSWORD
     );
 
     // שליחת מייל לאחר המחיקה
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -182,7 +182,7 @@ export const deleteUserWithEmail = async (req: Request, res: Response) => {
     const mailOptions = {
       from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: userEmail,
-      subject: "🗑️ Your Account Has Been Deleted",
+      subject: '🗑️ Your Account Has Been Deleted',
       text: `Hi ${userFullName}, your account was deleted.`, // רק לגיבוי
       html: `
               <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
@@ -199,12 +199,12 @@ export const deleteUserWithEmail = async (req: Request, res: Response) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("User deleted and email sent");
-    res.status(200).json({ message: "User deleted and email sent" });
+    console.log('User deleted and email sent');
+    res.status(200).json({ message: 'User deleted and email sent' });
     return;
   } catch (err: any) {
-    console.error("Error deleting user:", err);
-    res.status(500).json({ error: "Failed to delete user" });
+    console.error('Error deleting user:', err);
+    res.status(500).json({ error: 'Failed to delete user' });
     return;
   }
 };

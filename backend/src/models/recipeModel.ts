@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const ingredientSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -36,7 +36,7 @@ const recipeSchema = new mongoose.Schema({
   makingTime: {
     type: String,
     required: true,
-    default: "",
+    default: '',
   },
   image: {
     url: { type: String, required: true },
@@ -62,4 +62,4 @@ recipeSchema.pre('save', function (next) {
   next();
 });
 
-export default mongoose.model("Recipe", recipeSchema);
+export default mongoose.model('Recipe', recipeSchema);

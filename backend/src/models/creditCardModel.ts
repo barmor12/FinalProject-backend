@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const creditCardSchema = new mongoose.Schema(
     {
         userId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
             required: true,
         },
         cardNumber: {
@@ -45,4 +45,4 @@ const creditCardSchema = new mongoose.Schema(
 // Ensure only one default card per user
 creditCardSchema.index({ userId: 1, isDefault: 1 }, { unique: true, partialFilterExpression: { isDefault: true } });
 
-export default mongoose.model("CreditCard", creditCardSchema); 
+export default mongoose.model('CreditCard', creditCardSchema); 

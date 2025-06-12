@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const addressSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     fullName: { type: String, required: true }, // שם מלא עבור המשלוח
@@ -16,5 +16,5 @@ const addressSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Address = mongoose.model("Address", addressSchema);
+const Address = mongoose.model('Address', addressSchema);
 export default Address;

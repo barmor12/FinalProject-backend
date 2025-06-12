@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import Recipe from "../models/recipeModel";
-import logger from "../logger";
-import cloudinary from "../config/cloudinary";
-import mongoose from "mongoose";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { Request, Response } from 'express';
+import Recipe from '../models/recipeModel';
+import logger from '../logger';
+import cloudinary from '../config/cloudinary';
+import mongoose from 'mongoose';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 // Create a new recipe
 export const createRecipe = async (req: Request, res: Response) => {
@@ -18,12 +18,12 @@ export const createRecipe = async (req: Request, res: Response) => {
       makingTime,
     } = req.body;
     if (!name || !description || !servings || !ingredients || !instructions || !difficulty || !makingTime) {
-      res.status(400).json({ error: "All fields are required" });
+      res.status(400).json({ error: 'All fields are required' });
       return;
     }
 
     if (!['Easy', 'Medium', 'Hard'].includes(difficulty)) {
-      res.status(400).json({ error: "Difficulty must be one of: Easy, Medium, Hard" });
+      res.status(400).json({ error: 'Difficulty must be one of: Easy, Medium, Hard' });
       return;
     }
 
@@ -40,14 +40,14 @@ export const createRecipe = async (req: Request, res: Response) => {
     let imageData;
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "recipes",
+        folder: 'recipes',
       });
       imageData = {
         url: result.secure_url,
         public_id: result.public_id,
       };
     } else {
-      res.status(400).json({ error: "Recipe image is required" });
+      res.status(400).json({ error: 'Recipe image is required' });
       return;
     }
 
@@ -71,7 +71,7 @@ export const createRecipe = async (req: Request, res: Response) => {
     res.status(201).json(recipe);
   } catch (error) {
     logger.error(`[ERROR] Error creating recipe: ${error}`);
-    res.status(500).json({ error: "Failed to create recipe" });
+    res.status(500).json({ error: 'Failed to create recipe' });
   }
 };
 
@@ -82,7 +82,7 @@ export const getRecipes = async (req: Request, res: Response) => {
     res.status(200).json(recipes);
   } catch (error) {
     logger.error(`[ERROR] Error fetching recipes: ${error}`);
-    res.status(500).json({ error: "Failed to fetch recipes" });
+    res.status(500).json({ error: 'Failed to fetch recipes' });
   }
 };
 
@@ -91,13 +91,13 @@ export const getRecipe = async (req: Request, res: Response) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
     res.status(200).json(recipe);
   } catch (error) {
     logger.error(`[ERROR] Error fetching recipe: ${error}`);
-    res.status(500).json({ error: "Failed to fetch recipe" });
+    res.status(500).json({ error: 'Failed to fetch recipe' });
   }
 };
 
@@ -108,19 +108,19 @@ export const updateRecipe = async (req: Request, res: Response) => {
     const recipe = await Recipe.findById(req.params.id);
 
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
 
     // Validate difficulty if provided
     if (difficulty && !['Easy', 'Medium', 'Hard'].includes(difficulty)) {
-      res.status(400).json({ error: "Difficulty must be one of: Easy, Medium, Hard" });
+      res.status(400).json({ error: 'Difficulty must be one of: Easy, Medium, Hard' });
       return;
     }
 
     // Validate makingTime if provided
     if (!makingTime) {
-      recipe.makingTime = "";
+      recipe.makingTime = '';
     }
 
     // Handle image update if new image is provided
@@ -130,7 +130,7 @@ export const updateRecipe = async (req: Request, res: Response) => {
 
       // Upload new image
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "recipes"
+        folder: 'recipes'
       });
 
       recipe.image = {
@@ -153,7 +153,7 @@ export const updateRecipe = async (req: Request, res: Response) => {
     res.status(200).json(recipe);
   } catch (error) {
     logger.error(`[ERROR] Error updating recipe: ${error}`);
-    res.status(500).json({ error: "Failed to update recipe" });
+    res.status(500).json({ error: 'Failed to update recipe' });
   }
 };
 
@@ -163,22 +163,22 @@ export const likeRecipe = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // Get userId from authentication token
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      res.status(401).json({ error: "Authorization token is required" });
+      res.status(401).json({ error: 'Authorization token is required' });
       return;
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
     const userId = decoded.userId;
     if (!userId) {
-      res.status(401).json({ error: "Invalid token - user ID not found" });
+      res.status(401).json({ error: 'Invalid token - user ID not found' });
       return;
     }
 
     const recipe = await Recipe.findById(id);
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
 
@@ -187,7 +187,7 @@ export const likeRecipe = async (req: Request, res: Response) => {
     const alreadyLiked = recipe.likedBy.some(id => id.equals(userIdObj));
 
     if (alreadyLiked) {
-      res.status(400).json({ error: "You already liked this recipe" });
+      res.status(400).json({ error: 'You already liked this recipe' });
       return;
     }
 
@@ -199,12 +199,12 @@ export const likeRecipe = async (req: Request, res: Response) => {
     logger.info(`[INFO] Recipe liked successfully: ${recipe._id} by user: ${userId}`);
 
     res.status(200).json({
-      message: "Recipe liked successfully",
+      message: 'Recipe liked successfully',
       likes: recipe.likes
     });
   } catch (error) {
     logger.error(`[ERROR] Error liking recipe: ${error}`);
-    res.status(500).json({ error: "Failed to like recipe" });
+    res.status(500).json({ error: 'Failed to like recipe' });
   }
 };
 
@@ -214,22 +214,22 @@ export const unlikeRecipe = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // Get userId from authentication token
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      res.status(401).json({ error: "Authorization token is required" });
+      res.status(401).json({ error: 'Authorization token is required' });
       return;
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
     const userId = decoded.userId;
     if (!userId) {
-      res.status(401).json({ error: "Invalid token - user ID not found" });
+      res.status(401).json({ error: 'Invalid token - user ID not found' });
       return;
     }
 
     const recipe = await Recipe.findById(id);
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
 
@@ -238,7 +238,7 @@ export const unlikeRecipe = async (req: Request, res: Response) => {
     const likedIndex = recipe.likedBy.findIndex(id => id.equals(userIdObj));
 
     if (likedIndex === -1) {
-      res.status(400).json({ error: "You haven't liked this recipe yet" });
+      res.status(400).json({ error: 'You haven\'t liked this recipe yet' });
       return;
     }
 
@@ -250,12 +250,12 @@ export const unlikeRecipe = async (req: Request, res: Response) => {
     logger.info(`[INFO] Recipe unliked successfully: ${recipe._id} by user: ${userId}`);
 
     res.status(200).json({
-      message: "Recipe unliked successfully",
+      message: 'Recipe unliked successfully',
       likes: recipe.likes
     });
   } catch (error) {
     logger.error(`[ERROR] Error unliking recipe: ${error}`);
-    res.status(500).json({ error: "Failed to unlike recipe" });
+    res.status(500).json({ error: 'Failed to unlike recipe' });
   }
 };
 
@@ -265,7 +265,7 @@ export const deleteRecipe = async (req: Request, res: Response) => {
     const recipe = await Recipe.findById(req.params.id);
 
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
 
@@ -277,10 +277,10 @@ export const deleteRecipe = async (req: Request, res: Response) => {
     await recipe.deleteOne();
     logger.info(`[INFO] Recipe deleted successfully: ${recipe._id}`);
 
-    res.status(200).json({ message: "Recipe deleted successfully" });
+    res.status(200).json({ message: 'Recipe deleted successfully' });
   } catch (error) {
     logger.error(`[ERROR] Error deleting recipe: ${error}`);
-    res.status(500).json({ error: "Failed to delete recipe" });
+    res.status(500).json({ error: 'Failed to delete recipe' });
   }
 };
 
@@ -298,12 +298,12 @@ export const updateRecipeData = async (req: Request, res: Response) => {
 
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
 
     if (!['Easy', 'Medium', 'Hard'].includes(difficulty)) {
-      res.status(400).json({ error: "Difficulty must be one of: Easy, Medium, Hard" });
+      res.status(400).json({ error: 'Difficulty must be one of: Easy, Medium, Hard' });
       return;
     }
 
@@ -325,8 +325,8 @@ export const updateRecipeData = async (req: Request, res: Response) => {
             // Default if can't parse correctly
             return {
               name: value,
-              amount: "1",
-              unit: "piece"
+              amount: '1',
+              unit: 'piece'
             };
           }
         }
@@ -351,11 +351,11 @@ export const updateRecipeData = async (req: Request, res: Response) => {
       res.status(200).json(recipe);
     } catch (parseError) {
       logger.error(`[ERROR] Error parsing ingredients or instructions: ${parseError}`);
-      res.status(400).json({ error: "Invalid ingredients or instructions format" });
+      res.status(400).json({ error: 'Invalid ingredients or instructions format' });
     }
   } catch (error) {
     logger.error(`[ERROR] Error updating recipe data: ${error}`);
-    res.status(500).json({ error: "Failed to update recipe data" });
+    res.status(500).json({ error: 'Failed to update recipe data' });
   }
 };
 
@@ -366,7 +366,7 @@ export const getRecipeLikes = async (req: Request, res: Response) => {
 
     const recipe = await Recipe.findById(id);
     if (!recipe) {
-      res.status(404).json({ error: "Recipe not found" });
+      res.status(404).json({ error: 'Recipe not found' });
       return;
     }
 
@@ -377,7 +377,7 @@ export const getRecipeLikes = async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error(`[ERROR] Error fetching recipe likes: ${error}`);
-    res.status(500).json({ error: "Failed to fetch recipe likes" });
+    res.status(500).json({ error: 'Failed to fetch recipe likes' });
   }
 };
 

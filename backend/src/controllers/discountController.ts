@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import DiscountCode, { IDiscountCode } from "../models/discountCodeModel";
+import { Request, Response } from 'express';
+import DiscountCode, { IDiscountCode } from '../models/discountCodeModel';
 
 // יצירת קוד הנחה
 export const createDiscountCode = async (req: Request, res: Response) => {
@@ -7,13 +7,13 @@ export const createDiscountCode = async (req: Request, res: Response) => {
         const { code, discountPercentage, expiryDate } = req.body;
 
         if (!code || discountPercentage == null) {
-            res.status(400).json({ message: "Code and discount are required." });
+            res.status(400).json({ message: 'Code and discount are required.' });
             return;
         }
 
         const foundCode = await DiscountCode.findOne({ code }) as IDiscountCode;
         if (foundCode) {
-            res.status(409).json({ message: "Code already exists." });
+            res.status(409).json({ message: 'Code already exists.' });
             return;
         }
 
@@ -26,8 +26,8 @@ export const createDiscountCode = async (req: Request, res: Response) => {
         await newCode.save();
         res.status(201).json(newCode);
     } catch (error) {
-        console.error("Error creating code:", error);
-        res.status(500).json({ message: "Failed to create discount code." });
+        console.error('Error creating code:', error);
+        res.status(500).json({ message: 'Failed to create discount code.' });
     }
 };
 
@@ -37,7 +37,7 @@ export const getAllDiscountCodes = async (_req: Request, res: Response) => {
         const codes = await DiscountCode.find().sort({ createdAt: -1 });
         res.json(codes);
     } catch (error) {
-        res.status(500).json({ message: "Failed to fetch discount codes." });
+        res.status(500).json({ message: 'Failed to fetch discount codes.' });
     }
 };
 
@@ -46,13 +46,13 @@ export const validateDiscountCode = async (req: Request, res: Response) => {
     try {
         const { code } = req.body;
         if (!code) {
-            res.status(400).json({ message: "Code is required" });
+            res.status(400).json({ message: 'Code is required' });
             return;
         }
 
         const discountCode = await DiscountCode.findOne({ code });
         if (!discountCode) {
-            res.status(404).json({ message: "Discount code not found" });
+            res.status(404).json({ message: 'Discount code not found' });
             return;
         }
 
@@ -60,7 +60,7 @@ export const validateDiscountCode = async (req: Request, res: Response) => {
         const isExpired = discountCode.expiryDate && now > discountCode.expiryDate;
 
         if (!discountCode.isActive || isExpired) {
-            res.status(400).json({ message: "Code is invalid or expired" });
+            res.status(400).json({ message: 'Code is invalid or expired' });
             return;
         }
 
@@ -69,8 +69,8 @@ export const validateDiscountCode = async (req: Request, res: Response) => {
             discountPercentage: discountCode.discountPercentage,
         });
     } catch (err) {
-        console.error("[ERROR] Validating discount code:", err);
-        res.status(500).json({ message: "Server error" });
+        console.error('[ERROR] Validating discount code:', err);
+        res.status(500).json({ message: 'Server error' });
     }
 };
 // מחיקת קוד
@@ -79,13 +79,13 @@ export const deleteDiscountCode = async (req: Request, res: Response) => {
         const { id } = req.params;
         const deleted = await DiscountCode.findByIdAndDelete(id);
         if (!deleted) {
-            res.status(404).json({ message: "Discount code not found" });
+            res.status(404).json({ message: 'Discount code not found' });
             return;
         }
 
-        res.status(200).json({ message: "Discount code deleted successfully" });
+        res.status(200).json({ message: 'Discount code deleted successfully' });
     } catch (err) {
-        console.error("[ERROR] Deleting discount code:", err);
-        res.status(500).json({ message: "Server error" });
+        console.error('[ERROR] Deleting discount code:', err);
+        res.status(500).json({ message: 'Server error' });
     }
 };

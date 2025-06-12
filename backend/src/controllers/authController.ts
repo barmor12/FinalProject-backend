@@ -1,17 +1,17 @@
-import { OAuth2Client } from "google-auth-library";
-import express, { Request, Response, NextFunction } from "express";
-import bcrypt from "bcryptjs";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import multer from "multer";
-import fs from "fs";
-import path from "path";
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-import User from "../models/userModel";
-import logger from "../logger";
-import cloudinary from "../config/cloudinary";
-import CreditCard from "../models/creditCardModel";
-import crypto from "crypto";
+import { OAuth2Client } from 'google-auth-library';
+import express, { Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+import User from '../models/userModel';
+import logger from '../logger';
+import cloudinary from '../config/cloudinary';
+import CreditCard from '../models/creditCardModel';
+import crypto from 'crypto';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 
@@ -28,13 +28,13 @@ export const googleCallback = async (req: Request, res: Response) => {
     if (!payload) {
       return res
         .status(400)
-        .json({ error: "Failed to get payload from token" });
+        .json({ error: 'Failed to get payload from token' });
     }
 
     if (!payload.email) {
       return res
         .status(400)
-        .json({ error: "Google account must have an email" });
+        .json({ error: 'Google account must have an email' });
     }
 
     // First check if user exists by googleId
@@ -69,15 +69,15 @@ export const googleCallback = async (req: Request, res: Response) => {
         );
 
         const hashedPassword = await bcrypt.hash(
-          password || payload.sub + "google",
+          password || payload.sub + 'google',
           10
         );
 
         user = new User({
           googleId: payload.sub,
           email: payload.email,
-          firstName: payload.given_name || "Google",
-          lastName: payload.family_name || "User",
+          firstName: payload.given_name || 'Google',
+          lastName: payload.family_name || 'User',
           profilePic: payload.picture
             ? {
               url: payload.picture,
@@ -85,7 +85,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             }
             : undefined,
           password: hashedPassword,
-          role: "user",
+          role: 'user',
           isVerified: true, // Google users are automatically verified
         });
 
@@ -95,7 +95,7 @@ export const googleCallback = async (req: Request, res: Response) => {
     } else if (!user.password) {
       // If user exists but doesn't have a password (rare case)
       const hashedPassword = await bcrypt.hash(
-        password || payload.sub + "google",
+        password || payload.sub + 'google',
         10
       );
       user.password = hashedPassword;
@@ -112,7 +112,7 @@ export const googleCallback = async (req: Request, res: Response) => {
       await generateAndSend2FACode(user.email);
 
       return res.status(200).json({
-        message: "2FA code sent to email",
+        message: '2FA code sent to email',
         requires2FA: true,
         tokens,
         role: user.role,
@@ -122,15 +122,15 @@ export const googleCallback = async (req: Request, res: Response) => {
 
     // Return tokens in the exact same format as regular login
     res.status(200).json({
-      message: "User logged in successfully via Google",
+      message: 'User logged in successfully via Google',
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
       role: user.role,
       userId: user._id.toString(),
     });
   } catch (error) {
-    console.error("Error verifying token:", error);
-    res.status(500).json({ error: "Failed to authenticate user" });
+    console.error('Error verifying token:', error);
+    res.status(500).json({ error: 'Failed to authenticate user' });
   }
 };
 
@@ -148,9 +148,9 @@ export const enforceHttps = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.headers["x-forwarded-proto"] !== "https") {
-    logger.warn("[WARN] Request not using HTTPS");
-    return res.status(403).send("Please use HTTPS for secure connections.");
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    logger.warn('[WARN] Request not using HTTPS');
+    return res.status(403).send('Please use HTTPS for secure connections.');
   }
   next();
 };
@@ -161,17 +161,17 @@ export const upload = multer({ storage });
 
 // שליפת טוקן מהבקשה
 export const getTokenFromRequest = (req: Request): string | null => {
-  const authHeader = req.headers["authorization"];
+  const authHeader = req.headers['authorization'];
   if (!authHeader) {
-    logger.warn("[WARN] Authorization header missing");
+    logger.warn('[WARN] Authorization header missing');
     return null;
   }
-  return authHeader.split(" ")[1];
+  return authHeader.split(' ')[1];
 };
 // יצירת טוקן גישה וטוקן רענון
 const generateTokens = async (userId: string, role: string) => {
   if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
-    throw new Error("Token secrets are not configured in .env file");
+    throw new Error('Token secrets are not configured in .env file');
   }
 
   logger.info(`[INFO] Generating tokens for userId: ${userId}, role: ${role}`);
@@ -179,12 +179,12 @@ const generateTokens = async (userId: string, role: string) => {
     { userId, role },
     process.env.ACCESS_TOKEN_SECRET!,
     {
-      expiresIn: process.env.JWT_TOKEN_EXPIRATION || "1h",
+      expiresIn: process.env.JWT_TOKEN_EXPIRATION || '1h',
     }
   );
 
   const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET!, {
-    expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || "7d",
+    expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION || '7d',
   });
 
   return { accessToken, refreshToken };
@@ -194,25 +194,25 @@ const generateTokens = async (userId: string, role: string) => {
 
 const generateVerificationToken = (userId: string) => {
   if (!process.env.EMAIL_SECRET) {
-    throw new Error("EMAIL_SECRET is missing in .env file");
+    throw new Error('EMAIL_SECRET is missing in .env file');
   }
-  return jwt.sign({ userId }, process.env.EMAIL_SECRET, { expiresIn: "1d" });
+  return jwt.sign({ userId }, process.env.EMAIL_SECRET, { expiresIn: '1d' });
 };
 
 // שליחת קישור לאימות דוא"ל
 export const sendVerificationEmail = async (email: string, token: string) => {
   try {
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-      throw new Error("Email credentials are missing in .env file");
+      throw new Error('Email credentials are missing in .env file');
     }
 
-    console.log("=== EMAIL DEBUG ===");
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "***" : "undefined");
-    console.log("EMAIL_SERVICE:", process.env.EMAIL_SERVICE);
+    console.log('=== EMAIL DEBUG ===');
+    console.log('EMAIL_USER:', process.env.EMAIL_USER);
+    console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '***' : 'undefined');
+    console.log('EMAIL_SERVICE:', process.env.EMAIL_SERVICE);
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -222,13 +222,13 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     });
 
     // Fix the URL format to ensure proper protocol format with colon
-    const frontendUrl = process.env.FRONTEND_URL || "";
-    let verificationLink = "";
+    const frontendUrl = process.env.FRONTEND_URL || '';
+    let verificationLink = '';
 
     // Properly format the URL with the correct protocol
     if (
-      frontendUrl.startsWith("http://") ||
-      frontendUrl.startsWith("https://")
+      frontendUrl.startsWith('http://') ||
+      frontendUrl.startsWith('https://')
     ) {
       verificationLink = `${frontendUrl}/auth/verify-email?token=${token}`;
     } else {
@@ -241,12 +241,12 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 
     // Get user details to personalize the email
     const user = await User.findOne({ email });
-    const firstName = user ? user.firstName : "";
+    const firstName = user ? user.firstName : '';
 
     const mailOptions = {
       from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Verify Your Email Address",
+      subject: 'Verify Your Email Address',
       html: `
         <!DOCTYPE html>
         <html lang="en">
@@ -394,7 +394,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
             </div>
             
             <div class="email-body">
-              <p class="greeting">Hello${firstName ? " " + firstName : ""},</p>
+              <p class="greeting">Hello${firstName ? ' ' + firstName : ''},</p>
               <p>Thank you for registering with us. To complete your registration and verify your email address, please click on the button below:</p>
               
               <a href="${verificationLink}" class="verification-button" style="color: #ffffff; text-decoration: none;">Verify My Email</a>
@@ -437,7 +437,7 @@ export const sendError = (
 export const updatePassword = async (req: Request, res: Response) => {
   const token = getTokenFromRequest(req);
   if (!token) {
-    return sendError(res, "Token required", 401);
+    return sendError(res, 'Token required', 401);
   }
 
   try {
@@ -448,28 +448,28 @@ export const updatePassword = async (req: Request, res: Response) => {
 
     const user = await User.findById(decoded.userId);
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     const { oldPassword, newPassword } = req.body;
     if (!oldPassword || !newPassword) {
-      return sendError(res, "Both old and new passwords are required", 400);
+      return sendError(res, 'Both old and new passwords are required', 400);
     }
 
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
-      return sendError(res, "Old password is incorrect", 400);
+      return sendError(res, 'Old password is incorrect', 400);
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
     res.status(200).json({
-      message: "Password updated successfully",
+      message: 'Password updated successfully',
     });
   } catch (err) {
-    console.error("Update password error:", err);
-    return sendError(res, "Failed to update password", 500); // make sure `sendError` sends proper JSON
+    console.error('Update password error:', err);
+    return sendError(res, 'Failed to update password', 500); // make sure `sendError` sends proper JSON
   }
 };
 
@@ -480,8 +480,8 @@ export const register = async (req: Request, res: Response) => {
   logger.info(`[INFO] Attempting to register user: ${email}`);
 
   if (!firstName || !lastName || !email || !password) {
-    logger.warn("[WARN] Registration failed: Missing fields");
-    return sendError(res, "All fields are required", 400);
+    logger.warn('[WARN] Registration failed: Missing fields');
+    return sendError(res, 'All fields are required', 400);
   }
 
   const passwordRegex =
@@ -490,7 +490,7 @@ export const register = async (req: Request, res: Response) => {
   if (!passwordRegex.test(password)) {
     return sendError(
       res,
-      "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
       400
     );
   }
@@ -499,27 +499,27 @@ export const register = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       logger.warn(`[WARN] Registration failed: Email ${email} already exists`);
-      return sendError(res, "User with this email already exists", 409);
+      return sendError(res, 'User with this email already exists', 409);
     }
 
     let profilePic = {
-      url: "https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png",
-      public_id: "users/default_profile_image",
+      url: 'https://res.cloudinary.com/dhhrsuudb/image/upload/v1743463363/default_profile_image.png',
+      public_id: 'users/default_profile_image',
     };
 
     if (req.file) {
-      logger.info("[INFO] Uploading profile image to Cloudinary...");
+      logger.info('[INFO] Uploading profile image to Cloudinary...');
 
       const streamUpload = (buffer: Buffer) => {
         return new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(
-            { folder: "users" },
+            { folder: 'users' },
             (error: any, result: any) => {
               if (result) resolve(result);
               else reject(error);
             }
           );
-          const { Readable } = require("stream");
+          const { Readable } = require('stream');
           Readable.from(buffer).pipe(stream);
         });
       };
@@ -530,10 +530,10 @@ export const register = async (req: Request, res: Response) => {
           url: uploadResult.secure_url,
           public_id: uploadResult.public_id,
         };
-        logger.info("[INFO] Profile image uploaded successfully");
+        logger.info('[INFO] Profile image uploaded successfully');
       } catch (error: any) {
         logger.error(`[ERROR] Cloudinary upload error: ${error.message}`);
-        return sendError(res, "Profile image upload failed", 500);
+        return sendError(res, 'Profile image upload failed', 500);
       }
     }
 
@@ -545,7 +545,7 @@ export const register = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       profilePic,
-      role: "user",
+      role: 'user',
       isVerified: false,
     });
 
@@ -557,12 +557,12 @@ export const register = async (req: Request, res: Response) => {
     logger.info(`[INFO] User registered successfully: ${email}`);
 
     res.status(201).json({
-      message: "User created successfully. Please verify your email.",
+      message: 'User created successfully. Please verify your email.',
       user: newUser,
     });
   } catch (err) {
     logger.error(`[ERROR] Registration error: ${(err as Error).message}`);
-    sendError(res, "Failed to register", 500);
+    sendError(res, 'Failed to register', 500);
   }
 };
 
@@ -573,7 +573,7 @@ const generateAndSend2FACode = async (email: string) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 
   user.twoFactorCode = code;
@@ -582,11 +582,11 @@ const generateAndSend2FACode = async (email: string) => {
 
   // Send email with 2FA code
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-    throw new Error("Email credentials are missing in environment variables");
+    throw new Error('Email credentials are missing in environment variables');
   }
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: 'smtp.gmail.com',
     port: 587,
     secure: false,
     auth: {
@@ -598,7 +598,7 @@ const generateAndSend2FACode = async (email: string) => {
   const mailOptions = {
     from: `"Bakey" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Your 2FA Verification Code",
+    subject: 'Your 2FA Verification Code',
     html: `
       <!DOCTYPE html>
       <html lang="en">
@@ -685,7 +685,7 @@ const generateAndSend2FACode = async (email: string) => {
 export const enable2FA = async (req: Request, res: Response) => {
   const token = getTokenFromRequest(req);
   if (!token) {
-    return sendError(res, "Token required", 401);
+    return sendError(res, 'Token required', 401);
   }
 
   try {
@@ -696,19 +696,19 @@ export const enable2FA = async (req: Request, res: Response) => {
     const user = await User.findById(decoded.userId);
 
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     // Generate and send verification code
     await generateAndSend2FACode(user.email);
 
     res.status(200).json({
-      message: "Verification code sent to your email",
+      message: 'Verification code sent to your email',
       requiresVerification: true,
     });
   } catch (err) {
     logger.error(`[ERROR] Enable 2FA error: ${(err as Error).message}`);
-    sendError(res, "Failed to enable 2FA", 500);
+    sendError(res, 'Failed to enable 2FA', 500);
   }
 };
 
@@ -716,12 +716,12 @@ export const enable2FA = async (req: Request, res: Response) => {
 export const verify2FACode = async (req: Request, res: Response) => {
   const token = getTokenFromRequest(req);
   if (!token) {
-    return sendError(res, "Token required", 401);
+    return sendError(res, 'Token required', 401);
   }
 
   const { code } = req.body;
   if (!code) {
-    return sendError(res, "Verification code is required", 400);
+    return sendError(res, 'Verification code is required', 400);
   }
 
   try {
@@ -732,19 +732,19 @@ export const verify2FACode = async (req: Request, res: Response) => {
     const user = await User.findById(decoded.userId);
 
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     if (!user.twoFactorCode || !user.twoFactorExpires) {
-      return sendError(res, "No 2FA code found", 400);
+      return sendError(res, 'No 2FA code found', 400);
     }
 
     if (user.twoFactorCode !== code) {
-      return sendError(res, "Invalid 2FA code", 400);
+      return sendError(res, 'Invalid 2FA code', 400);
     }
 
     if (Date.now() > user.twoFactorExpires.getTime()) {
-      return sendError(res, "2FA code has expired", 400);
+      return sendError(res, '2FA code has expired', 400);
     }
 
     // Enable 2FA and clear the verification code
@@ -754,12 +754,12 @@ export const verify2FACode = async (req: Request, res: Response) => {
     await user.save();
 
     res.status(200).json({
-      message: "2FA enabled successfully",
+      message: '2FA enabled successfully',
       twoFactorEnabled: true,
     });
   } catch (err) {
     logger.error(`[ERROR] Verify 2FA code error: ${(err as Error).message}`);
-    sendError(res, "Failed to verify 2FA code", 500);
+    sendError(res, 'Failed to verify 2FA code', 500);
   }
 };
 
@@ -767,7 +767,7 @@ export const verify2FACode = async (req: Request, res: Response) => {
 export const disable2FA = async (req: Request, res: Response) => {
   const token = getTokenFromRequest(req);
   if (!token) {
-    return sendError(res, "Token required", 401);
+    return sendError(res, 'Token required', 401);
   }
 
   try {
@@ -778,7 +778,7 @@ export const disable2FA = async (req: Request, res: Response) => {
     const user = await User.findById(decoded.userId);
 
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     user.twoFactorEnabled = false;
@@ -786,10 +786,10 @@ export const disable2FA = async (req: Request, res: Response) => {
     user.twoFactorExpires = undefined;
     await user.save();
 
-    res.status(200).json({ message: "2FA disabled successfully" });
+    res.status(200).json({ message: '2FA disabled successfully' });
   } catch (err) {
     logger.error(`[ERROR] Disable 2FA error: ${(err as Error).message}`);
-    sendError(res, "Failed to disable 2FA", 500);
+    sendError(res, 'Failed to disable 2FA', 500);
   }
 };
 
@@ -798,7 +798,7 @@ export const login = async (req: Request, res: Response) => {
 
   logger.info(`[INFO] Login attempt for email: ${email}`);
   if (!email || !password) {
-    return sendError(res, "Email and password are required");
+    return sendError(res, 'Email and password are required');
   }
 
   try {
@@ -806,7 +806,7 @@ export const login = async (req: Request, res: Response) => {
     logger.info(`[INFO] User fetched during login: ${user}`);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return sendError(res, "Invalid email or password");
+      return sendError(res, 'Invalid email or password');
     }
 
     if (!user.isVerified) {
@@ -814,7 +814,7 @@ export const login = async (req: Request, res: Response) => {
       await sendVerificationEmail(user.email, verificationToken);
       return sendError(
         res,
-        "Email not verified. A new verification email has been sent."
+        'Email not verified. A new verification email has been sent.'
       );
     }
 
@@ -826,7 +826,7 @@ export const login = async (req: Request, res: Response) => {
       const tempTokens = await generateTokens(user._id.toString(), user.role);
 
       res.status(200).json({
-        message: "2FA code sent to email",
+        message: '2FA code sent to email',
         requires2FA: true,
         tokens: tempTokens,
         userId: user._id.toString(),
@@ -842,20 +842,20 @@ export const login = async (req: Request, res: Response) => {
     await user.save();
 
     res.status(200).json({
-      message: "User logged in successfully",
+      message: 'User logged in successfully',
       tokens,
       role: user.role,
       userId: user._id.toString(),
     });
   } catch (err) {
     logger.error(`[ERROR] Login error: ${(err as Error).message}`);
-    sendError(res, "Failed to login", 500);
+    sendError(res, 'Failed to login', 500);
   }
 };
 export const get2FAStatus = async (req: Request, res: Response) => {
   const token = getTokenFromRequest(req);
   if (!token) {
-    return sendError(res, "Token required", 401);
+    return sendError(res, 'Token required', 401);
   }
 
   try {
@@ -866,7 +866,7 @@ export const get2FAStatus = async (req: Request, res: Response) => {
     const user = await User.findById(decoded.userId);
 
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     res.status(200).json({
@@ -874,16 +874,16 @@ export const get2FAStatus = async (req: Request, res: Response) => {
     });
   } catch (err) {
     logger.error(`[ERROR] Get 2FA status error: ${(err as Error).message}`);
-    sendError(res, "Failed to get 2FA status", 500);
+    sendError(res, 'Failed to get 2FA status', 500);
   }
 };
 // רענון טוקן
 export const refresh = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
-  logger.info("[INFO] Refresh token process started");
+  logger.info('[INFO] Refresh token process started');
 
   if (!refreshToken) {
-    return sendError(res, "Refresh token is required");
+    return sendError(res, 'Refresh token is required');
   }
 
   try {
@@ -895,7 +895,7 @@ export const refresh = async (req: Request, res: Response) => {
     logger.info(`[INFO] Refresh token verified for userId: ${payload.userId}`);
     const user = await User.findById(payload.userId);
     if (!user || !user.refresh_tokens.includes(refreshToken)) {
-      return sendError(res, "Invalid refresh token", 403);
+      return sendError(res, 'Invalid refresh token', 403);
     }
 
     const tokens = await generateTokens(user._id.toString(), user.role);
@@ -911,7 +911,7 @@ export const refresh = async (req: Request, res: Response) => {
     res.status(200).json(tokens);
   } catch (err) {
     logger.error(`[ERROR] Refresh token error: ${(err as Error).message}`);
-    sendError(res, "Failed to refresh token", 500);
+    sendError(res, 'Failed to refresh token', 500);
   }
 };
 
@@ -919,11 +919,11 @@ export const refresh = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
-  logger.info("[INFO] Logout process started");
+  logger.info('[INFO] Logout process started');
 
   if (!refreshToken) {
-    logger.warn("[WARN] Refresh token is missing from the request");
-    return sendError(res, "Refresh token is required", 400);
+    logger.warn('[WARN] Refresh token is missing from the request');
+    return sendError(res, 'Refresh token is required', 400);
   }
 
   try {
@@ -936,8 +936,8 @@ export const logout = async (req: Request, res: Response) => {
     // Find the user by ID
     const user = await User.findById(payload.userId);
     if (!user) {
-      logger.warn("[WARN] User not found during logout");
-      return sendError(res, "User not found", 404);
+      logger.warn('[WARN] User not found during logout');
+      return sendError(res, 'User not found', 404);
     }
 
     // Remove ALL refresh tokens for the user
@@ -947,20 +947,20 @@ export const logout = async (req: Request, res: Response) => {
     await user.save();
 
     logger.info(`[INFO] User logged out successfully: ${user._id}`);
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (err: any) {
     // Handle token verification errors
-    if (err.name === "JsonWebTokenError") {
-      logger.warn("[WARN] Invalid refresh token provided");
-      return sendError(res, "Invalid refresh token", 403);
-    } else if (err.name === "TokenExpiredError") {
-      logger.warn("[WARN] Refresh token expired");
-      return sendError(res, "Refresh token expired", 401);
+    if (err.name === 'JsonWebTokenError') {
+      logger.warn('[WARN] Invalid refresh token provided');
+      return sendError(res, 'Invalid refresh token', 403);
+    } else if (err.name === 'TokenExpiredError') {
+      logger.warn('[WARN] Refresh token expired');
+      return sendError(res, 'Refresh token expired', 401);
     }
 
     // Handle other errors
     logger.error(`[ERROR] Logout error: ${err.message}`);
-    sendError(res, "Failed to logout", 500);
+    sendError(res, 'Failed to logout', 500);
   }
 };
 // אימות דוא"ל
@@ -1423,13 +1423,13 @@ export const verifyEmail = async (req: Request, res: Response) => {
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
   if (!email) {
-    return sendError(res, "Email is required", 400);
+    return sendError(res, 'Email is required', 400);
   }
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     // יצירת קוד אימות ושמירה במסד הנתונים
@@ -1443,23 +1443,23 @@ export const forgotPassword = async (req: Request, res: Response) => {
     // שליחת אימייל
     await sendResetEmail(user.email, resetCode);
 
-    res.status(200).json({ message: "Reset code sent to email" });
+    res.status(200).json({ message: 'Reset code sent to email' });
   } catch (err) {
     logger.error(`[ERROR] Forgot password error: ${(err as Error).message}`);
-    sendError(res, "Failed to send reset email", 500);
+    sendError(res, 'Failed to send reset email', 500);
   }
 };
 export const resetPassword = async (req: Request, res: Response) => {
   const { email, code, newPassword } = req.body;
 
   if (!email || !code || !newPassword) {
-    return sendError(res, "All fields are required", 400);
+    return sendError(res, 'All fields are required', 400);
   }
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return sendError(res, "User not found", 404);
+      return sendError(res, 'User not found', 404);
     }
 
     // בדיקת קוד השחזור והתוקף
@@ -1469,7 +1469,7 @@ export const resetPassword = async (req: Request, res: Response) => {
       !user.resetExpires ||
       Date.now() > user.resetExpires.getTime()
     ) {
-      return sendError(res, "Invalid or expired reset code", 400);
+      return sendError(res, 'Invalid or expired reset code', 400);
     }
 
     // מחיקת קוד האיפוס לאחר השימוש
@@ -1483,19 +1483,19 @@ export const resetPassword = async (req: Request, res: Response) => {
     user.password = hashedPassword;
     await user.save();
 
-    res.status(200).json({ message: "Password reset successfully" });
+    res.status(200).json({ message: 'Password reset successfully' });
   } catch (err) {
     logger.error(`[ERROR] Reset password error: ${(err as Error).message}`);
-    sendError(res, "Failed to reset password", 500);
+    sendError(res, 'Failed to reset password', 500);
   }
 };
 const sendResetEmail = async (email: string, resetCode: string) => {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-    throw new Error("Email credentials are missing in environment variables");
+    throw new Error('Email credentials are missing in environment variables');
   }
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: 'smtp.gmail.com',
     port: 587,
     secure: false,
     auth: {
@@ -1507,7 +1507,7 @@ const sendResetEmail = async (email: string, resetCode: string) => {
   const mailOptions = {
     from: `"Bakey" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Password Reset Code",
+    subject: 'Password Reset Code',
     html: `
     <head>
       <meta charset="UTF-8" />
@@ -1595,38 +1595,38 @@ const sendResetEmail = async (email: string, resetCode: string) => {
 // Add a new credit card
 export const addCreditCard = async (req: Request, res: Response) => {
   try {
-    console.log("first");
+    console.log('first');
     const { cardNumber, cardHolderName, expiryDate, isDefault } = req.body;
     console.log(req.user);
     const userId = (req.user as TokenPayload)?.userId;
     console.log(userId);
     if (!userId) {
-      res.status(401).json({ message: "User not authenticated" });
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
     // Validate card number (basic Luhn algorithm check)
     if (!isValidCardNumber(cardNumber)) {
-      res.status(400).json({ message: "Invalid card number" });
+      res.status(400).json({ message: 'Invalid card number' });
       return;
     }
 
     // Validate expiry date format (MM/YY)
     if (!isValidExpiryDate(expiryDate)) {
-      res.status(400).json({ message: "Invalid expiry date format. Use MM/YY" });
+      res.status(400).json({ message: 'Invalid expiry date format. Use MM/YY' });
       return;
     }
 
     // Create hash of card number for validation
     const cardHash = crypto
-      .createHash("sha256")
+      .createHash('sha256')
       .update(cardNumber)
-      .digest("hex");
+      .digest('hex');
 
     // Check if card already exists
     const existingCard = await CreditCard.findOne({ userId, cardHash });
     if (existingCard) {
-      res.status(400).json({ message: "This card is already registered" });
+      res.status(400).json({ message: 'This card is already registered' });
       return;
     }
 
@@ -1653,7 +1653,7 @@ export const addCreditCard = async (req: Request, res: Response) => {
 
     // Return card details (with masked number)
     res.status(201).json({
-      message: "Credit card added successfully",
+      message: 'Credit card added successfully',
       card: {
         id: card._id,
         cardNumber: card.cardNumber, // Will be masked due to getter
@@ -1665,7 +1665,7 @@ export const addCreditCard = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     logger.error(`[ERROR] Failed to add credit card: ${error.message}`);
-    res.status(500).json({ message: "Failed to add credit card" });
+    res.status(500).json({ message: 'Failed to add credit card' });
     return;
   }
 };
@@ -1676,7 +1676,7 @@ export const getCreditCards = async (req: Request, res: Response) => {
     const userId = (req.user as TokenPayload)?.userId;
 
     if (!userId) {
-      res.status(401).json({ message: "User not authenticated" });
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
@@ -1694,7 +1694,7 @@ export const getCreditCards = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     logger.error(`[ERROR] Failed to get credit cards: ${error.message}`);
-    res.status(500).json({ message: "Failed to get credit cards" });
+    res.status(500).json({ message: 'Failed to get credit cards' });
     return;
   }
 };
@@ -1706,7 +1706,7 @@ export const setDefaultCard = async (req: Request, res: Response) => {
     const userId = (req.user as TokenPayload)?.userId;
 
     if (!userId) {
-      res.status(401).json({ message: "User not authenticated" });
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
@@ -1724,12 +1724,12 @@ export const setDefaultCard = async (req: Request, res: Response) => {
     );
 
     if (!card) {
-      res.status(404).json({ message: "Card not found" });
+      res.status(404).json({ message: 'Card not found' });
       return;
     }
 
     res.status(200).json({
-      message: "Default card updated successfully",
+      message: 'Default card updated successfully',
       card: {
         id: card._id,
         cardNumber: card.cardNumber,
@@ -1741,7 +1741,7 @@ export const setDefaultCard = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     logger.error(`[ERROR] Failed to set default card: ${error.message}`);
-    res.status(500).json({ message: "Failed to set default card" });
+    res.status(500).json({ message: 'Failed to set default card' });
     return;
   }
 };
@@ -1753,14 +1753,14 @@ export const deleteCreditCard = async (req: Request, res: Response) => {
     const userId = (req.user as TokenPayload)?.userId;
 
     if (!userId) {
-      res.status(401).json({ message: "User not authenticated" });
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
     const card = await CreditCard.findOneAndDelete({ _id: cardId, userId });
 
     if (!card) {
-      res.status(404).json({ message: "Card not found" });
+      res.status(404).json({ message: 'Card not found' });
       return;
     }
 
@@ -1775,11 +1775,11 @@ export const deleteCreditCard = async (req: Request, res: Response) => {
       }
     }
 
-    res.status(200).json({ message: "Credit card deleted successfully" });
+    res.status(200).json({ message: 'Credit card deleted successfully' });
     return;
   } catch (error: any) {
     logger.error(`[ERROR] Failed to delete credit card: ${error.message}`);
-    res.status(500).json({ message: "Failed to delete credit card" });
+    res.status(500).json({ message: 'Failed to delete credit card' });
     return;
   }
 };
@@ -1787,7 +1787,7 @@ export const deleteCreditCard = async (req: Request, res: Response) => {
 // Helper functions
 // Validate credit card number using Luhn algorithm
 export function isValidCardNumber(cardNumber: string): boolean {
-  const cleanNumber = cardNumber.replace(/[\s-]/g, "");
+  const cleanNumber = cardNumber.replace(/[\s-]/g, '');
   if (!/^\d+$/.test(cleanNumber)) return false;
 
   let sum = 0;
@@ -1810,7 +1810,7 @@ export function isValidCardNumber(cardNumber: string): boolean {
 export function isValidExpiryDate(expiryDate: string): boolean {
   if (!/^\d{2}\/\d{2}$/.test(expiryDate)) return false;
 
-  const [monthStr, yearStr] = expiryDate.split("/");
+  const [monthStr, yearStr] = expiryDate.split('/');
   const month = parseInt(monthStr, 10);
   const year = parseInt(yearStr, 10);
 
@@ -1829,14 +1829,14 @@ export function isValidExpiryDate(expiryDate: string): boolean {
 
 // Detect card type (Visa, Mastercard, etc.)
 export function getCardType(cardNumber: string): string {
-  const cleanNumber = cardNumber.replace(/[\s-]/g, "");
+  const cleanNumber = cardNumber.replace(/[\s-]/g, '');
 
-  if (/^4\d{12}(\d{3})?$/.test(cleanNumber)) return "Visa";
-  if (/^5[1-5]\d{14}$/.test(cleanNumber)) return "Mastercard";
-  if (/^3[47]\d{13}$/.test(cleanNumber)) return "American Express";
-  if (/^6(?:011|5\d{2})\d{12}$/.test(cleanNumber)) return "Discover";
+  if (/^4\d{12}(\d{3})?$/.test(cleanNumber)) return 'Visa';
+  if (/^5[1-5]\d{14}$/.test(cleanNumber)) return 'Mastercard';
+  if (/^3[47]\d{13}$/.test(cleanNumber)) return 'American Express';
+  if (/^6(?:011|5\d{2})\d{12}$/.test(cleanNumber)) return 'Discover';
 
-  return "Unknown";
+  return 'Unknown';
 }
 
 

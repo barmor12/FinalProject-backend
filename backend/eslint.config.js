@@ -1,17 +1,20 @@
-import tseslint from "typescript-eslint";
-
-export default tseslint.config({
-  files: ["**/*.ts", "**/*.js"],
-  languageOptions: {
-    parserOptions: {
-      sourceType: "module",
-      ecmaVersion: "latest",
+module.exports = [
+  {
+    files: ["**/*.ts", "**/*.js"],
+    languageOptions: {
+      parser: require("@typescript-eslint/parser"),
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        project: "./tsconfig.json",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
+    },
+    rules: {
+      quotes: ["error", "single"],
+      semi: ["error", "always"],
     },
   },
-  rules: {
-    semi: ["error", "always"],
-    quotes: ["error", "single"],
-    "no-unused-vars": "warn",
-    "no-console": "off",
-  },
-});
+];

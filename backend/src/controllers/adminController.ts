@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import Order from "../models/orderModel";
-import User from "../models/userModel";
-import bcrypt from "bcryptjs";
+import { Request, Response } from 'express';
+import Order from '../models/orderModel';
+import User from '../models/userModel';
+import bcrypt from 'bcryptjs';
 
 // פונקציה למשיכת כל ההזמנות
 export const getAllOrders = async (req: Request, res: Response) => {
@@ -9,8 +9,8 @@ export const getAllOrders = async (req: Request, res: Response) => {
         const orders = await Order.find();
         res.status(200).json({ orders });
     } catch (error) {
-        console.error("Error fetching orders:", error);
-        res.status(500).json({ error: "Failed to fetch orders" });
+        console.error('Error fetching orders:', error);
+        res.status(500).json({ error: 'Failed to fetch orders' });
     }
 };
 export const getStats = async (req: Request, res: Response): Promise<void> => {
@@ -23,7 +23,7 @@ export const getStats = async (req: Request, res: Response): Promise<void> => {
                 {
                     $group: {
                         _id: null,
-                        totalRevenue: { $sum: "$totalPrice" }
+                        totalRevenue: { $sum: '$totalPrice' }
                     }
                 }
             ])
@@ -37,8 +37,8 @@ export const getStats = async (req: Request, res: Response): Promise<void> => {
             totalRevenue,
         });
     } catch (error) {
-        console.error("Error fetching stats:", error);
-        res.status(500).json({ error: "Failed to fetch statistics" });
+        console.error('Error fetching stats:', error);
+        res.status(500).json({ error: 'Failed to fetch statistics' });
     }
 };
 // פונקציה לעדכון הזמנה על פי המזהה
@@ -49,12 +49,12 @@ export const updateOrder = async (req: Request, res: Response) => {
 
         const order = await Order.findByIdAndUpdate(orderId, updateData, { new: true });
         if (!order) {
-            res.status(404).json({ error: "Order not found" });
+            res.status(404).json({ error: 'Order not found' });
         }
         res.status(200).json({ order });
     } catch (error) {
-        console.error("Error updating order:", error);
-        res.status(500).json({ error: "Failed to update order" });
+        console.error('Error updating order:', error);
+        res.status(500).json({ error: 'Failed to update order' });
     }
 };
 
@@ -67,7 +67,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
         // Check if password is being updated
         if (updateData.password) {
-            console.log("Password update requested");
+            console.log('Password update requested');
 
             // Hash the password
             const salt = await bcrypt.genSalt(10);
@@ -83,7 +83,7 @@ export const updateUser = async (req: Request, res: Response) => {
         );
 
         if (!user) {
-            res.status(404).json({ error: "User not found" });
+            res.status(404).json({ error: 'User not found' });
             return;
         }
 
@@ -99,8 +99,8 @@ export const updateUser = async (req: Request, res: Response) => {
 
         res.status(200).json({ user: userResponse });
     } catch (error) {
-        console.error("Error updating user:", error);
-        res.status(500).json({ error: "Failed to update user" });
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Failed to update user' });
     }
 };
 
@@ -112,15 +112,15 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
 
         // אם לא נמצאו משתמשים, נחזיר תשובה ריקה
         if (!users || users.length === 0) {
-            res.status(404).json({ message: "No users found" });
+            res.status(404).json({ message: 'No users found' });
             return;
         }
 
         // החזרת כל המשתמשים
         res.status(200).json(users);
     } catch (error) {
-        console.error("❌ Error fetching users:", error);
-        res.status(500).json({ error: "Failed to fetch users" });
+        console.error('❌ Error fetching users:', error);
+        res.status(500).json({ error: 'Failed to fetch users' });
     }
 };
 
@@ -132,14 +132,14 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
         const user = await User.findById(userId);
 
         if (!user) {
-            res.status(404).json({ error: "User not found" });
+            res.status(404).json({ error: 'User not found' });
             return;
         }
 
         res.status(200).json(user);
     } catch (error) {
-        console.error("Error fetching user by ID:", error);
-        res.status(500).json({ error: "Failed to fetch user" });
+        console.error('Error fetching user by ID:', error);
+        res.status(500).json({ error: 'Failed to fetch user' });
     }
 };
 
@@ -150,7 +150,7 @@ export const toggleOrderPriority = async (req: Request, res: Response): Promise<
         const { isPriority } = req.body;
 
         if (isPriority === undefined) {
-            res.status(400).json({ error: "isPriority field is required" });
+            res.status(400).json({ error: 'isPriority field is required' });
             return;
         }
 
@@ -162,7 +162,7 @@ export const toggleOrderPriority = async (req: Request, res: Response): Promise<
         );
 
         if (!order) {
-            res.status(404).json({ error: "Order not found" });
+            res.status(404).json({ error: 'Order not found' });
             return;
         }
 
@@ -172,8 +172,8 @@ export const toggleOrderPriority = async (req: Request, res: Response): Promise<
             order
         });
     } catch (error) {
-        console.error("Error updating order priority:", error);
-        res.status(500).json({ error: "Failed to update order priority" });
+        console.error('Error updating order priority:', error);
+        res.status(500).json({ error: 'Failed to update order priority' });
     }
 };
 

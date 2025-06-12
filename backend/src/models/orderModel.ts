@@ -1,16 +1,16 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const orderItemSchema = new mongoose.Schema({
-  cake: { type: mongoose.Schema.Types.ObjectId, ref: "Cake", required: true },
+  cake: { type: mongoose.Schema.Types.ObjectId, ref: 'Cake', required: true },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
 });
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   address: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Address",
+    ref: 'Address',
     required: false,
   }, // 🔥 קישור לכתובת הלקוח
   items: [orderItemSchema],
@@ -18,8 +18,8 @@ const orderSchema = new mongoose.Schema({
   totalRevenue: { type: Number, default: 0 },
   status: {
     type: String,
-    enum: ["draft", "pending", "confirmed", "delivered"],
-    default: "draft",
+    enum: ['draft', 'pending', 'confirmed', 'delivered'],
+    default: 'draft',
   },
   isPriority: { type: Boolean, default: false }, // Field to mark priority orders
   deliveryDate: {
@@ -37,16 +37,16 @@ const orderSchema = new mongoose.Schema({
 
         return dateToValidate >= today;
       },
-      message: "Delivery date must be today or in the future",
+      message: 'Delivery date must be today or in the future',
     },
   },
   shippingMethod: {
     type: String,
-    enum: ["Standard Delivery (2-3 days)", "Self Pickup"],
+    enum: ['Standard Delivery (2-3 days)', 'Self Pickup'],
     required: false,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("Order", orderSchema);
+export default mongoose.model('Order', orderSchema);

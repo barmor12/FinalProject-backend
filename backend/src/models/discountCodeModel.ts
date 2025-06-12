@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document } from 'mongoose';
 
 // ✅ ממשק עם הפונקציה isValid
 export interface IDiscountCode extends Document {
@@ -40,4 +40,4 @@ discountCodeSchema.methods.isValid = function () {
   return true;
 };
 
-export default mongoose.model<IDiscountCode>("DiscountCode", discountCodeSchema);
+export default mongoose.model<IDiscountCode>('DiscountCode', discountCodeSchema);

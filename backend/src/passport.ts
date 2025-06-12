@@ -1,7 +1,7 @@
-import passport from "passport";
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import User from "./models/userModel"; // ודא שהנתיב נכון
-import dotenv from "dotenv";
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import User from './models/userModel'; // ודא שהנתיב נכון
+import dotenv from 'dotenv';
 
 // טוען את משתני הסביבה
 dotenv.config();
@@ -12,11 +12,11 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!, // חובה לספק clientID
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!, // חובה לספק clientSecret
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || "/auth/google/callback", // URL ברירת מחדל
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback', // URL ברירת מחדל
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("Profile received from Google:", profile); // לוג לדיבוג
+        console.log('Profile received from Google:', profile); // לוג לדיבוג
 
         // חיפוש משתמש לפי Google ID
         let user = await User.findOne({ googleId: profile.id });
@@ -29,14 +29,14 @@ passport.use(
             profilePic: profile.photos ? profile.photos[0].value : undefined,
           });
           await user.save();
-          console.log("New user created:", user);
+          console.log('New user created:', user);
         }
 
         // Ensure userId is present per User type
         (user as any).userId = user._id.toString();
         return done(null, user as any);
       } catch (err) {
-        console.error("Error during authentication:", err);
+        console.error('Error during authentication:', err);
         return done(err, false);
       }
     }
@@ -57,7 +57,7 @@ passport.deserializeUser(async (id, done) => {
     }
     done(null, user as any);
   } catch (err) {
-    console.error("Error during deserialization:", err);
+    console.error('Error during deserialization:', err);
     done(err, null);
   }
 });

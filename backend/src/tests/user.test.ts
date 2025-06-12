@@ -1,76 +1,76 @@
-import request from "supertest";
-import express from "express";
-import userController from "../controllers/userController";
-import jwt from "jsonwebtoken";
+import request from 'supertest';
+import express from 'express';
+import userController from '../controllers/userController';
+import jwt from 'jsonwebtoken';
 
-jest.mock("../models/userModel", () => ({
+jest.mock('../models/userModel', () => ({
   findById: jest.fn(),
   findByIdAndDelete: jest.fn(),
 }));
 
-jest.mock("../config/cloudinary", () => ({
+jest.mock('../config/cloudinary', () => ({
   uploader: {
     destroy: jest.fn(),
     upload: jest.fn(() => ({
-      secure_url: "http://example.com/image.jpg",
-      public_id: "mockPublicId",
+      secure_url: 'http://example.com/image.jpg',
+      public_id: 'mockPublicId',
     })),
   },
 }));
 
 const mockUser = {
-  _id: "user123",
-  firstName: "Test",
-  lastName: "User",
+  _id: 'user123',
+  firstName: 'Test',
+  lastName: 'User',
   profilePic: {
-    url: "http://example.com/old.jpg",
-    public_id: "oldPublicId",
+    url: 'http://example.com/old.jpg',
+    public_id: 'oldPublicId',
   },
   save: jest.fn().mockResolvedValue(true),
-  toObject: jest.fn().mockReturnValue({ firstName: "Test", lastName: "User" }),
+  toObject: jest.fn().mockReturnValue({ firstName: 'Test', lastName: 'User' }),
 };
 
 export const app = express();
 app.use(express.json());
 
 // Set up routes for testing, but do not call .listen()
-app.get("/profile", (req, res) => {
-  req.headers.authorization = `Bearer validtoken`;
+app.get('/profile', (req, res) => {
+  req.headers.authorization = 'Bearer validtoken';
   return userController.getProfile(req as any, res);
 });
 
-app.put("/profile/name", (req, res) => {
-  req.headers.authorization = `Bearer validtoken`;
+app.put('/profile/name', (req, res) => {
+  req.headers.authorization = 'Bearer validtoken';
   return userController.updateUserName(req as any, res);
 });
 
-describe("User Controller Tests", () => {
+describe('User Controller Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(jwt, "verify").mockImplementation(() => ({ userId: "user123" }));
+    jest.spyOn(jwt, 'verify').mockImplementation(() => ({ userId: 'user123' }));
     // Patch userModel.findById for tests that use select()
-    const userModel = require("../models/userModel");
-    jest.spyOn(userModel, "findById").mockReturnValue({
+    const userModel = require('../models/userModel');
+    jest.spyOn(userModel, 'findById').mockReturnValue({
       select: jest.fn().mockResolvedValueOnce({
-        _id: "user123",
-        firstName: "Test",
-        lastName: "User",
-        email: "test@example.com",
-        role: "user",
-        imageUrl: "http://example.com/image.jpg",
+        _id: 'user123',
+        firstName: 'Test',
+        lastName: 'User',
+        email: 'test@example.com',
+        role: 'user',
+        imageUrl: 'http://example.com/image.jpg',
       }),
     } as any);
   });
 
-  test("PUT /profile/name - should update user name", async () => {
-    const { findById } = require("../models/userModel");
+  test('PUT /profile/name - should update user name', async () => {
+    const { findById } = require('../models/userModel');
     findById.mockResolvedValueOnce(mockUser);
 
     const res = await request(app)
-      .put("/profile/name")
-      .send({ firstName: "New", lastName: "Name" });
+      .put('/profile/name')
+      .send({ firstName: 'New', lastName: 'Name' });
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Name updated successfully");
+    expect(res.body.message).toBe('Name updated successfully');
   });
 });

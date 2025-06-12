@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
-import Order from "../models/orderModel";
-import Cake from "../models/cakeModel";
-import User from "../models/userModel";
-import DiscountCode from "../models/discountCodeModel";
-import mongoose from "mongoose";
-import Cart from "../models/cartModel";
-import nodemailer from "nodemailer";
-import Address from "../models/addressModel";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import NotificationToken from "../models/notificationToken";
-import { sendOrderStatusChangeNotification } from "../utils/pushNotifications";
+import { Request, Response } from 'express';
+import Order from '../models/orderModel';
+import Cake from '../models/cakeModel';
+import User from '../models/userModel';
+import DiscountCode from '../models/discountCodeModel';
+import mongoose from 'mongoose';
+import Cart from '../models/cartModel';
+import nodemailer from 'nodemailer';
+import Address from '../models/addressModel';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import NotificationToken from '../models/notificationToken';
+import { sendOrderStatusChangeNotification } from '../utils/pushNotifications';
 
 // Helper function to get push token for user
 async function getPushTokenForUser(userId: string) {
@@ -22,12 +22,12 @@ export const placeOrder = async (
 ): Promise<void> => {
   try {
     const { items, paymentMethod, address, deliveryDate } = req.body;
-    console.log("📨 Full Request Body:", JSON.stringify(req.body, null, 2));
+    console.log('📨 Full Request Body:', JSON.stringify(req.body, null, 2));
 
     // Get userId from the authenticated user
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      res.status(401).json({ error: "Authorization token is required" });
+      res.status(401).json({ error: 'Authorization token is required' });
       return;
     }
 
@@ -42,20 +42,20 @@ export const placeOrder = async (
       !userId ||
       !items ||
       items.length === 0 ||
-      (req.body.shippingMethod === "Standard Delivery (2-3 days)" && !address)
+      (req.body.shippingMethod === 'Standard Delivery (2-3 days)' && !address)
     ) {
-      console.error("❌ Error: Missing required fields.");
-      res.status(400).json({ error: "Missing required fields" });
+      console.error('❌ Error: Missing required fields.');
+      res.status(400).json({ error: 'Missing required fields' });
       return;
     }
 
     // בדיקת תאריך משלוח רק אם שיטת המשלוח היא Standard Delivery (2-3 days)
     const deliveryDateTime = deliveryDate ? new Date(deliveryDate) : null;
 
-    if (req.body.shippingMethod === "Standard Delivery (2-3 days)") {
+    if (req.body.shippingMethod === 'Standard Delivery (2-3 days)') {
       if (!deliveryDateTime || deliveryDateTime <= new Date()) {
-        console.error("❌ Error: Delivery date must be in the future");
-        res.status(400).json({ error: "Delivery date must be in the future" });
+        console.error('❌ Error: Delivery date must be in the future');
+        res.status(400).json({ error: 'Delivery date must be in the future' });
         return;
       }
     }
@@ -63,8 +63,8 @@ export const placeOrder = async (
     // ✅ בדיקה: האם המשתמש קיים?
     const user = await User.findById(userId);
     if (!user) {
-      console.error("❌ Error: User not found:", userId);
-      res.status(404).json({ error: "User not found" });
+      console.error('❌ Error: User not found:', userId);
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
@@ -74,12 +74,12 @@ export const placeOrder = async (
       userAddress = await Address.findById(address);
       if (!userAddress || userAddress.userId.toString() !== userId) {
         console.error(
-          "❌ Error: Address not found or doesn't belong to user:",
+          '❌ Error: Address not found or doesn\'t belong to user:',
           address
         );
         res
           .status(404)
-          .json({ error: "Address not found or does not belong to user" });
+          .json({ error: 'Address not found or does not belong to user' });
         return;
       }
     }
@@ -89,11 +89,11 @@ export const placeOrder = async (
     const cakes = await Cake.find({ _id: { $in: cakeIds } });
 
     if (cakes.length !== items.length) {
-      console.error("❌ Error: One or more cakes not found.", {
+      console.error('❌ Error: One or more cakes not found.', {
         expected: items.length,
         found: cakes.length,
       });
-      res.status(404).json({ error: "One or more cakes not found" });
+      res.status(404).json({ error: 'One or more cakes not found' });
       return;
     }
 
@@ -151,13 +151,13 @@ export const placeOrder = async (
       totalPrice,
       totalRevenue,
       paymentMethod,
-      status: "pending",
+      status: 'pending',
       deliveryDate: deliveryDateTime,
     });
 
     // ✅ שמירת ההזמנה במסד הנתונים
     const savedOrder = await order.save();
-    console.log("✅ Order Saved Successfully:", savedOrder);
+    console.log('✅ Order Saved Successfully:', savedOrder);
     const orderIdStr = savedOrder._id.toString();
 
     // ✅ שליחת מייל אישור הזמנה
@@ -166,9 +166,9 @@ export const placeOrder = async (
       orderIdStr,
       totalPrice,
       mappedItems,
-      userAddress?.fullName || "N/A",
+      userAddress?.fullName || 'N/A',
       user.firstName,
-      "https://example.com"
+      'https://example.com'
     );
 
     // ✅ ניקוי עגלת הקניות של המשתמש
@@ -176,14 +176,14 @@ export const placeOrder = async (
 
     res.status(201).json(savedOrder);
   } catch (error: unknown) {
-    console.error("❌ Error placing order:", error);
+    console.error('❌ Error placing order:', error);
 
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
       res
         .status(500)
-        .json({ error: "Failed to place order due to an unknown error" });
+        .json({ error: 'Failed to place order due to an unknown error' });
     }
   }
 };
@@ -193,19 +193,19 @@ export const getOrdersByDate = async (req: Request, res: Response) => {
     if (!date) {
       res
         .status(400)
-        .json({ message: "Date is required in format YYYY-MM-DD" });
+        .json({ message: 'Date is required in format YYYY-MM-DD' });
       return;
     }
 
     const orders = await Order.find({
       deliveryDate: date,
-    }).populate("user", "firstName lastName email");
+    }).populate('user', 'firstName lastName email');
 
     res.json(orders);
-    console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
+    console.log('✅ Orders retrieved:', JSON.stringify(orders, null, 2));
   } catch (error) {
-    console.error("Error fetching orders by date:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error fetching orders by date:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -225,7 +225,7 @@ export const sendOrderConfirmationEmail = async (
   try {
     // יצירת טרנספורטור לשליחת המייל
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -347,7 +347,7 @@ export const sendOrderConfirmationEmail = async (
                 <td>$${item.price}</td>
               </tr>`
           )
-          .join("")}
+          .join('')}
         </tbody>
       </table>
     </div>
@@ -372,7 +372,7 @@ export const sendOrderConfirmationEmail = async (
     await transporter.sendMail(mailOptions);
     console.log(`Order confirmation email sent to ${customerEmail}`);
   } catch (error) {
-    console.error("Error sending order confirmation email:", error);
+    console.error('Error sending order confirmation email:', error);
   }
 };
 
@@ -381,21 +381,21 @@ export const getAllOrders = async (
   res: Response
 ): Promise<void> => {
   try {
-    console.log("🔍 Fetching all orders...");
+    console.log('🔍 Fetching all orders...');
     const orders = await Order.find()
-      .populate("user", "firstName lastName email")
+      .populate('user', 'firstName lastName email')
       .populate({
-        path: "items.cake",
-        select: "name price image",
+        path: 'items.cake',
+        select: 'name price image',
         strictPopulate: false, // מבטיח שהנתונים יחזרו גם אם cake לא קיים
       });
 
-    console.log("✅ Orders retrieved:", JSON.stringify(orders, null, 2));
+    console.log('✅ Orders retrieved:', JSON.stringify(orders, null, 2));
     res.status(200).json(orders);
   } catch (err) {
-    console.error("❌ Error fetching orders:", err);
+    console.error('❌ Error fetching orders:', err);
     res.status(500).json({
-      error: "Failed to fetch orders",
+      error: 'Failed to fetch orders',
       details: (err as Error).message,
     });
   }
@@ -406,7 +406,7 @@ export const saveDraftOrder = async (req: Request, res: Response) => {
   if (!userId || !cakeId || !quantity) {
     res
       .status(400)
-      .json({ error: "User ID, Cake ID, and quantity are required" });
+      .json({ error: 'User ID, Cake ID, and quantity are required' });
     return;
   }
 
@@ -415,23 +415,23 @@ export const saveDraftOrder = async (req: Request, res: Response) => {
       user: userId,
       cake: cakeId,
       quantity,
-      status: "draft",
+      status: 'draft',
       imagePath: req.file?.path || null,
     });
 
     const savedOrder = await order.save();
     res.status(201).json(savedOrder);
   } catch (err) {
-    console.error("Error saving draft order:", err);
-    res.status(500).json({ error: "Failed to save draft order" });
+    console.error('Error saving draft order:', err);
+    res.status(500).json({ error: 'Failed to save draft order' });
   }
 };
 
 export const duplicateOrder = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      res.status(401).json({ error: "Unauthorized" });
+      res.status(401).json({ error: 'Unauthorized' });
       return;
     }
     const decoded = jwt.verify(
@@ -443,7 +443,7 @@ export const duplicateOrder = async (req: Request, res: Response) => {
     // נדרש שהבקשה תשלח את המערך items עם מבנה: { cakeId: string, quantity: number }
     const { items } = req.body;
     if (!items || !Array.isArray(items)) {
-      res.status(400).json({ error: "Invalid items format" });
+      res.status(400).json({ error: 'Invalid items format' });
       return;
     }
 
@@ -473,10 +473,10 @@ export const duplicateOrder = async (req: Request, res: Response) => {
     });
 
     await cart.save();
-    res.status(200).json({ message: "Cart updated", cart });
+    res.status(200).json({ message: 'Cart updated', cart });
   } catch (error) {
-    console.error("Error in reorderCart:", error);
-    res.status(500).json({ error: "Failed to reorder cart" });
+    console.error('Error in reorderCart:', error);
+    res.status(500).json({ error: 'Failed to reorder cart' });
   }
 };
 
@@ -484,7 +484,7 @@ export const applyDiscountCode = async (req: Request, res: Response) => {
   const { orderId, discountCode } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
-    res.status(400).json({ error: "Invalid order ID format" });
+    res.status(400).json({ error: 'Invalid order ID format' });
     return;
   }
 
@@ -495,13 +495,13 @@ export const applyDiscountCode = async (req: Request, res: Response) => {
     });
 
     if (!validCode) {
-      res.status(400).json({ error: "Invalid or expired discount code" });
+      res.status(400).json({ error: 'Invalid or expired discount code' });
       return;
     }
 
     const order = await Order.findById(orderId);
     if (!order) {
-      res.status(404).json({ error: "Order not found" });
+      res.status(404).json({ error: 'Order not found' });
       return;
     }
 
@@ -510,8 +510,8 @@ export const applyDiscountCode = async (req: Request, res: Response) => {
 
     res.status(200).json(order);
   } catch (err) {
-    console.error("Failed to apply discount code:", err);
-    res.status(500).json({ error: "Failed to apply discount code" });
+    console.error('Failed to apply discount code:', err);
+    res.status(500).json({ error: 'Failed to apply discount code' });
   }
 };
 
@@ -519,7 +519,7 @@ export const checkDeliveryDate = async (req: Request, res: Response) => {
   const { date } = req.body;
 
   if (!date) {
-    res.status(400).json({ error: "Date is required" });
+    res.status(400).json({ error: 'Date is required' });
     return;
   }
 
@@ -538,8 +538,8 @@ export const checkDeliveryDate = async (req: Request, res: Response) => {
 
     res.status(200).json({ available: ordersOnDate < maxOrdersPerDay });
   } catch (err) {
-    console.error("Failed to check delivery date:", err);
-    res.status(500).json({ error: "Failed to check delivery date" });
+    console.error('Failed to check delivery date:', err);
+    res.status(500).json({ error: 'Failed to check delivery date' });
   }
 };
 
@@ -547,12 +547,12 @@ export const validateOrderInput = async (req: Request, res: Response) => {
   const { userId, cakeId, quantity } = req.body;
 
   if (!userId || !cakeId || !quantity) {
-    res.status(400).json({ error: "Missing required fields" });
+    res.status(400).json({ error: 'Missing required fields' });
     return;
   }
 
   if (quantity <= 0) {
-    res.status(400).json({ error: "Quantity must be greater than zero" });
+    res.status(400).json({ error: 'Quantity must be greater than zero' });
     return;
   }
 
@@ -561,7 +561,7 @@ export const validateOrderInput = async (req: Request, res: Response) => {
       !mongoose.Types.ObjectId.isValid(userId) ||
       !mongoose.Types.ObjectId.isValid(cakeId)
     ) {
-      res.status(400).json({ error: "Invalid ID format" });
+      res.status(400).json({ error: 'Invalid ID format' });
       return;
     }
 
@@ -569,19 +569,19 @@ export const validateOrderInput = async (req: Request, res: Response) => {
     const cakeExists = await Cake.exists({ _id: cakeId });
 
     if (!userExists) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
     if (!cakeExists) {
-      res.status(404).json({ error: "Cake not found" });
+      res.status(404).json({ error: 'Cake not found' });
       return;
     }
 
     res.status(200).json({ valid: true });
   } catch (err) {
-    console.error("Validation error:", err);
-    res.status(500).json({ error: "Failed to validate order" });
+    console.error('Validation error:', err);
+    res.status(500).json({ error: 'Failed to validate order' });
   }
 };
 export const getDecorations = async (
@@ -590,16 +590,16 @@ export const getDecorations = async (
 ): Promise<void> => {
   try {
     const decorations = [
-      "Sprinkles",
-      "Chocolates",
-      "Fondant",
-      "Fruit Slices",
-      "Icing Roses",
+      'Sprinkles',
+      'Chocolates',
+      'Fondant',
+      'Fruit Slices',
+      'Icing Roses',
     ]; // רשימה קשיחה לדוגמה
     res.status(200).json(decorations);
   } catch (error) {
-    console.error("Error fetching decorations:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error('Error fetching decorations:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 // עדכון סטטוס הזמנה
@@ -611,11 +611,11 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     const updateFields: any = {};
     if (status) {
       if (
-        !["draft", "pending", "confirmed", "delivered", "cancelled"].includes(
+        !['draft', 'pending', 'confirmed', 'delivered', 'cancelled'].includes(
           status
         )
       ) {
-        res.status(400).json({ error: "Invalid status value" });
+        res.status(400).json({ error: 'Invalid status value' });
         return;
       }
       updateFields.status = status;
@@ -627,38 +627,38 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 
     const order = await Order.findByIdAndUpdate(orderId, updateFields, {
       new: true,
-    }).populate("user", "_id email firstName lastName"); // populate user for token lookup
+    }).populate('user', '_id email firstName lastName'); // populate user for token lookup
 
     // --- Push Notification logic and logging ---
     if (order && order.user && order.user._id) {
       // Logging user id
       // @ts-ignore
-      console.log("🧠 order.user._id:", order.user._id);
+      console.log('🧠 order.user._id:', order.user._id);
       // @ts-ignore
       const pushToken = await getPushTokenForUser(order.user._id);
-      console.log("📲 טוקן שנמצא:", pushToken);
+      console.log('📲 טוקן שנמצא:', pushToken);
       if (pushToken) {
         await sendOrderStatusChangeNotification(
           pushToken,
           order._id.toString(),
           updateFields.status
         );
-        console.log("🚀 שלחתי התראה ללקוח על שינוי סטטוס!");
+        console.log('🚀 שלחתי התראה ללקוח על שינוי סטטוס!');
       } else {
-        console.log("⚠️ אין טוקן ללקוח, לא נשלחה התראה.");
+        console.log('⚠️ אין טוקן ללקוח, לא נשלחה התראה.');
       }
     }
     // --- End Push Notification logic ---
 
     if (!order) {
-      res.status(404).json({ error: "Order not found" });
+      res.status(404).json({ error: 'Order not found' });
       return;
     }
 
-    res.json({ message: "Order updated successfully", order });
+    res.json({ message: 'Order updated successfully', order });
   } catch (error) {
-    console.error("❌ Error updating order:", error);
-    res.status(500).json({ error: "Failed to update order" });
+    console.error('❌ Error updating order:', error);
+    res.status(500).json({ error: 'Failed to update order' });
   }
 };
 
@@ -668,22 +668,22 @@ export const deleteOrder = async (req: Request, res: Response) => {
     const { orderId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      res.status(400).json({ error: "Invalid order ID" });
+      res.status(400).json({ error: 'Invalid order ID' });
       return;
     }
 
     // מצא את ההזמנה עם פרטי העוגות
-    const order = await Order.findById(orderId).populate("items.cake");
+    const order = await Order.findById(orderId).populate('items.cake');
 
     if (!order) {
-      res.status(404).json({ error: "Order not found" });
+      res.status(404).json({ error: 'Order not found' });
       return;
     }
 
     // החזר מלאי לכל עוגה
     for (const item of order.items) {
       const cake = item.cake as any;
-      if (cake && cake._id && typeof item.quantity === "number") {
+      if (cake && cake._id && typeof item.quantity === 'number') {
         await Cake.findByIdAndUpdate(cake._id, {
           $inc: { stock: item.quantity },
         });
@@ -694,12 +694,12 @@ export const deleteOrder = async (req: Request, res: Response) => {
     await Order.findByIdAndDelete(orderId);
 
     res.status(200).json({
-      message: "Order deleted successfully and stock updated",
+      message: 'Order deleted successfully and stock updated',
       deletedOrderId: order._id,
     });
   } catch (error) {
-    console.error("❌ Error deleting order:", error);
-    res.status(500).json({ error: "Failed to delete order" });
+    console.error('❌ Error deleting order:', error);
+    res.status(500).json({ error: 'Failed to delete order' });
   }
 };
 export const sendOrderUpdateEmailHandler = async (
@@ -710,19 +710,19 @@ export const sendOrderUpdateEmailHandler = async (
     const { orderId } = req.params;
     const { customerEmail, orderStatus, managerMessage, hasMsg } = req.body;
 
-    console.log("Received request body:", req.body);
+    console.log('Received request body:', req.body);
 
     if (!customerEmail || !orderStatus) {
-      res.status(400).json({ error: "Missing required fields" });
+      res.status(400).json({ error: 'Missing required fields' });
       return;
     }
 
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-      throw new Error("Email credentials are missing in .env file");
+      throw new Error('Email credentials are missing in .env file');
     }
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -732,10 +732,10 @@ export const sendOrderUpdateEmailHandler = async (
     });
 
     const statusMessages: Record<string, string> = {
-      pending: "Your order has been received and is awaiting confirmation.",
-      confirmed: "Your order has been confirmed and is being prepared.",
-      delivered: "Your order has been successfully delivered!",
-      cancelled: "Unfortunately, your order has been cancelled.",
+      pending: 'Your order has been received and is awaiting confirmation.',
+      confirmed: 'Your order has been confirmed and is being prepared.',
+      delivered: 'Your order has been successfully delivered!',
+      cancelled: 'Unfortunately, your order has been cancelled.',
     };
 
     let emailContent = `
@@ -755,7 +755,7 @@ export const sendOrderUpdateEmailHandler = async (
       `;
     }
 
-    emailContent += `<p>Thank you for ordering with us!</p>`;
+    emailContent += '<p>Thank you for ordering with us!</p>';
 
     const mailOptions = {
       from: `"Bakey" <${process.env.EMAIL_USER}>`,
@@ -769,11 +769,11 @@ export const sendOrderUpdateEmailHandler = async (
 
     res
       .status(200)
-      .json({ success: true, message: "Email sent successfully!" });
+      .json({ success: true, message: 'Email sent successfully!' });
     return;
   } catch (error: any) {
     console.error(`[ERROR] Failed to send email: ${error.message}`);
-    res.status(500).json({ success: false, message: "Failed to send email." });
+    res.status(500).json({ success: false, message: 'Failed to send email.' });
     return;
   }
 };
@@ -784,33 +784,33 @@ export const getOrderById = async (req: Request, res: Response) => {
 
     // בדיקה אם ה-ID תקין
     if (!orderId) {
-      res.status(400).json({ error: "Order ID is required" });
+      res.status(400).json({ error: 'Order ID is required' });
       return;
     }
 
     // חיפוש ההזמנה במסד הנתונים
     const order = await Order.findById(orderId)
-      .populate("user", "firstName lastName email")
+      .populate('user', 'firstName lastName email')
       .populate({
-        path: "items.cake",
-        select: "name image",
+        path: 'items.cake',
+        select: 'name image',
       })
-      .populate("address");
+      .populate('address');
 
     if (!order) {
-      res.status(404).json({ error: "Order not found" });
+      res.status(404).json({ error: 'Order not found' });
       return;
     }
 
     res.json(order);
   } catch (error) {
     if (error instanceof Error) {
-      console.error("❌ Error fetching order:", error);
+      console.error('❌ Error fetching order:', error);
       res
         .status(500)
-        .json({ error: "Failed to fetch order", details: error.message });
+        .json({ error: 'Failed to fetch order', details: error.message });
     } else {
-      res.status(500).json({ error: "Unknown error occurred" });
+      res.status(500).json({ error: 'Unknown error occurred' });
     }
   }
 };
@@ -823,27 +823,27 @@ export const getUserOrders = async (
 
     // ✅ בדיקה אם יש userId
     if (!userId) {
-      res.status(400).json({ error: "User ID is required" });
+      res.status(400).json({ error: 'User ID is required' });
       return;
     }
 
     // ✅ בדיקה אם ה-userId תקין כ-ObjectId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      res.status(400).json({ error: "Invalid User ID format" });
+      res.status(400).json({ error: 'Invalid User ID format' });
       return;
     }
 
     // ✅ שליפת כל ההזמנות של המשתמש
     const orders = await Order.find({ user: userId })
       .sort({ createdAt: -1 }) // מההזמנה האחרונה לישנה ביותר
-      .populate("user", "firstName lastName email") // טוען מידע בסיסי על המשתמש
+      .populate('user', 'firstName lastName email') // טוען מידע בסיסי על המשתמש
       .populate({
-        path: "items.cake",
-        select: "name image price", // שליפת שם, תמונה ומחיר של העוגה
+        path: 'items.cake',
+        select: 'name image price', // שליפת שם, תמונה ומחיר של העוגה
       })
       .populate({
-        path: "address",
-        select: "fullName phone street city zipCode country", // ✅ שליפת הכתובת מהמודל
+        path: 'address',
+        select: 'fullName phone street city zipCode country', // ✅ שליפת הכתובת מהמודל
       });
 
     // ✅ מחזיר מערך ריק במקום שגיאת 404 אם אין הזמנות
@@ -854,13 +854,13 @@ export const getUserOrders = async (
 
     res.status(200).json(orders);
   } catch (error: any) {
-    console.error("❌ Error fetching user orders:", error);
+    console.error('❌ Error fetching user orders:', error);
 
     // ✅ בדיקת השגיאה ושמירה על רמות אבטחה
     const errorMessage =
       error instanceof mongoose.Error.ValidationError
-        ? "Validation error while fetching orders."
-        : "Failed to fetch user orders.";
+        ? 'Validation error while fetching orders.'
+        : 'Failed to fetch user orders.';
 
     res.status(500).json({ error: errorMessage });
   }
@@ -870,7 +870,7 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
   try {
     const { month, year } = req.query; // month should be 1-12, year should be YYYY
     if (!month || !year) {
-      res.status(400).json({ message: "Month and year are required" });
+      res.status(400).json({ message: 'Month and year are required' });
       return;
     }
 
@@ -882,12 +882,12 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
     if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
       res
         .status(400)
-        .json({ message: "Invalid month. Must be between 1 and 12" });
+        .json({ message: 'Invalid month. Must be between 1 and 12' });
       return;
     }
 
     if (isNaN(yearNum) || yearNum < 2000 || yearNum > 2100) {
-      res.status(400).json({ message: "Invalid year" });
+      res.status(400).json({ message: 'Invalid year' });
       return;
     }
 
@@ -902,20 +902,20 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
         $lte: endDate,
       },
     })
-      .populate("user", "firstName lastName email")
+      .populate('user', 'firstName lastName email')
       .populate({
-        path: "items.cake",
-        select: "name price image",
+        path: 'items.cake',
+        select: 'name price image',
       })
-      .populate("address");
+      .populate('address');
 
     console.log(
-      "✅ Orders retrieved for month:",
+      '✅ Orders retrieved for month:',
       JSON.stringify(orders, null, 2)
     );
     res.json(orders);
   } catch (error) {
-    console.error("Error fetching orders by month:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error fetching orders by month:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
