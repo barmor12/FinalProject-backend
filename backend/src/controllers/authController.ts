@@ -15,6 +15,8 @@ import crypto from 'crypto';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 
+
+
 export const googleCallback = async (req: Request, res: Response) => {
   const { id_token, password } = req.body;
 
@@ -39,6 +41,8 @@ export const googleCallback = async (req: Request, res: Response) => {
 
     // First check if user exists by googleId
     let user = await User.findOne({ googleId: payload.sub });
+
+    
 
     // If no user found by googleId, check by email
     if (!user) {
