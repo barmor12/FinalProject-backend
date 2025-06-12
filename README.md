@@ -1,5 +1,5 @@
 
-# 🍰 Final Project Backend - CakeManager API
+# 🍰 Final Project Backend - Bakey API
 
 ## Overview
 
