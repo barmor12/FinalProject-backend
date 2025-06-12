@@ -49,10 +49,10 @@ jobs:
       - name: Deploy to production server
         if: github.ref == 'refs/heads/main'
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} <<EOF
             cd /var/www/FinalProject-backend/backend
             git pull origin main
             npm install
             npm run build
-            pm2 restart CakeBackend || pm2 start dist/server.js --name CakeBackend
+            pm2 restart Bakey || pm2 start dist/server.js --name Bakey
           EOF
