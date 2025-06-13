@@ -22,6 +22,8 @@ router.get('/:id', authenticateMiddleware, getRecipe);
 
 router.post('/newRecipe', authenticateAdminMiddleware, upload.single('image'), createRecipe);
 
+
+
 router.put(
   '/:id/withImage',
   authenticateAdminMiddleware,
