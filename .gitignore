@@ -33,4 +33,7 @@ coverage/
 
 # Temporary files
 *.tmp
-*.temp 
+*.temp
+
+# Uploads
+uploads/ 
