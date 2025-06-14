@@ -99,7 +99,12 @@ export const createRecipe = async (req: Request, res: Response) => {
 // Get all recipes
 export const getRecipes = async (req: Request, res: Response) => {
   try {
-    const recipes = await Recipe.find().sort({ createdAt: -1 });
+    const query: any = {};
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
+
+    const recipes = await Recipe.find(query);
     res.status(200).json(recipes);
   } catch (error) {
     logger.error(`[ERROR] Error fetching recipes: ${error}`);
