@@ -38,6 +38,11 @@ const recipeSchema = new mongoose.Schema({
     required: true,
     default: '',
   },
+  category: {
+    type: String,
+    required: true,
+    enum: ['Cakes', 'Cookies', 'Vegan', 'Birthday', 'Allergen-Free']
+  },
   image: {
     url: { type: String, required: true },
     public_id: { type: String, required: true }

@@ -16,8 +16,9 @@ export const createRecipe = async (req: Request, res: Response) => {
       instructions,
       difficulty,
       makingTime,
+      category,
     } = req.body;
-    if (!name || !description || !servings || !ingredients || !instructions || !difficulty || !makingTime) {
+    if (!name || !description || !servings || !ingredients || !instructions || !difficulty || !makingTime || !category) {
       res.status(400).json({ error: 'All fields are required' });
       return;
     }
@@ -58,6 +59,7 @@ export const createRecipe = async (req: Request, res: Response) => {
       servings: parseInt(servings),
       difficulty,
       makingTime,
+      category,
       image: imageData,
       ingredients: parsedIngredients,
       instructions: parsedInstructions,
@@ -104,7 +106,7 @@ export const getRecipe = async (req: Request, res: Response) => {
 // Update a recipe
 export const updateRecipe = async (req: Request, res: Response) => {
   try {
-    const { name, description, servings, ingredients, directions, difficulty, makingTime } = req.body;
+    const { name, description, servings, ingredients, directions, difficulty, makingTime, category } = req.body;
     const recipe = await Recipe.findById(req.params.id);
 
     if (!recipe) {
@@ -146,6 +148,7 @@ export const updateRecipe = async (req: Request, res: Response) => {
     recipe.difficulty = difficulty || recipe.difficulty;
     recipe.ingredients = ingredients || recipe.ingredients;
     recipe.instructions = directions || recipe.instructions;
+    recipe.category = category || recipe.category;
 
     await recipe.save();
     logger.info(`[INFO] Recipe updated successfully: ${recipe._id}`);
@@ -294,6 +297,7 @@ export const updateRecipeData = async (req: Request, res: Response) => {
       instructions,
       difficulty,
       makingTime,
+      category,
     } = req.body;
 
     const recipe = await Recipe.findById(req.params.id);
@@ -345,6 +349,7 @@ export const updateRecipeData = async (req: Request, res: Response) => {
       recipe.instructions = parsedInstructions as any;
       recipe.difficulty = difficulty;
       recipe.makingTime = makingTime || recipe.makingTime;
+      recipe.category = category || recipe.category;
 
       await recipe.save();
       logger.info(`[INFO] Recipe data updated successfully: ${recipe._id}`);
