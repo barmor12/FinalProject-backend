@@ -28,14 +28,27 @@ export const createRecipe = async (req: Request, res: Response) => {
       return;
     }
 
-    // Parse ingredients from object to array
-    const parsedIngredients = Object.entries(JSON.parse(ingredients)).map(([_, value]) => value);
+    // Parse ingredients from JSON string
+    let parsedIngredients;
+    try {
+      parsedIngredients = JSON.parse(ingredients);
+    } catch (e) {
+      res.status(400).json({ error: 'Invalid ingredients format' });
+      return;
+    }
 
-    // Parse instructions from object to array of instruction objects
-    const parsedInstructions = Object.entries(JSON.parse(instructions)).map(([_, value]: [string, any], index) => ({
-      step: index + 1,
-      instruction: typeof value === 'object' ? value.instruction : value
-    }));
+    // Parse instructions from JSON string
+    let parsedInstructions;
+    try {
+      const parsed = JSON.parse(instructions);
+      parsedInstructions = parsed.map((value: any, index: number) => ({
+        step: index + 1,
+        instruction: typeof value === 'object' && value !== null ? value.instruction : value
+      }));
+    } catch (e) {
+      res.status(400).json({ error: 'Invalid instructions format' });
+      return;
+    }
 
     // Handle image upload
     let imageData;
@@ -52,11 +65,17 @@ export const createRecipe = async (req: Request, res: Response) => {
       return;
     }
 
+    const parsedServings = parseInt(servings);
+    if (isNaN(parsedServings)) {
+      res.status(400).json({ error: 'Servings must be a valid number' });
+      return;
+    }
+
     // Create new recipe
     const recipe = new Recipe({
       name,
       description,
-      servings: parseInt(servings),
+      servings: parsedServings,
       difficulty,
       makingTime,
       category,
