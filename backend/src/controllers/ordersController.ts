@@ -242,21 +242,55 @@ export const placeOrder = async (
         },
       ];
     }
+    const orderItemsHtml = savedOrder.items
+      .map(
+        (item: any) => `
+          <tr>
+            <td>${item.cakeName}</td>
+            <td>${item.quantity}</td>
+            <td>$${item.price}</td>
+          </tr>
+        `
+      )
+      .join('');
+
+    const receiptNote =
+      savedOrder.paymentMethod === 'cash'
+        ? '<p><em>You chose to pay with cash. A receipt will be sent after payment is completed.</em></p>'
+        : '<p><strong>Your payment receipt is attached.</strong></p>';
+
     await sendEmail({
       to: user.email,
-      subject: 'Order Confirmation',
+      subject: `Order Confirmation - Order #${savedOrder._id}`,
       html: `
-        <h2>Order Confirmed</h2>
-        <p>Thank you for your order!</p>
-        <p><strong>Order ID:</strong> ${savedOrder._id}</p>
-        <p><strong>Status:</strong> ${savedOrder.status}</p>
-        <p><strong>Payment Method:</strong> ${savedOrder.paymentMethod}</p>
-        <p><strong>Total:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
-        ${
-          savedOrder.paymentMethod === 'cash'
-            ? '<p><em>You will receive a receipt after payment is completed.</em></p>'
-            : '<p><strong>Attached is your payment receipt.</strong></p>'
-        }
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
+        <h2 style="color: #5A3827; text-align: center;">Order Confirmation</h2>
+        <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
+        <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
+        <p><strong>Order Status:</strong> ${savedOrder.status}</p>
+        <p><strong>Delivery Address:</strong> ${userAddress ? `${userAddress.fullName}, ${userAddress.street}, ${userAddress.city}` : 'Pickup from store'}</p>
+
+        <h3>Order Details</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #f4f4f4;">
+              <th style="padding: 8px; border-bottom: 1px solid #ddd;">Item</th>
+              <th style="padding: 8px; border-bottom: 1px solid #ddd;">Quantity</th>
+              <th style="padding: 8px; border-bottom: 1px solid #ddd;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${orderItemsHtml}
+          </tbody>
+        </table>
+
+        <p style="margin-top: 20px; font-size: 16px;"><strong>Total Price:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
+        ${receiptNote}
+        <p style="margin-top: 20px;">We will notify you when your order is confirmed and on its way.</p>
+        <p>If you have any questions, feel free to contact us.</p>
+        <p style="margin-top: 10px;">Thank you for shopping with us!</p>
+        <p><a href="${process.env.FRONTEND_URL || '#'}" style="color: #5A3827;">Visit our shop</a></p>
+      </div>
       `,
       attachments,
     });
