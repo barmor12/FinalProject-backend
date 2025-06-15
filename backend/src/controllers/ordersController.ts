@@ -10,25 +10,7 @@ import Address from '../models/addressModel';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import NotificationToken from '../models/notificationToken';
 import { sendOrderStatusChangeNotification } from '../utils/pushNotifications';
-import PDFDocument from 'pdfkit';
-import path from 'path';
-import fs from 'fs';
 
-interface InvoiceItem {
-  cake: {
-    name: string;
-    price: number;
-  };
-  quantity: number;
-}
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail', // or your preferred email service
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
 // Helper function to get push token for user
 async function getPushTokenForUser(userId: string) {
   const tokenDoc = await NotificationToken.findOne({ userId });
@@ -227,8 +209,6 @@ export const getOrdersByDate = async (req: Request, res: Response) => {
   }
 };
 
-
-
 interface TokenPayload extends JwtPayload {
   userId: string;
   role: string;
@@ -243,7 +223,16 @@ export const sendOrderConfirmationEmail = async (
   shopUrl: string
 ): Promise<void> => {
   try {
-
+    // יצירת טרנספורטור לשליחת המייל
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
     // יצירת תוכן המייל עם התייחסות לנתונים דינמיים
     const mailOptions = {
       from: `"Bakey" <${process.env.EMAIL_USER}>`,
@@ -732,6 +721,15 @@ export const sendOrderUpdateEmailHandler = async (
       throw new Error('Email credentials are missing in .env file');
     }
 
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
 
     const statusMessages: Record<string, string> = {
       pending: 'Your order has been received and is awaiting confirmation.',
@@ -919,123 +917,5 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching orders by month:', error);
     res.status(500).json({ message: 'Server error' });
-  }
-};
-
-export const sendInvoice = async (req: Request, res: Response) => {
-  try {
-    const {
-      orderId,
-      items,
-      total,
-      shippingMethod,
-      deliveryDate,
-      address,
-      paymentMethod,
-      creditCard
-    } = req.body;
-
-    // ✅ שליפת userId מה-Authorization header
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-      res.status(401).json({ message: 'Authorization token is missing' });
-      return;
-    }
-
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
-    const userId = decoded.userId;
-
-    // ✅ יצירת PDF
-    const doc = new PDFDocument();
-    const pdfPath = path.join(__dirname, `../temp/invoice-${orderId}.pdf`);
-    const writeStream = fs.createWriteStream(pdfPath);
-
-    doc.pipe(writeStream);
-
-    doc.fontSize(25).text('Order Invoice', { align: 'center' });
-    doc.moveDown();
-
-    doc.fontSize(12).text(`Order ID: ${orderId}`);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`);
-    doc.text(`Payment Method: ${paymentMethod}`);
-    if (creditCard) {
-      doc.text(`Card: ${creditCard}`);
-    }
-    doc.moveDown();
-
-    doc.text('Shipping Details:');
-    doc.text(`Method: ${shippingMethod}`);
-    doc.text(`Delivery Date: ${deliveryDate}`);
-
-    doc.text('Shipping Details:');
-    doc.text(`Method: ${shippingMethod}`);
-    doc.text(`Delivery Date: ${deliveryDate}`);
-
-    // הצגת כתובת רק אם זה לא Self Pickup
-    if (shippingMethod !== 'Self Pickup' && address && typeof address === 'object') {
-      const { street, city } = address;
-      const fullAddress = `${street}, ${city}`;
-      console.log('full adress', fullAddress);
-      doc.text(`Address: ${fullAddress}`);
-    }
-
-
-
-
-    doc.moveDown();
-
-    doc.text('Items:', { underline: true });
-    doc.moveDown(0.5);
-
-    let y = doc.y;
-    doc.text('Item', 50, y);
-    doc.text('Quantity', 250, y);
-    doc.text('Price', 350, y);
-    doc.text('Total', 450, y);
-    doc.moveDown();
-
-    (items as InvoiceItem[]).forEach(item => {
-      const itemTotal = item.cake.price * item.quantity;
-      doc.text(item.cake.name, 50);
-      doc.text(item.quantity.toString(), 250);
-      doc.text(`$${item.cake.price.toFixed(2)}`, 350);
-      doc.text(`$${itemTotal.toFixed(2)}`, 450);
-      doc.moveDown();
-    });
-
-    doc.moveDown();
-    doc.text(`Total Amount: $${total}`, { align: 'right' });
-
-    doc.end();
-
-    await new Promise((resolve, reject) => {
-      writeStream.on('finish', resolve);
-      writeStream.on('error', reject);
-    });
-
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    await transporter.sendMail({
-      from: `"Bakey" <${process.env.EMAIL_USER}>`,
-      to: user.email,
-      subject: `Order Invoice #${orderId}`,
-      text: 'Thank you for your order! Please find your invoice attached.',
-      attachments: [
-        {
-          filename: `invoice-${orderId}.pdf`,
-          path: pdfPath,
-        },
-      ],
-    });
-
-    fs.unlinkSync(pdfPath);
-
-    res.status(200).json({ message: 'Invoice sent successfully' });
-  } catch (error) {
-    console.error('Error sending invoice:', error);
-    res.status(500).json({ message: 'Failed to send invoice' });
   }
 };

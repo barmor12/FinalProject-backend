@@ -14,7 +14,7 @@ import {
   sendOrderUpdateEmailHandler,
   getOrdersByDate,
   getOrdersByMonth,
-  sendInvoice,
+  
 } from '../controllers/ordersController';
 import authenticateMiddleware from '../common/authMiddleware';
 
@@ -65,6 +65,6 @@ router.get('/', authenticateMiddleware, getDecorations); // GET /decorations
 router.get('/user/:userId', authenticateMiddleware, getUserOrders); // קריאה לפי `userId`
 
 router.get('/:orderId', getOrderById); // שליפת הזמנה לפי ID
-router.post('/send-invoice', sendInvoice); // שליפת הזמנה לפי ID
+
 
 export default router;
