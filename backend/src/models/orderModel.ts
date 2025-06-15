@@ -21,6 +21,11 @@ const orderSchema = new mongoose.Schema({
     enum: ['draft', 'pending', 'confirmed', 'delivered'],
     default: 'draft',
   },
+  paymentMethod: {
+    type: String,
+    enum: ['cash', 'credit'],
+    required: true,
+  },
   isPriority: { type: Boolean, default: false }, // Field to mark priority orders
   deliveryDate: {
     type: Date,

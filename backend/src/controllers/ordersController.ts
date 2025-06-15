@@ -6,10 +6,77 @@ import DiscountCode from '../models/discountCodeModel';
 import mongoose from 'mongoose';
 import Cart from '../models/cartModel';
 import nodemailer from 'nodemailer';
+import PDFDocument from 'pdfkit';
 import Address from '../models/addressModel';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import NotificationToken from '../models/notificationToken';
 import { sendOrderStatusChangeNotification } from '../utils/pushNotifications';
+// --- Utility: Send email with attachments ---
+export async function sendEmail({ to, subject, html, attachments }: { to: string; subject: string; html: string; attachments?: any[] }) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    throw new Error('Email credentials are missing in .env file');
+  }
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+  const mailOptions: any = {
+    from: `"Bakey" <${process.env.EMAIL_USER}>`,
+    to,
+    subject,
+    html,
+  };
+  if (attachments && attachments.length > 0) {
+    mailOptions.attachments = attachments;
+  }
+  await transporter.sendMail(mailOptions);
+}
+
+// --- Utility: Generate PDF receipt for order ---
+export function generateReceiptPDF(order: any) {
+  const doc = new PDFDocument();
+  let buffers: Buffer[] = [];
+  doc.on('data', buffers.push.bind(buffers));
+  doc.on('end', () => {});
+
+  doc.fontSize(20).text('Payment Receipt', { align: 'center' });
+  doc.moveDown();
+  doc.fontSize(14).text(`Order ID: ${order._id}`);
+  doc.text(`Status: ${order.status}`);
+  doc.text(`Payment Method: ${order.paymentMethod}`);
+  doc.text(`Total: $${order.totalPrice.toFixed(2)}`);
+  doc.moveDown();
+  doc.text('Items:', { underline: true });
+  if (Array.isArray(order.items)) {
+    order.items.forEach((item: any) => {
+      doc.text(
+        `- ${item.cakeName || (item.cake && item.cake.name) || 'Cake'} x${item.quantity} $${item.price}`
+      );
+    });
+  }
+  doc.end();
+
+  // Wait for the PDF to finish and return as attachment object
+  const pdfPromise: Promise<Buffer> = new Promise((resolve) => {
+    doc.on('end', () => {
+      resolve(Buffer.concat(buffers));
+    });
+  });
+  // We must return a promise, but sendEmail expects the object synchronously.
+  // So, in usage, await generateReceiptPDF(order) to get the object.
+  // For compatibility, return a dummy object with a promise property.
+  // But to keep the code simple, we'll make placeOrder await it.
+  return {
+    filename: `receipt_order_${order._id}.pdf`,
+    content: pdfPromise,
+    contentType: 'application/pdf',
+  };
+}
 
 // Helper function to get push token for user
 async function getPushTokenForUser(userId: string) {
@@ -160,16 +227,39 @@ export const placeOrder = async (
     console.log('✅ Order Saved Successfully:', savedOrder);
     const orderIdStr = savedOrder._id.toString();
 
-    // ✅ שליחת מייל אישור הזמנה
-    await sendOrderConfirmationEmail(
-      user.email,
-      orderIdStr,
-      totalPrice,
-      mappedItems,
-      userAddress?.fullName || 'N/A',
-      user.firstName,
-      'https://example.com'
-    );
+    // ✅ שליחת מייל אישור הזמנה (חדש עם תמיכה ב-attachments)
+    let attachments: any[] = [];
+    if (savedOrder.paymentMethod === 'credit') {
+      // generateReceiptPDF returns {filename, content: Promise<Buffer>, contentType}
+      const pdfObj = generateReceiptPDF(savedOrder);
+      // Wait for the PDF buffer to be ready
+      const pdfBuffer = await pdfObj.content;
+      attachments = [
+        {
+          filename: pdfObj.filename,
+          content: pdfBuffer,
+          contentType: pdfObj.contentType,
+        },
+      ];
+    }
+    await sendEmail({
+      to: user.email,
+      subject: 'Order Confirmation',
+      html: `
+        <h2>Order Confirmed</h2>
+        <p>Thank you for your order!</p>
+        <p><strong>Order ID:</strong> ${savedOrder._id}</p>
+        <p><strong>Status:</strong> ${savedOrder.status}</p>
+        <p><strong>Payment Method:</strong> ${savedOrder.paymentMethod}</p>
+        <p><strong>Total:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
+        ${
+          savedOrder.paymentMethod === 'cash'
+            ? '<p><em>You will receive a receipt after payment is completed.</em></p>'
+            : '<p><strong>Attached is your payment receipt.</strong></p>'
+        }
+      `,
+      attachments,
+    });
 
     // ✅ ניקוי עגלת הקניות של המשתמש
     await Cart.deleteOne({ user: userId });
