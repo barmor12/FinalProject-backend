@@ -256,8 +256,8 @@ export const placeOrder = async (
 
     const receiptNote =
       savedOrder.paymentMethod === 'cash'
-        ? '<p><em>You chose to pay with cash. A receipt will be sent after payment is completed.</em></p>'
-        : '<p><strong>Your payment receipt is attached.</strong></p>';
+        ? '<p style="color:#5a3827;"><em>You chose to pay with cash. A receipt will be sent after payment is completed.</em></p>'
+        : '<p style="color:#5a3827;"><strong>Your payment receipt is attached.</strong></p>';
 
     await sendEmail({
       to: user.email,
