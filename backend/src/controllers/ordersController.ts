@@ -246,7 +246,7 @@ export const placeOrder = async (
       .map(
         (item: any) => `
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.cakeName || 'Cake'}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.cakeName}</td>
             <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
             <td style="padding: 8px; border-bottom: 1px solid #ddd;">$${item.price}</td>
           </tr>
@@ -470,15 +470,15 @@ export const sendOrderConfirmationEmail = async (
         </thead>
         <tbody>
           ${orderItems
-          .map(
-            (item: any) => `
-              <tr>
-                <td>${item.cakeName || 'Cake'}</td>
-                <td>${item.quantity}</td>
-                <td>$${item.price}</td>
-              </tr>`
-          )
-          .join('')}
+            .map(
+              (item: any) => `
+                <tr>
+                  <td>${item.cakeName}</td>
+                  <td>${item.quantity}</td>
+                  <td>$${item.price}</td>
+                </tr>`
+            )
+            .join('')}
         </tbody>
       </table>
     </div>
