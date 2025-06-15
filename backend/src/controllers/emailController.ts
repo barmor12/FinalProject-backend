@@ -34,13 +34,13 @@ export const sendReviewEmail = async (
     const mailOptions = {
       from: `"Bakey" <${process.env.EMAIL_USER}>`,
       to: customerEmail,
-      subject: `We'd love your review for Order #${orderId.slice(-6)}`,
+      subject: `Order #${orderId.slice(-6)} Delivered – We're Here for You`,
       html: `
         <!DOCTYPE html>
         <html lang="en">
           <head>
             <meta charset="UTF-8">
-            <title>Leave a Review</title>
+            <title>We're Here to Help</title>
             <style>
               body {
                 font-family: Arial, sans-serif;
@@ -55,32 +55,36 @@ export const sendReviewEmail = async (
                 border-radius: 8px;
                 padding: 20px;
                 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                text-align: center;
               }
               .header {
-                text-align: center;
                 color: #6b4226;
+                margin-bottom: 20px;
               }
-              .button {
+              .order-info {
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 24px;
+              }
+              .whatsapp-button {
                 display: inline-block;
-                padding: 10px 20px;
-                margin-top: 20px;
-                background-color: #6b4226;
-                color: #fff;
+                background-color: #25D366;
+                color: white;
+                padding: 12px 24px;
                 text-decoration: none;
-                border-radius: 5px;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: bold;
               }
             </style>
           </head>
           <body>
             <div class="container">
               <h2 class="header">Thank you for your order!</h2>
-              <p>Your order <strong>#${orderId.slice(
-        -6
-      )}</strong> has been delivered.</p>
-              <p>We would love to hear your feedback. Please click the button below to leave a review:</p>
-              <a class="button" href="${process.env.REVIEW_URL || 'https://example.com/review'
-        }">Leave a Review</a>
-              <p>Thank you for shopping with us!</p>
+              <p class="order-info">Your order <strong>#${orderId.slice(-6)}</strong> has been delivered.</p>
+              <p>If you have any questions or need assistance, feel free to contact us directly on WhatsApp:</p>
+              <a class="whatsapp-button" href="https://wa.me/972509667461" target="_blank">Contact Us on WhatsApp</a>
+              <p style="margin-top: 24px;">We're always here for you.<br>Bakey Team</p>
             </div>
           </body>
         </html>
