@@ -476,7 +476,34 @@ export const generateFinancialReport = async (req: Request, res: Response) => {
     }
 };
 
+export const getTopCakeName = async (req: Request, res: Response) => {
+    try {
+      const deliveredOrders = await Order.find({ status: 'delivered' }).populate({
+        path: 'items.cake',
+        select: 'name',
+      });
+  
+      const cakeCount: { [cakeName: string]: number } = {};
+  
+      deliveredOrders.forEach(order => {
+        order.items.forEach(item => {
+          const cake = item.cake as any;
+          if (!cake || !cake.name) return;
+          cakeCount[cake.name] = (cakeCount[cake.name] || 0) + (item.quantity || 0);
+        });
+      });
+  
+      const topCake = Object.entries(cakeCount).sort((a, b) => b[1] - a[1])[0];
+  
+      res.status(200).json({ name: topCake ? topCake[0] : 'N/A' });
+    } catch (error) {
+      logger.error(`[ERROR] Failed to get top cake: ${error}`);
+      res.status(500).json({ name: 'N/A' });
+    }
+  };
+
 export default {
     getStatistics,
     generateFinancialReport,
+    getTopCakeName,
 };
