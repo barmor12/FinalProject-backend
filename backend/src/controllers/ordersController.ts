@@ -473,7 +473,7 @@ export const sendOrderConfirmationEmail = async (
             .map(
               (item: any) => `
                 <tr>
-                  <td>${item.cakeName}</td>
+                  <td>${item.cakeName || (item.cake && item.cake.name) || 'Cake'}</td>
                   <td>${item.quantity}</td>
                   <td>$${item.price}</td>
                 </tr>`
