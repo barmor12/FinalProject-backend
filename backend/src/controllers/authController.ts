@@ -1562,23 +1562,12 @@ const sendResetEmail = async (email: string, resetCode: string) => {
             color: #555;
           }
 
-          .code-box {
-            display: inline-block;
-            background: var(--accent-blue);
-            color: #fff;
-            padding: 16px 28px;
-            border-radius: 8px;
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          }
+          /* The code-box style will be overridden inline for the code itself */
 
           @media (max-width: 420px) {
             h1 { font-size: 22px; }
             p  { font-size: 15px; }
-            .code-box { font-size: 24px; }
+            .code-box { font-size: 24px !important; }
           }
         </style>
       </head>
@@ -1587,7 +1576,7 @@ const sendResetEmail = async (email: string, resetCode: string) => {
           <div class="card">
             <h1>Password Reset Request</h1>
             <p>Use the following code to reset your password:</p>
-            <div class="code-box">${resetCode}</div>
+            <div class="code-box" style="background:#3a7cff;color:#fff;font-size:30px;padding:18px 30px;border-radius:10px;display:inline-block;font-weight:700;letter-spacing:4px;box-shadow:0 4px 12px rgba(0,0,0,0.15);">${resetCode}</div>
             <p>This code will expire in 15&nbsp;minutes.</p>
           </div>
         </div>
