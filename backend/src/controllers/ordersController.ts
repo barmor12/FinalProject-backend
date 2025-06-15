@@ -205,7 +205,7 @@ export const placeOrder = async (
           cake: foundCake._id,
           quantity: i.quantity,
           price: foundCake.price,
-          cakeName: foundCake.name,
+          cakeName: foundCake.name || 'Cake',
         };
       })
       .filter(Boolean);
@@ -246,7 +246,7 @@ export const placeOrder = async (
       .map(
         (item: any) => `
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.cakeName || 'Unnamed Cake'}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.cakeName || 'Cake'}</td>
             <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
             <td style="padding: 8px; border-bottom: 1px solid #ddd;">$${item.price}</td>
           </tr>
@@ -265,7 +265,9 @@ export const placeOrder = async (
       html: `
   <body style="margin:0;padding:0;background-color:#f4f4f9;">
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 30px auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
-    <h2 style="text-align:center; color: #5A3827;">Order Confirmation</h2>
+    <div style="background-color:#5A3827; padding: 10px; border-radius: 8px; text-align: center;">
+      <h2 style="margin: 0; color: white;">Order Confirmation</h2>
+    </div>
     <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
     <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
     <p><strong>Order Status:</strong> ${savedOrder.status}</p>
@@ -288,8 +290,7 @@ export const placeOrder = async (
     <p style="margin-top: 20px; font-size: 16px;"><strong>Total Price:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
     ${receiptNote}
     <p style="margin-top: 20px;">We will notify you when your order is confirmed and on its way.</p>
-    <p>If you have any questions, feel free to contact us via WhatsApp:</p>
-    <div style="margin-top: 10px; text-align: center;">
+    <div style="margin-top: 20px; text-align: center;">
       <a href="https://wa.me/972509667461" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold;">
         Contact Us on WhatsApp
       </a>
@@ -472,7 +473,7 @@ export const sendOrderConfirmationEmail = async (
           .map(
             (item: any) => `
               <tr>
-                <td>${item.cakeName}</td>
+                <td>${item.cakeName || 'Cake'}</td>
                 <td>${item.quantity}</td>
                 <td>$${item.price}</td>
               </tr>`
@@ -490,7 +491,11 @@ export const sendOrderConfirmationEmail = async (
       <p>We will notify you when your order is confirmed and on its way.</p>
       <p>If you have any questions, feel free to contact us.</p>
       <p>Thank you for shopping with us!</p>
-      <p><a href="${shopUrl}" style="color: #5a3827; text-decoration: none;">Visit our shop</a></p>
+      <div style="margin-top: 20px; text-align: center;">
+        <a href="https://wa.me/972509667461" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold;">
+          Contact Us on WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 </body>
