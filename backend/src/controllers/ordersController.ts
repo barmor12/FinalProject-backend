@@ -246,9 +246,9 @@ export const placeOrder = async (
       .map(
         (item: any) => `
           <tr>
-            <td>${item.cakeName}</td>
-            <td>${item.quantity}</td>
-            <td>$${item.price}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.cakeName || 'Unnamed Cake'}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">$${item.price}</td>
           </tr>
         `
       )
@@ -263,35 +263,41 @@ export const placeOrder = async (
       to: user.email,
       subject: `Order Confirmation - Order #${savedOrder._id}`,
       html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
-        <h2 style="color: #5A3827; text-align: center;">Order Confirmation</h2>
-        <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
-        <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
-        <p><strong>Order Status:</strong> ${savedOrder.status}</p>
-        <p><strong>Delivery Address:</strong> ${userAddress ? `${userAddress.fullName}, ${userAddress.street}, ${userAddress.city}` : 'Pickup from store'}</p>
+  <body style="margin:0;padding:0;background-color:#f4f4f9;">
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 30px auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center; color: #5A3827;">Order Confirmation</h2>
+    <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
+    <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
+    <p><strong>Order Status:</strong> ${savedOrder.status}</p>
+    <p><strong>Delivery Address:</strong> ${userAddress ? `${userAddress.fullName}, ${userAddress.street}, ${userAddress.city}` : 'Pickup from store'}</p>
 
-        <h3>Order Details</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="background-color: #f4f4f4;">
-              <th style="padding: 8px; border-bottom: 1px solid #ddd;">Item</th>
-              <th style="padding: 8px; border-bottom: 1px solid #ddd;">Quantity</th>
-              <th style="padding: 8px; border-bottom: 1px solid #ddd;">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${orderItemsHtml}
-          </tbody>
-        </table>
+    <h3 style="margin-top:20px;">Order Details</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: #f4f4f4;">
+          <th style="padding: 8px; border-bottom: 1px solid #ddd;">Item</th>
+          <th style="padding: 8px; border-bottom: 1px solid #ddd;">Quantity</th>
+          <th style="padding: 8px; border-bottom: 1px solid #ddd;">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${orderItemsHtml}
+      </tbody>
+    </table>
 
-        <p style="margin-top: 20px; font-size: 16px;"><strong>Total Price:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
-        ${receiptNote}
-        <p style="margin-top: 20px;">We will notify you when your order is confirmed and on its way.</p>
-        <p>If you have any questions, feel free to contact us.</p>
-        <p style="margin-top: 10px;">Thank you for shopping with us!</p>
-        <p><a href="${process.env.FRONTEND_URL || '#'}" style="color: #5A3827;">Visit our shop</a></p>
-      </div>
-      `,
+    <p style="margin-top: 20px; font-size: 16px;"><strong>Total Price:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
+    ${receiptNote}
+    <p style="margin-top: 20px;">We will notify you when your order is confirmed and on its way.</p>
+    <p>If you have any questions, feel free to contact us via WhatsApp:</p>
+    <div style="margin-top: 10px; text-align: center;">
+      <a href="https://wa.me/972509667461" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold;">
+        Contact Us on WhatsApp
+      </a>
+    </div>
+    <p style="margin-top: 20px;">Thank you for shopping with us!</p>
+  </div>
+  </body>
+`,
       attachments,
     });
 
