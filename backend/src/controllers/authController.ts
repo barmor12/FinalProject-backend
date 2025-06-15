@@ -1513,83 +1513,86 @@ const sendResetEmail = async (email: string, resetCode: string) => {
     to: email,
     subject: 'Password Reset Code',
     html: `
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Password Reset</title>
-      <style>
-        /* צבעי המותג */
-        :root {
-          --brand-brown: #6b4226;
-          --brand-beige: #f9f3ea;
-          --accent-blue: #3a7cff;
-        }
-    
-        body {
-          margin: 0;
-          background: var(--brand-beige);
-          font-family: Arial, sans-serif;
-          color: var(--brand-brown);
-        }
-    
-        .wrapper {
-          width: 100%;
-          padding: 40px 0;
-          display: flex;
-          justify-content: center;
-        }
-    
-        .card {
-          width: 90%;
-          max-width: 480px;
-          background: #ffffff;
-          border-radius: 16px;
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-          padding: 48px 32px 40px;
-          text-align: center;
-        }
-    
-        h1 {
-          font-size: 26px;
-          font-weight: 800;
-          margin-bottom: 20px;
-        }
-    
-        p {
-          font-size: 16px;
-          margin-bottom: 28px;
-          line-height: 1.45;
-        }
-    
-        .code-box {
-          display: inline-block;
-          background: var(--accent-blue);
-          color: #fff;
-          padding: 14px 24px;
-          border-radius: 8px;
-          font-size: 22px;
-          font-weight: 700;
-          letter-spacing: 2px;
-        }
-    
-        @media (max-width: 420px) {
-          h1 { font-size: 22px; }
-          p  { font-size: 15px; }
-          .code-box { font-size: 20px; }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="wrapper">
-        <div class="card">
-          <h1>Password Reset Request</h1>
-          <p>Use the following code to reset your password:</p>
-          <div class="code-box">${resetCode}</div>
-          <p>This code will expire in 15&nbsp;minutes.</p>
-        </div>
-      </div>
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Password Reset</title>
+        <style>
+          :root {
+            --brand-brown: #6b4226;
+            --brand-beige: #f9f3ea;
+            --accent-blue: #3a7cff;
+          }
 
-`
+          body {
+            margin: 0;
+            background: var(--brand-beige);
+            font-family: Arial, sans-serif;
+            color: var(--brand-brown);
+          }
+
+          .wrapper {
+            width: 100%;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+          }
+
+          .card {
+            width: 90%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            padding: 48px 32px 40px;
+            text-align: center;
+          }
+
+          h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #333;
+          }
+
+          p {
+            font-size: 16px;
+            margin-bottom: 28px;
+            line-height: 1.45;
+            color: #555;
+          }
+
+          .code-box {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 16px 28px;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          @media (max-width: 420px) {
+            h1 { font-size: 22px; }
+            p  { font-size: 15px; }
+            .code-box { font-size: 24px; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="card">
+            <h1>Password Reset Request</h1>
+            <p>Use the following code to reset your password:</p>
+            <div class="code-box">${resetCode}</div>
+            <p>This code will expire in 15&nbsp;minutes.</p>
+          </div>
+        </div>
+      </body>
+    `
   };
 
   await transporter.sendMail(mailOptions);
