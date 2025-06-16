@@ -1850,7 +1850,8 @@ export const setPassword = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    user.password = password;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
     await user.save();
 
     res.status(200).json({ message: 'Password set successfully.' });
