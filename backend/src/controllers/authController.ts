@@ -42,7 +42,7 @@ export const googleCallback = async (req: Request, res: Response) => {
     // First check if user exists by googleId
     let user = await User.findOne({ googleId: payload.sub });
 
-    
+    let isNewUser = false;
 
     // If no user found by googleId, check by email
     if (!user) {
@@ -95,6 +95,7 @@ export const googleCallback = async (req: Request, res: Response) => {
 
         await user.save();
         logger.info(`[INFO] New user created from Google login: ${user._id}`);
+        isNewUser = true;
       }
     } else if (!user.password) {
       // If user exists but doesn't have a password (rare case)
@@ -121,6 +122,7 @@ export const googleCallback = async (req: Request, res: Response) => {
         tokens,
         role: user.role,
         userId: user._id.toString(),
+        ...(isNewUser ? { isNewUser: true } : {}),
       });
     }
 
@@ -131,6 +133,7 @@ export const googleCallback = async (req: Request, res: Response) => {
       refreshToken: tokens.refreshToken,
       role: user.role,
       userId: user._id.toString(),
+      ...(isNewUser ? { isNewUser: true } : {}),
     });
   } catch (error) {
     console.error('Error verifying token:', error);
