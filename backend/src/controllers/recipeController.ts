@@ -203,6 +203,7 @@ export const likeRecipe = async (req: Request, res: Response) => {
       return;
     }
 
+    // Only fetch the recipe, and if not found, return 404 - no fallback or creation
     const recipe = await Recipe.findById(id);
     if (!recipe) {
       res.status(404).json({ error: 'Recipe not found' });
@@ -218,16 +219,16 @@ export const likeRecipe = async (req: Request, res: Response) => {
       return;
     }
 
-    // Add user to likedBy array and increment likes count
-    recipe.likedBy.push(userIdObj);
-    recipe.likes += 1;
+    await Recipe.findByIdAndUpdate(id, {
+      $addToSet: { likedBy: userIdObj },
+      $inc: { likes: 1 }
+    });
+    logger.info(`[INFO] Recipe liked successfully: ${id} by user: ${userId}`);
 
-    await recipe.save();
-    logger.info(`[INFO] Recipe liked successfully: ${recipe._id} by user: ${userId}`);
-
+    const updatedRecipe = await Recipe.findById(id);
     res.status(200).json({
       message: 'Recipe liked successfully',
-      likes: recipe.likes
+      likes: updatedRecipe?.likes || 0
     });
   } catch (error) {
     logger.error(`[ERROR] Error liking recipe: ${error}`);
@@ -269,16 +270,16 @@ export const unlikeRecipe = async (req: Request, res: Response) => {
       return;
     }
 
-    // Remove user from likedBy array and decrement likes count
-    recipe.likedBy.splice(likedIndex, 1);
-    recipe.likes = Math.max(0, recipe.likes - 1); // Ensure likes don't go below 0
+    await Recipe.findByIdAndUpdate(id, {
+      $pull: { likedBy: userIdObj },
+      $inc: { likes: -1 }
+    });
+    logger.info(`[INFO] Recipe unliked successfully: ${id} by user: ${userId}`);
 
-    await recipe.save();
-    logger.info(`[INFO] Recipe unliked successfully: ${recipe._id} by user: ${userId}`);
-
+    const updatedRecipe = await Recipe.findById(id);
     res.status(200).json({
       message: 'Recipe unliked successfully',
-      likes: recipe.likes
+      likes: updatedRecipe?.likes || 0
     });
   } catch (error) {
     logger.error(`[ERROR] Error unliking recipe: ${error}`);

@@ -37,7 +37,7 @@ router.put(
 );
 router.delete('/:id', authenticateAdminMiddleware, deleteRecipe);
 
-router.post('/:id/like', authenticateMiddleware, likeRecipe);
-router.post('/:id/unlike', authenticateMiddleware, unlikeRecipe);
+router.put('/:id/like', authenticateMiddleware, likeRecipe);
+router.put('/:id/unlike', authenticateMiddleware, unlikeRecipe);
 router.get('/:id/likes', getRecipeLikes);
 export default router;
