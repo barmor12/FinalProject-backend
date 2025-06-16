@@ -1834,6 +1834,28 @@ export function getCardType(cardNumber: string): string {
 
   return 'Unknown';
 }
+export const setPassword = async (req: Request, res: Response) => {
+  try {
+    const { userId, password } = req.body;
+
+    if (!userId || !password) {
+      return res.status(400).json({ error: 'Missing userId or password.' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    user.password = password;
+    await user.save();
+
+    res.status(200).json({ message: 'Password set successfully.' });
+  } catch (error) {
+    console.error('Error in setPassword:', error);
+    res.status(500).json({ error: 'Server error.' });
+  }
+};
 
 
 export default {
@@ -1858,4 +1880,5 @@ export default {
   getCreditCards,
   setDefaultCard,
   deleteCreditCard,
+  setPassword,
 };

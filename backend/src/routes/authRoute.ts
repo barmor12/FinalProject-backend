@@ -20,6 +20,7 @@ import {
   setDefaultCard,
   deleteCreditCard,
 } from '../controllers/authController';
+import { setPassword } from '../controllers/authController';
 import authenticateMiddleware from '../common/authMiddleware';
 
 const router = express.Router();
@@ -69,5 +70,13 @@ router.post('/add-credit-cards', authenticateMiddleware, addCreditCard);
 router.get('/credit-cards', authenticateMiddleware, getCreditCards);
 router.put('/credit-cards/:cardId/default', authenticateMiddleware, setDefaultCard);
 router.delete('/delete-credit-cards/:cardId', authenticateMiddleware, deleteCreditCard);
+router.post('/set-password', authenticateMiddleware, async (req, res, next) => {
+  try {
+    await setPassword(req, res);
+  } catch (error) {
+    console.error('[ERROR] Set password failed:', error);
+    next(error);
+  }
+});
 
 export default router;
