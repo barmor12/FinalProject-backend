@@ -42,7 +42,7 @@ export function generateReceiptPDF(order: any) {
   const doc = new PDFDocument();
   let buffers: Buffer[] = [];
   doc.on('data', buffers.push.bind(buffers));
-  doc.on('end', () => {});
+  doc.on('end', () => { });
 
   doc.fontSize(20).text('Payment Receipt', { align: 'center' });
   doc.moveDown();
@@ -259,48 +259,48 @@ export const placeOrder = async (
         ? '<p style="color:#5a3827;"><em>You chose to pay with cash. A receipt will be sent after payment is completed.</em></p>'
         : '<p style="color:#5a3827;"><strong>Your payment receipt is attached.</strong></p>';
 
-    await sendEmail({
-      to: user.email,
-      subject: `Order Confirmation - Order #${savedOrder._id}`,
-      html: `
-  <body style="margin:0;padding:0;background-color:#f4f4f9;">
-  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 30px auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
-    <div style="background-color:#5A3827; padding: 10px; border-radius: 8px; text-align: center;">
-      <h2 style="margin: 0; color: white;">Order Confirmation</h2>
-    </div>
-    <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
-    <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
-    <p><strong>Order Status:</strong> ${savedOrder.status}</p>
-    <p><strong>Delivery Address:</strong> ${userAddress ? `${userAddress.fullName}, ${userAddress.street}, ${userAddress.city}` : 'Pickup from store'}</p>
+    //     await sendEmail({
+    //       to: user.email,
+    //       subject: `Order Confirmation - Order #${savedOrder._id}`,
+    //       html: `
+    //   <body style="margin:0;padding:0;background-color:#f4f4f9;">
+    //   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 30px auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
+    //     <div style="background-color:#5A3827; padding: 10px; border-radius: 8px; text-align: center;">
+    //       <h2 style="margin: 0; color: white;">Order Confirmation</h2>
+    //     </div>
+    //     <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
+    //     <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
+    //     <p><strong>Order Status:</strong> ${savedOrder.status}</p>
+    //     <p><strong>Delivery Address:</strong> ${userAddress ? `${userAddress.fullName}, ${userAddress.street}, ${userAddress.city}` : 'Pickup from store'}</p>
 
-    <h3 style="margin-top:20px;">Order Details</h3>
-    <table style="width: 100%; border-collapse: collapse;">
-      <thead>
-        <tr style="background-color: #f4f4f4;">
-          <th style="padding: 8px; border-bottom: 1px solid #ddd;">Item</th>
-          <th style="padding: 8px; border-bottom: 1px solid #ddd;">Quantity</th>
-          <th style="padding: 8px; border-bottom: 1px solid #ddd;">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${orderItemsHtml}
-      </tbody>
-    </table>
+    //     <h3 style="margin-top:20px;">Order Details</h3>
+    //     <table style="width: 100%; border-collapse: collapse;">
+    //       <thead>
+    //         <tr style="background-color: #f4f4f4;">
+    //           <th style="padding: 8px; border-bottom: 1px solid #ddd;">Item</th>
+    //           <th style="padding: 8px; border-bottom: 1px solid #ddd;">Quantity</th>
+    //           <th style="padding: 8px; border-bottom: 1px solid #ddd;">Price</th>
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         ${orderItemsHtml}
+    //       </tbody>
+    //     </table>
 
-    <p style="margin-top: 20px; font-size: 16px;"><strong>Total Price:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
-    ${receiptNote}
-    <p style="margin-top: 20px;">We will notify you when your order is confirmed and on its way.</p>
-    <div style="margin-top: 20px; text-align: center;">
-      <a href="https://wa.me/972509667461" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold;">
-        Contact Us on WhatsApp
-      </a>
-    </div>
-    <p style="margin-top: 20px;">Thank you for shopping with us!</p>
-  </div>
-  </body>
-`,
-      attachments,
-    });
+    //     <p style="margin-top: 20px; font-size: 16px;"><strong>Total Price:</strong> $${savedOrder.totalPrice.toFixed(2)}</p>
+    //     ${receiptNote}
+    //     <p style="margin-top: 20px;">We will notify you when your order is confirmed and on its way.</p>
+    //     <div style="margin-top: 20px; text-align: center;">
+    //       <a href="https://wa.me/972509667461" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold;">
+    //         Contact Us on WhatsApp
+    //       </a>
+    //     </div>
+    //     <p style="margin-top: 20px;">Thank you for shopping with us!</p>
+    //   </div>
+    //   </body>
+    // `,
+    //       attachments,
+    //     });
 
     // ✅ ניקוי עגלת הקניות של המשתמש
     await Cart.deleteOne({ user: userId });
@@ -470,15 +470,15 @@ export const sendOrderConfirmationEmail = async (
         </thead>
         <tbody>
           ${orderItems
-            .map(
-              (item: any) => `
+          .map(
+            (item: any) => `
                 <tr>
                   <td>${item.cakeName || (item.cake && item.cake.name) || 'Cake'}</td>
                   <td>${item.quantity}</td>
                   <td>$${item.price}</td>
                 </tr>`
-            )
-            .join('')}
+          )
+          .join('')}
         </tbody>
       </table>
     </div>
