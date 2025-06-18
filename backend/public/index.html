@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Bakey App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #f9f7f6, #fff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #ffb347;
+      padding: 2rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 1rem;
+    }
+
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section h2 {
+      color: #ff7b00;
+      margin-bottom: 0.5rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background-color: #fffaf0;
+      border: 1px solid #ffd699;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #f8e1c4;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to Bakey App 🎂</h1>
+    <p>Where your sweet cravings meet technology</p>
+  </header>
+
+  <div class="container">
+    <div class="section">
+      <h2>About the App</h2>
+      <p>Bakey is a cutting-edge cake ordering and management platform, built with ❤️ as a final project by Bar Mor & Aviel Esperanza.</p>
+      <p>From delightful orders to complete admin and inventory control — Bakey does it all!</p>
+    </div>
+
+    <div class="section">
+      <h2>Top Features</h2>
+      <div class="features">
+        <div class="feature-card">
+          <h3>🎂 Custom Orders</h3>
+          <p>Create and customize cake orders with just a few clicks.</p>
+        </div>
+        <div class="feature-card">
+          <h3>📦 Inventory Tracking</h3>
+          <p>Smart stock management so you never run out of flour again.</p>
+        </div>
+        <div class="feature-card">
+          <h3>👩‍🍳 Admin Dashboard</h3>
+          <p>Manage orders, products, and reviews — all in one place.</p>
+        </div>
+        <div class="feature-card">
+          <h3>💳 Online Payments</h3>
+          <p>Secure and smooth checkout experience via Stripe or PayPal.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🌐 Mobile Friendly</h3>
+          <p>Use Bakey anywhere — fully responsive and cross-device ready.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Made With</h2>
+      <p>React Native • Node.js • Express • MongoDB • TypeScript • Cloudinary • Stripe • Docker • GitHub Actions</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Bakey App by Bar Mor & Aviel Esperanza • All rights reserved.
+  </footer>
+</body>
+</html>
