@@ -37,6 +37,10 @@ app.get('/', (req, res) => {
 app.get('/privacy', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/privacy.html'));
 });
+
+app.get('/terms', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/terms.html'));
+});
 // Middleware
 app.use(cors());
 app.use(express.json());
