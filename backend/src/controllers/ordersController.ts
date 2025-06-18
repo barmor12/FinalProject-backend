@@ -39,38 +39,62 @@ export async function sendEmail({ to, subject, html, attachments }: { to: string
 
 // --- Utility: Generate PDF receipt for order ---
 export function generateReceiptPDF(order: any) {
-  const doc = new PDFDocument();
+  const doc = new PDFDocument({ size: 'A4', margin: 50 });
   let buffers: Buffer[] = [];
   doc.on('data', buffers.push.bind(buffers));
-  doc.on('end', () => { });
+  doc.on('end', () => {});
 
-  doc.fontSize(20).text('Payment Receipt', { align: 'center' });
+  // Header
+  doc.fontSize(24).fillColor('#5A3827').text('Bakey - Payment Receipt', {
+    align: 'center',
+    underline: true,
+  });
   doc.moveDown();
-  doc.fontSize(14).text(`Order ID: ${order._id}`);
+
+  doc.fontSize(14).fillColor('#333333');
+  doc.text(`Order ID: ${order._id}`);
   doc.text(`Status: ${order.status}`);
   doc.text(`Payment Method: ${order.paymentMethod}`);
   doc.text(`Total: $${order.totalPrice.toFixed(2)}`);
-  doc.moveDown();
-  doc.text('Items:', { underline: true });
+  doc.moveDown(1.5);
+
+  // Items Header
+  doc.fontSize(16).fillColor('#5A3827').text('Order Summary:', { underline: true });
+  doc.moveDown(0.5);
+
+  // Items List
   if (Array.isArray(order.items)) {
     order.items.forEach((item: any) => {
-      doc.text(
-        `- ${item.cakeName || (item.cake && item.cake.name) || 'Cake'} x${item.quantity} $${item.price}`
-      );
+      const cakeName =
+        (item.cake && typeof item.cake === 'object' && 'name' in item.cake)
+          ? item.cake.name
+          : item.cakeName || 'Cake';
+      const line = `${cakeName} x${item.quantity}`;
+      const price = `$${(item.price * item.quantity).toFixed(2)}`;
+
+      doc
+        .fontSize(12)
+        .fillColor('#000000')
+        .text(line, { continued: true })
+        .text(` - ${price}`, { align: 'right' });
     });
   }
+
+  // Footer
+  doc.moveDown(2);
+  doc.fontSize(11).fillColor('#555555').text(
+    'Thank you for choosing Bakey! We appreciate your order and hope you enjoy your cake.',
+    { align: 'center' }
+  );
+
   doc.end();
 
-  // Wait for the PDF to finish and return as attachment object
   const pdfPromise: Promise<Buffer> = new Promise((resolve) => {
     doc.on('end', () => {
       resolve(Buffer.concat(buffers));
     });
   });
-  // We must return a promise, but sendEmail expects the object synchronously.
-  // So, in usage, await generateReceiptPDF(order) to get the object.
-  // For compatibility, return a dummy object with a promise property.
-  // But to keep the code simple, we'll make placeOrder await it.
+
   return {
     filename: `receipt_order_${order._id}.pdf`,
     content: pdfPromise,
@@ -242,16 +266,19 @@ export const placeOrder = async (
         },
       ];
     }
-    const orderItemsHtml = savedOrder.items
-      .map(
-        (item: any) => `
+    const orderItemsHtml = items
+      .map((item: any) => {
+        const cake = cakes.find((c) => c._id.toString() === item.cakeId);
+        const cakeName = cake?.name || 'Cake';
+        const price = cake?.price || 0;
+        return `
           <tr>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.cakeName}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${cakeName}</td>
             <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">$${item.price}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">$${price}</td>
           </tr>
-        `
-      )
+        `;
+      })
       .join('');
 
     const receiptNote =
