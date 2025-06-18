@@ -7,6 +7,16 @@ import User from '../models/userModel';
 jest.mock('../models/cakeModel');
 jest.mock('../models/userModel');
 
+import cloudinary from '../config/cloudinary';
+jest.mock('../config/cloudinary', () => ({
+  uploader: {
+    upload: jest.fn().mockResolvedValue({
+      secure_url: 'http://example.com/image.jpg',
+      public_id: 'mockPublicId',
+    }),
+  },
+}));
+
 const app = express();
 app.use(express.json());
 app.post('/add', cakeController.addCake);
@@ -47,19 +57,26 @@ describe('CakeController', () => {
         price: 20,
         cost: 10,
         ingredients: ['flour'],
-        image: { url: 'http://example.com', public_id: 'id' },
+        stock: 10,
+        image: { url: 'http://example.com/image.jpg', public_id: 'mockPublicId' },
+      });
+
+      app.post('/addWithMock', express.json(), (req, res, next) => {
+        (req as any).file = { path: 'mock/path/to/image.jpg' };
+        cakeController.addCake(req as any, res as any);
       });
 
       const res = await request(app)
-        .post('/add')
+        .post('/addWithMock')
         .send({
           name: 'Cake',
           description: 'Test',
-          cost: '10',
-          price: '20',
+          cost: 10,
+          price: 20,
           ingredients: ['flour'],
-          imageUrl: 'http://example.com/image.jpg',
+          stock: 10,
         });
+
       expect(res.status).toBe(201);
     });
   });
