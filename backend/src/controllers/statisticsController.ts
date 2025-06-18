@@ -154,6 +154,8 @@ export const getStatistics = async (req: Request, res: Response) => {
             };
         });
 
+
+        
         // עוגות הכי רווחיות
         const cakeStats = deliveredOrders.reduce((acc: any, order) => {
             order.items.forEach((item) => {
