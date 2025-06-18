@@ -4,67 +4,50 @@ import User from '../models/userModel';
 import cloudinary from '../config/cloudinary';
 
 export const addCake = async (req: Request, res: Response): Promise<void> => {
-  const { name, description, price, cost, ingredients, stock, imageUrl } = req.body;
-  console.log('body: ', req.body);
-
-  // Check required fields
-  if (!name || !description || !price || !cost || !ingredients) {
-    res.status(400).json({ error: 'Name, description, price, cost, and ingredients are required' });
-    return;
-  }
-
-  // Validate cost and price
-  const costValue = parseFloat(cost);
-  const priceValue = parseFloat(price);
-
-  if (isNaN(costValue) || isNaN(priceValue)) {
-    res.status(400).json({ error: 'Cost and price must be valid numbers' });
-    return;
-  }
-
-  if (costValue >= priceValue) {
-    res.status(400).json({ error: 'Price must be higher than cost' });
-    return;
-  }
-
   try {
-    let imageData = null;
+    const { name, description, price, cost, ingredients, stock } = req.body;
 
-    // Handle image: either from file upload or URL in request body
-    if (req.file) {
-      // If image is uploaded via form
-      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'cakes' });
-      imageData = {
-        url: uploadResult.secure_url,
-        public_id: uploadResult.public_id
-      };
-    } else if (imageUrl) {
-      // If image URL is provided in request body
-      imageData = {
-        url: imageUrl,
-        public_id: `direct_url_${Date.now()}` // Create a pseudo ID for direct URLs
-      };
-    } else {
-      // No image provided
-      res.status(400).json({ error: 'Image file or image URL is required' });
+    if (!name || !description || !price || !cost || !ingredients || !stock) {
+      res.status(400).json({ error: 'All fields are required' });
       return;
     }
+
+    const priceValue = parseFloat(price);
+    const costValue = parseFloat(cost);
+    const stockValue = parseInt(stock, 10);
+
+    if (isNaN(priceValue) || isNaN(costValue) || isNaN(stockValue)) {
+      res.status(400).json({ error: 'Price, cost, and stock must be valid numbers' });
+      return;
+    }
+
+    if (!req.file || !req.file.path) {
+      res.status(400).json({ error: 'Image is required' });
+      return;
+    }
+
+    const uploadedImage = await cloudinary.uploader.upload(req.file.path);
+
+    const imageData = {
+      url: uploadedImage.secure_url,
+      public_id: uploadedImage.public_id,
+    };
 
     const cake = new Cake({
       name,
       description,
-      cost: costValue,
       price: priceValue,
+      cost: costValue,
       ingredients,
+      stock: stockValue,
       image: imageData,
-      stock,
     });
 
-    const savedCake = await cake.save();
-    res.status(201).json(savedCake);
-  } catch (err) {
-    console.error('Failed to save cake:', err);
-    res.status(500).json({ error: 'Failed to save cake' });
+    await cake.save();
+    res.status(201).json({ message: 'Cake added successfully', cake });
+  } catch (error) {
+    console.error('❌ Error adding cake:', error);
+    res.status(500).json({ error: 'Failed to add cake' });
   }
 };
 
