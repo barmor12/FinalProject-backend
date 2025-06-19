@@ -20,7 +20,12 @@ const upload = multer({ dest: 'uploads/' });
 router.get('/', authenticateMiddleware, getRecipes);
 router.get('/:id', authenticateMiddleware, getRecipe);
 
-router.post('/newRecipe', authenticateAdminMiddleware, upload.single('image'), createRecipe);
+router.post('/newRecipe', authenticateAdminMiddleware, upload.single('image'), (req, res) => {
+  createRecipe(req, res).catch(err => {
+    console.error('Unhandled error in createRecipe:', err);
+    res.status(500).json({ error: 'Unhandled error in createRecipe' });
+  });
+});
 
 
 
@@ -28,7 +33,12 @@ router.put(
   '/:id/withImage',
   authenticateAdminMiddleware,
   upload.single('image'),
-  updateRecipe
+  (req, res) => {
+    updateRecipe(req, res).catch(err => {
+      console.error('Unhandled error in updateRecipe:', err);
+      res.status(500).json({ error: 'Unhandled error in updateRecipe' });
+    });
+  }
 );
 router.put(
   '/:id',

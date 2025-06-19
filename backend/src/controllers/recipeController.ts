@@ -18,80 +18,42 @@ export const createRecipe = async (req: Request, res: Response) => {
       makingTime,
       category,
     } = req.body;
-    if (!name || !description || !servings || !ingredients || !instructions || !difficulty || !makingTime || !category) {
-      res.status(400).json({ error: 'All fields are required' });
-      return;
+
+    console.log('Uploaded file:', req.file);
+
+    if (!req.file || !req.file.path || !req.file.originalname) {
+      console.error('File upload failed or missing essential data:', req.file);
+      throw new Error('Recipe image is required');
     }
 
-    if (!['Easy', 'Medium', 'Hard'].includes(difficulty)) {
-      res.status(400).json({ error: 'Difficulty must be one of: Easy, Medium, Hard' });
-      return;
-    }
-
-    // Parse ingredients from JSON string
-    let parsedIngredients;
-    try {
-      parsedIngredients = JSON.parse(ingredients);
-    } catch (e) {
-      res.status(400).json({ error: 'Invalid ingredients format' });
-      return;
-    }
-
-    // Parse instructions from JSON string
-    let parsedInstructions;
-    try {
-      const parsed = JSON.parse(instructions);
-      parsedInstructions = parsed.map((value: any, index: number) => ({
-        step: index + 1,
-        instruction: typeof value === 'object' && value !== null ? value.instruction : value
-      }));
-    } catch (e) {
-      res.status(400).json({ error: 'Invalid instructions format' });
-      return;
-    }
-
-    // Handle image upload
-    let imageData;
+    let imageUploadResult = null;
     if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
+      imageUploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: 'recipes',
       });
-      imageData = {
-        url: result.secure_url,
-        public_id: result.public_id,
-      };
     } else {
-      res.status(400).json({ error: 'Recipe image is required' });
-      return;
+      return res.status(400).json({ error: 'Recipe image is required' });
     }
 
-    const parsedServings = parseInt(servings);
-    if (isNaN(parsedServings)) {
-      res.status(400).json({ error: 'Servings must be a valid number' });
-      return;
-    }
-
-    // Create new recipe
-    const recipe = new Recipe({
+    const newRecipe = new Recipe({
       name,
       description,
-      servings: parsedServings,
+      servings,
+      ingredients: JSON.parse(ingredients),
+      instructions: JSON.parse(instructions),
       difficulty,
       makingTime,
       category,
-      image: imageData,
-      ingredients: parsedIngredients,
-      instructions: parsedInstructions,
-      likes: 0,
-      likedBy: []
+      image: {
+        url: imageUploadResult.secure_url,
+        public_id: imageUploadResult.public_id,
+      },
     });
 
-    await recipe.save();
-    logger.info(`[INFO] Recipe created successfully: ${recipe._id}`);
-
-    res.status(201).json(recipe);
+    const savedRecipe = await newRecipe.save();
+    res.status(201).json(savedRecipe);
   } catch (error) {
-    logger.error(`[ERROR] Error creating recipe: ${error}`);
+    console.error('[ERROR] Error creating recipe:', error);
     res.status(500).json({ error: 'Failed to create recipe' });
   }
 };
