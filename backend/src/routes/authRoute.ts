@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { getMe } from '../controllers/authController';
 import {
   register,
   login,
@@ -19,8 +20,9 @@ import {
   getCreditCards,
   setDefaultCard,
   deleteCreditCard,
+  setPassword,
+  
 } from '../controllers/authController';
-import { setPassword } from '../controllers/authController';
 import authenticateMiddleware from '../common/authMiddleware';
 
 const router = express.Router();
@@ -64,9 +66,11 @@ router.post('/2fa/enable', enable2FA);
 router.post('/2fa/disable', disable2FA);
 router.post('/2fa/verify', verify2FACode);
 router.get('/2fa/status', get2FAStatus);
+router.get('/me', authenticateMiddleware, getMe);
 
 // Credit card routes
 router.post('/add-credit-cards', authenticateMiddleware, addCreditCard);
+
 router.get('/credit-cards', authenticateMiddleware, getCreditCards);
 router.put('/credit-cards/:cardId/default', authenticateMiddleware, setDefaultCard);
 router.delete('/delete-credit-cards/:cardId', authenticateMiddleware, deleteCreditCard);
@@ -77,6 +81,12 @@ router.post('/set-password', authenticateMiddleware, async (req, res, next) => {
     console.error('[ERROR] Set password failed:', error);
     next(error);
   }
+
 });
 
 export default router;
+
+// Add /me route at the bottom
+
+
+

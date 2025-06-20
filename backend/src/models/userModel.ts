@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cake' }],
     refresh_tokens: [String],
     isVerified: { type: Boolean, default: false },
+    isPasswordSet: { type: Boolean, default: false },
     resetToken: { type: String },
     resetExpires: { type: Date },
 

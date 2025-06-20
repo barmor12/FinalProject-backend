@@ -35,12 +35,21 @@ export const createRecipe = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Recipe image is required' });
     }
 
+    let parsedIngredients, parsedInstructions;
+    try {
+      parsedIngredients = typeof ingredients === 'string' ? JSON.parse(ingredients) : ingredients;
+      parsedInstructions = typeof instructions === 'string' ? JSON.parse(instructions) : instructions;
+    } catch (parseError) {
+      console.error('Invalid JSON in ingredients or instructions:', parseError);
+      return res.status(400).json({ error: 'Invalid format for ingredients or instructions' });
+    }
+
     const newRecipe = new Recipe({
       name,
       description,
       servings,
-      ingredients: JSON.parse(ingredients),
-      instructions: JSON.parse(instructions),
+      ingredients: parsedIngredients,
+      instructions: parsedInstructions,
       difficulty,
       makingTime,
       category,

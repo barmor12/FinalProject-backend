@@ -84,13 +84,14 @@ export const googleCallback = async (req: Request, res: Response) => {
           lastName: payload.family_name || 'User',
           profilePic: payload.picture
             ? {
-              url: payload.picture,
-              public_id: `google_${payload.sub}`,
-            }
+                url: payload.picture,
+                public_id: `google_${payload.sub}`,
+              }
             : undefined,
           password: hashedPassword,
           role: 'user',
           isVerified: true, // Google users are automatically verified
+          isPasswordSet: false, // ← כאן מוסיפים
         });
 
         await user.save();
@@ -195,6 +196,40 @@ const generateTokens = async (userId: string, role: string) => {
   });
 
   return { accessToken, refreshToken };
+};
+// שליפת משתמש מחובר (getMe)
+export const getMe = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return sendError(res, 'Token required', 401);
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET!
+    ) as TokenPayload;
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return sendError(res, 'User not found', 404);
+    }
+
+    res.status(200).json({
+      userId: user._id.toString(),
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      isVerified: user.isVerified,
+      isPasswordSet: user.isPasswordSet, // ← כאן מוסיפים
+      profilePic: user.profilePic,
+      twoFactorEnabled: user.twoFactorEnabled,
+    });
+  } catch (err) {
+    logger.error(`[ERROR] getMe error: ${(err as Error).message}`);
+    sendError(res, 'Failed to get user', 500);
+  }
 };
 
 // יצירת טוקן לאימות דוא"ל
@@ -469,6 +504,7 @@ export const updatePassword = async (req: Request, res: Response) => {
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
+    user.isPasswordSet = true;
     await user.save();
 
     res.status(200).json({
@@ -554,6 +590,7 @@ export const register = async (req: Request, res: Response) => {
       profilePic,
       role: 'user',
       isVerified: false,
+      isPasswordSet: true, // בעת רישום רגיל, הסיסמה כבר קיימת
     });
 
     const newUser = await user.save();
@@ -1488,6 +1525,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     // עדכון הסיסמה לאחר אימות
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
+    user.isPasswordSet = true;
     await user.save();
 
     res.status(200).json({ message: 'Password reset successfully' });
@@ -1852,6 +1890,7 @@ export const setPassword = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
+    user.isPasswordSet = true;
     await user.save();
 
     res.status(200).json({ message: 'Password set successfully.' });
@@ -1885,4 +1924,5 @@ export default {
   setDefaultCard,
   deleteCreditCard,
   setPassword,
+  getMe,
 };
