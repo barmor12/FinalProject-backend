@@ -13,6 +13,8 @@ export const getUserAddresses = async (req: Request, res: Response) => {
             return;
         }
 
+        
+
         const addresses = await Address.find({ userId });
         console.log('🔍 Found Addresses:', addresses);
 
