@@ -6,6 +6,29 @@
   <title>Welcome to Bakey App</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
+  .screenshots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .screenshots img {
+    max-width: 230px;
+    height: auto;
+    border-radius: 1.2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+    background: white;
+    padding: 1rem;
+  }
+
+  .screenshots img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  }
     body {
       font-family: 'Quicksand', sans-serif;
       background: linear-gradient(to right, #f9f7f6, #fff);
@@ -112,7 +135,7 @@
         </div>
         <div class="feature-card">
           <h3>💳 Online Payments</h3>
-          <p>Secure and smooth checkout experience via Stripe or PayPal.</p>
+          <p>Secure and smooth checkout experience </p>
         </div>
         <div class="feature-card">
           <h3>🌐 Mobile Friendly</h3>
@@ -141,6 +164,19 @@
           </div>
         </div>
       </div>
+
+    <div class="section">
+      <h2>📸 App Screenshots</h2>
+      <p style="text-align: center;">Preview the beauty and functionality of Bakey</p>
+      <div class="screenshots">
+        <img src="images/login_transparent.png" alt="Login Screen"/>
+        <img src="images/signup_transparent.png" alt="Signup Screen"/>
+        <img src="images/dashboard_transparent.png" alt="User Dashboard"/>
+        <img src="images/admin_dashboard_transparent.png" alt="Admin Dashboard"/>
+        <img src="images/admin_statistics_transparent.png" alt="Admin Statistics"/>
+        <img src="images/admin_panel_transparent.png" alt="Admin Panel"/>
+      </div>
+    </div>
 
     <div class="section">
       <h2>Made With</h2>
