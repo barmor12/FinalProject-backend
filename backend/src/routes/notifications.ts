@@ -4,6 +4,8 @@ import { PushToken } from '../models/PushToken';
 import { NotificationLog } from '../models/NotificationLog';
 import { sendOrderStatusChangeNotification } from '../services/notificationService';
 import authenticateMiddleware from '../common/authMiddleware';
+import mongoose from 'mongoose';
+import User from '../models/userModel';
 
 const expo = new Expo();
 export const notificationsRouter = Router();
@@ -126,3 +128,111 @@ notificationsRouter.get(
     res.json(logs);
   }
 );
+
+// POST /notifications/user/:userId
+notificationsRouter.post(
+  '/user/:userId',
+  authenticateMiddleware,
+  async (req: Request, res: Response): Promise<any> => {
+    const { userId } = req.params;
+    const { title, body, type } = req.body;
+
+    const tokenDocs = await PushToken.find({ userId });
+    if (!tokenDocs.length) {
+      return res.status(404).json({ error: 'No tokens found for user' });
+    }
+
+    const messages = tokenDocs
+      .map((doc) => doc.token)
+      .filter((token) => Expo.isExpoPushToken(token))
+      .map((token) => ({
+        to: token,
+        sound: 'default',
+        title,
+        body,
+        data: { type },
+      }));
+
+    const chunks = expo.chunkPushNotifications(messages);
+    let sentCount = 0;
+
+    for (const chunk of chunks) {
+      try {
+        const tickets = await expo.sendPushNotificationsAsync(chunk);
+        sentCount += tickets.length;
+      } catch (err) {
+        console.error('Error sending push notifications:', err);
+      }
+    }
+
+    await NotificationLog.create({
+      userId,
+      type,
+      title,
+      body,
+      sentTo: sentCount,
+      sentAt: new Date(),
+    });
+
+    res.json({ ok: true, sentTo: sentCount });
+  }
+);
+
+
+// Utility function to get all admin user IDs
+async function getAdminUserIds(): Promise<mongoose.Types.ObjectId[]> {
+  // Ensure User model is imported above
+  const admins = await User.find({ role: 'admin' }, { _id: 1 });
+  return admins.map((admin) => admin._id);
+}
+
+// שליחת התראה לאדמין כשנכנסת הזמנה חדשה
+export async function notifyAdminOfNewOrder(orderId: string) {
+  try {
+    const adminUserIds = await getAdminUserIds(); // This function should return an array of admin user IDs
+    const adminTokens = await PushToken.find({ userId: { $in: adminUserIds } });
+
+    const messages = adminTokens
+      .map((doc) => doc.token)
+      .filter((token) => Expo.isExpoPushToken(token))
+      .map((token) => ({
+        to: token,
+        sound: 'default',
+        title: '📦 New Order',
+        body: `Incoming A New Order: ${orderId.slice(-6)}`,
+        data: { type: 'new_order', orderId },
+      }));
+
+    if (!messages.length) {
+      console.warn('⚠️ No valid admin push tokens found');
+      return;
+    }
+
+    const chunks = expo.chunkPushNotifications(messages);
+    let sentCount = 0;
+
+    for (const chunk of chunks) {
+      try {
+        const receipts = await expo.sendPushNotificationsAsync(chunk);
+        sentCount += receipts.length;
+      } catch (err) {
+        console.error('❌ Failed sending to admin chunk', err);
+      }
+    }
+
+    for (const adminId of adminUserIds) {
+      await NotificationLog.create({
+        userId: adminId,
+        type: 'new_order',
+        title: '📦 New Order',
+        body: `Incoming A New Order: ${orderId.slice(-6)}`,
+        sentTo: sentCount,
+        sentAt: new Date(),
+      });
+    }
+
+    console.log('📨 Admins notified of new order');
+  } catch (err) {
+    console.error('❌ Failed to notify admin of new order', err);
+  }
+}

@@ -11,6 +11,7 @@ import Address from '../models/addressModel';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import NotificationToken from '../models/notificationToken';
 import { sendOrderStatusChangeNotification } from '../utils/pushNotifications';
+import { notifyAdminOfNewOrder } from '../routes/notifications';
 // --- Utility: Send email with attachments ---
 export async function sendEmail({ to, subject, html, attachments }: { to: string; subject: string; html: string; attachments?: any[] }) {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
@@ -128,7 +129,7 @@ export const placeOrder = async (
     ) as JwtPayload;
     const userId = decoded.userId;
 
-    // ✅ בדיקה: לוודא שכל הנתונים החיוניים קיימים (כתובת חובה רק אם שיטת משלוח היא "Standard Delivery (2-3 days)")
+
     if (
       !userId ||
       !items ||
@@ -140,7 +141,7 @@ export const placeOrder = async (
       return;
     }
 
-    // בדיקת תאריך משלוח רק אם שיטת המשלוח היא Standard Delivery (2-3 days)
+
     const deliveryDateTime = deliveryDate ? new Date(deliveryDate) : null;
 
     if (req.body.shippingMethod === 'Standard Delivery (2-3 days)') {
@@ -250,6 +251,8 @@ export const placeOrder = async (
     const savedOrder = await order.save();
     console.log('✅ Order Saved Successfully:', savedOrder);
     const orderIdStr = savedOrder._id.toString();
+    // 🔔 שליחת התראה לאדמין על הזמנה חדשה
+    await notifyAdminOfNewOrder(orderIdStr);
 
     // ✅ שליחת מייל אישור הזמנה (חדש עם תמיכה ב-attachments)
     let attachments: any[] = [];
@@ -288,7 +291,7 @@ export const placeOrder = async (
 
     await sendEmail({
       to: user.email,
-      subject: `Order Confirmation - Order #${savedOrder._id}`,
+      subject: `Order Confirmation - Order #${savedOrder._id.toString().slice(-6)}`,
       html: `
   <body style="margin:0;padding:0;background-color:#f4f4f9;">
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 30px auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.1);">
@@ -296,7 +299,7 @@ export const placeOrder = async (
       <h2 style="margin: 0; color: white;">Order Confirmation</h2>
     </div>
     <p>Hi <strong>${user.firstName || 'Customer'}</strong>,</p>
-    <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id}</strong> has been successfully placed.</p>
+    <p>Thank you for your order! We're excited to let you know that your order <strong>#${savedOrder._id.toString().slice(-6)}</strong> has been successfully placed.</p>
     <p><strong>Order Status:</strong> ${savedOrder.status}</p>
     <p><strong>Delivery Address:</strong> ${userAddress ? `${userAddress.fullName}, ${userAddress.street}, ${userAddress.city}` : 'Pickup from store'}</p>
 
