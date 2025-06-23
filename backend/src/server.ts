@@ -18,7 +18,7 @@ import addressRoute from './routes/addressRoute';
 import discountRoutes from './routes/discountRoute';
 import emailRoute from './routes/emailRoute';
 import statisticsRoutes from './routes/statisticsRoutes';
-import { notificationsRouter } from './routes/notifications';
+import { notificationsRouter } from './routes/notificationsRoute';
 import './passport';
 import path from 'path';
 

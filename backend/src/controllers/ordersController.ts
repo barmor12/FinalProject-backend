@@ -11,7 +11,7 @@ import Address from '../models/addressModel';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import NotificationToken from '../models/notificationToken';
 import { sendOrderStatusChangeNotification } from '../utils/pushNotifications';
-import { notifyAdminOfNewOrder } from '../routes/notifications';
+import { notifyAdminOfNewOrder } from '../controllers/notificationController';
 // --- Utility: Send email with attachments ---
 export async function sendEmail({ to, subject, html, attachments }: { to: string; subject: string; html: string; attachments?: any[] }) {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
