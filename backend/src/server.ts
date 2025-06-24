@@ -80,6 +80,7 @@ fs.readdir(uploadsPath, (err, files) => {
   }
 });
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
+app.use('/builds', express.static(path.join(__dirname, '../builds')));
 
 // Health check endpoint
 app.get('/health', async (req, res) => {
