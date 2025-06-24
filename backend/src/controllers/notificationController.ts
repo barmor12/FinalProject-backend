@@ -134,7 +134,7 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
         sound: 'default',
         title: '📦 New Order',
         body: `Incoming A New Order: #${orderId.slice(-6)}`,
-        data: { type: 'new_order', orderId },
+        data: { type: 'new_order', orderId, navigateTo: 'order_details' },
       }));
 
     if (!messages.length) {
@@ -161,6 +161,7 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
         body: `Incoming A New Order: ${orderId.slice(-6)}`,
         sentTo: sentCount,
         sentAt: new Date(),
+        metadata: { orderId, navigateTo: 'order_details' },
       });
     }
 
