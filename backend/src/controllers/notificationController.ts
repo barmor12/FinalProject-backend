@@ -134,7 +134,7 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
         sound: 'default',
         title: '📦 New Order',
         body: `Incoming A New Order: #${orderId.slice(-6)}`,
-        data: { type: 'new_order', orderId, navigateTo: 'order_details' },
+        data: { type: 'new_order', orderId, navigateTo: 'adminOrderDetails' },
       }));
 
     if (!messages.length) {
@@ -158,10 +158,13 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
         userId: new mongoose.Types.ObjectId(adminId),
         type: 'new_order',
         title: '📦 New Order',
-        body: `Incoming A New Order: ${orderId.slice(-6)}`,
+        body: `Incoming A New Order: #${orderId.slice(-6)}`,
         sentTo: sentCount,
         sentAt: new Date(),
-        metadata: { orderId, navigateTo: 'order_details' },
+        metadata: {
+          orderId,
+          navigateTo: 'order_details',
+        },
       });
     }
 
