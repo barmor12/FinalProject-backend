@@ -7,6 +7,8 @@ import {
   sendNotificationToAdmins,
   sendOrderStatusChangeNotification,
 } from '../controllers/notificationController';
+import { getUserNotificationHistory } from '../controllers/notificationController';
+
 import { sendNotificationToUser } from '../controllers/notificationController';
 import { handleOrderStatusNotification } from '../controllers/notificationController';
 export const notificationsRouter = Router();
@@ -37,3 +39,5 @@ notificationsRouter.post('/send-to-admins', authenticateMiddleware, async (req, 
 });
 
 notificationsRouter.post('/order-status', authenticateMiddleware, handleOrderStatusNotification);
+
+notificationsRouter.get('/history', authenticateMiddleware, getUserNotificationHistory);

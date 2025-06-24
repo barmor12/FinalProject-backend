@@ -95,7 +95,7 @@ export const sendNotificationToAll = async (req: Request, res: Response): Promis
   }
 
   await NotificationLog.create({
-    userId,
+    userId: new mongoose.Types.ObjectId(userId),
     type,
     title,
     body: message,
@@ -155,7 +155,7 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
 
     for (const adminId of adminUserIds) {
       await NotificationLog.create({
-        userId: adminId,
+        userId: new mongoose.Types.ObjectId(adminId),
         type: 'new_order',
         title: '📦 New Order',
         body: `Incoming A New Order: ${orderId.slice(-6)}`,
@@ -226,7 +226,7 @@ export async function sendNotificationToUser(
   }
 
   await NotificationLog.create({
-    userId,
+    userId: new mongoose.Types.ObjectId(userId),
     type,
     title,
     body,
@@ -274,7 +274,7 @@ export async function sendNotificationToAdmins({
 
   for (const adminId of adminUserIds) {
     await NotificationLog.create({
-      userId: adminId,
+      userId: new mongoose.Types.ObjectId(adminId),
       type,
       title,
       body,
@@ -334,5 +334,25 @@ export const handleOrderStatusNotification = async (req: Request, res: Response)
   } catch (error) {
     console.error('❌ Error in handleOrderStatusNotification:', error);
     res.status(500).json({ error: 'Failed to send order status notification' });
+  }
+};
+
+export const getUserNotificationHistory = async (req: Request, res: Response): Promise<void> => {
+  const userId = (req as any).user?.userId || (req as any).user?.id;
+  console.log('📥 Notification history requested by user:', userId);
+
+  if (!userId) {
+    res.status(400).json({ error: 'Missing userId' });
+    return;
+  }
+
+  try {
+    const history = await NotificationLog.find({ userId: new mongoose.Types.ObjectId(userId) })
+      .sort({ sentAt: -1 })
+      .limit(50); 
+    res.json(history);
+  } catch (error) {
+    console.error('❌ Failed to get notification history:', error);
+    res.status(500).json({ error: 'Failed to fetch notification history' });
   }
 };
