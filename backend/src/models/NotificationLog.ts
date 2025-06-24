@@ -15,6 +15,7 @@ export interface INotificationLog extends Document {
   body: string;
   sentAt: Date;
   sentTo: number;
+  orderId?: string;
 }
 
 const notificationLogSchema = new Schema<INotificationLog>({
@@ -28,6 +29,7 @@ const notificationLogSchema = new Schema<INotificationLog>({
   body: { type: String, required: true },
   sentAt: { type: Date, default: () => new Date() },
   sentTo: { type: Number, required: true },
+  orderId: { type: String },
 });
 
 export const NotificationLog = model<INotificationLog>(

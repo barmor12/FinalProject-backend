@@ -159,6 +159,7 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
         type: 'new_order',
         title: '📦 New Order',
         body: `Incoming A New Order: #${orderId.slice(-6)}`,
+        orderId: orderId,
         sentTo: sentCount,
         sentAt: new Date(),
         metadata: {
