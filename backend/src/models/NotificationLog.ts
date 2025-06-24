@@ -5,7 +5,8 @@ export type NotificationType =
   | 'promotion'
   | 'newProduct'
   | 'all'
-  | 'new_order';
+  | 'new_order'
+  | 'order_status_change';
 
 export interface INotificationLog extends Document {
   userId: Types.ObjectId;
@@ -20,7 +21,7 @@ const notificationLogSchema = new Schema<INotificationLog>({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   type: {
     type: String,
-    enum: ['orderStatus', 'promotion', 'newProduct', 'all', 'new_order'],
+    enum: ['orderStatus', 'promotion', 'newProduct', 'all', 'new_order', 'order_status_change'],
     required: true,
   },
   title: { type: String, required: true },

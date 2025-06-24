@@ -8,7 +8,7 @@ import {
   sendOrderStatusChangeNotification,
 } from '../controllers/notificationController';
 import { sendNotificationToUser } from '../controllers/notificationController';
-
+import { handleOrderStatusNotification } from '../controllers/notificationController';
 export const notificationsRouter = Router();
 
 notificationsRouter.post('/register', authenticateMiddleware, registerPushToken);
@@ -36,14 +36,4 @@ notificationsRouter.post('/send-to-admins', authenticateMiddleware, async (req, 
   }
 });
 
-// שליחת התראה על שינוי סטטוס הזמנה
-notificationsRouter.post('/order-status', authenticateMiddleware, async (req, res) => {
-  const { userId, orderId, newStatus, locale } = req.body;
-  try {
-    await sendOrderStatusChangeNotification({ userId, orderId, newStatus, locale });
-    res.json({ ok: true });
-  } catch (error) {
-    console.error('Error sending order status notification:', error);
-    res.status(500).json({ error: 'Failed to send order status notification' });
-  }
-});
+notificationsRouter.post('/order-status', authenticateMiddleware, handleOrderStatusNotification);

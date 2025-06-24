@@ -7,7 +7,7 @@ export interface IPushToken extends Document {
 }
 
 const pushTokenSchema = new Schema<IPushToken>({
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   token: { type: String, required: true, unique: true },
   createdAt: { type: Date, default: () => new Date() },
 });

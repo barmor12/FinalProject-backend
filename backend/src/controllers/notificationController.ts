@@ -20,13 +20,18 @@ export const registerPushToken = async (req: Request, res: Response): Promise<vo
     return;
   }
 
-  await PushToken.findOneAndUpdate(
-    { token },
-    { userId, token, sentAt: new Date() },
-    { upsert: true, new: true }
-  );
-
-  res.json({ ok: true });
+  try {
+    await PushToken.findOneAndUpdate(
+      { token },
+      { userId: new mongoose.Types.ObjectId(userId), token, sentAt: new Date() },
+      { upsert: true, new: true }
+    );
+    console.log('✅ Successfully registered push token for user:', userId, 'token:', token);
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('❌ Failed to register push token:', error);
+    res.status(500).json({ error: 'Failed to register push token' });
+  }
 };
 
 export const sendNotificationToAll = async (req: Request, res: Response): Promise<void> => {
@@ -82,9 +87,9 @@ export const sendNotificationToAll = async (req: Request, res: Response): Promis
       try {
         const tickets = await expo.sendPushNotificationsAsync(chunk);
         sentCount += tickets.length;
-        console.log(`✅ נשלחו התראות ל-${projectId}`);
+        console.log(`✅ Notifications sent to project: ${projectId}`);
       } catch (error) {
-        console.error(`❌ שגיאה בשליחת התראות ל-${projectId}:`, error);
+        console.error(`❌ Error sending notifications to project ${projectId}:`, error);
       }
     }
   }
@@ -98,7 +103,7 @@ export const sendNotificationToAll = async (req: Request, res: Response): Promis
     sentAt: new Date(),
   });
 
-  console.log('📨 Notification sent:', { title, message, sentTo: sentCount });
+  console.log('📨 Notification sent summary:', { title, message, sentTo: sentCount });
 
   res.json({ ok: true, sentTo: sentCount });
 };
@@ -128,12 +133,11 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
         to: token,
         sound: 'default',
         title: '📦 New Order',
-        body: `Incoming A New Order: ${orderId.slice(-6)}`,
+        body: `Incoming A New Order: #${orderId.slice(-6)}`,
         data: { type: 'new_order', orderId },
       }));
 
     if (!messages.length) {
-      console.warn('⚠️ No valid admin push tokens found');
       return;
     }
 
@@ -160,7 +164,7 @@ export async function notifyAdminOfNewOrder(orderId: string): Promise<void> {
       });
     }
 
-    console.log('📨 Admins notified of new order');
+    console.log('📨 Admins have been notified of new order');
   } catch (err) {
     console.error('❌ Failed to notify admin of new order', err);
   }
@@ -176,19 +180,29 @@ export async function sendNotificationToUser(
     type,
   }: { title: string; body: string; type: NotificationType }
 ): Promise<void> {
-  const tokenDocs = await PushToken.find({ userId });
-  console.log('🧠 userId:', userId);
-  console.log('📦 tokenDocs:', tokenDocs);
-  console.log('📲 כל הטוקנים שנמצאו:', tokenDocs.map(d => d.token));
+  let tokenDocs = [];
+  try {
+    const objectId = new mongoose.Types.ObjectId(userId);
+    tokenDocs = await PushToken.find({ userId: objectId });
+
+    if (!tokenDocs.length) {
+      tokenDocs = await PushToken.find({ userId: userId.toString() });
+    }
+  } catch (err) {
+    tokenDocs = await PushToken.find({ userId: userId.toString() });
+  }
+
+  if (!tokenDocs?.length || !tokenDocs[0]?.token) {
+    console.log('⚠️ No token found for user, notification not sent.');
+    return;
+  }
 
   const tokens = tokenDocs
     .map((doc) => doc.token)
     .filter((token) => token && Expo.isExpoPushToken(token));
 
-  console.log('✅ טוקנים תקפים:', tokens);
-
   if (!tokens.length) {
-    console.warn('⚠️ אין טוקנים תקפים למשתמש:', userId);
+    console.warn('⚠️ No valid tokens for user:', userId);
     return;
   }
 
@@ -244,7 +258,6 @@ export async function sendNotificationToAdmins({
     }));
 
   if (!messages.length) {
-    console.warn('⚠️ No valid admin push tokens found');
     return;
   }
 
@@ -282,26 +295,44 @@ export async function sendOrderStatusChangeNotification(params: {
   locale?: string;
 }): Promise<void> {
   const { userId, orderId, newStatus, locale = 'he' } = params;
+  console.log(`📤 Sending order status update | userId: ${userId} | orderId: ${orderId} | newStatus: ${newStatus}`);
   let title: string;
   let body: string;
+
   if (locale === 'he') {
-    title = 'עדכון סטטוס הזמנה';
-    body = `הסטטוס של ההזמנה שלך (${orderId.slice(-6)}) עודכן ל: ${newStatus}`;
+    title = 'Order Status Update';
+    body = `The status of your order (${orderId.slice(-6)}) has been updated to: ${newStatus}`;
   } else {
     title = 'Order Status Update';
     body = `Your order (${orderId.slice(-6)}) status changed to: ${newStatus}`;
   }
-  await sendNotificationToUser(userId, {
-    title,
-    body,
-    type: 'order_status_change' as NotificationType,
-  });
-  await NotificationLog.create({
-    userId,
-    type: 'order_status_change',
-    title,
-    body,
-    sentTo: 1,
-    sentAt: new Date(),
-  });
+
+  try {
+    await sendNotificationToUser(userId, {
+      title,
+      body,
+      type: 'order_status_change' as NotificationType,
+    });
+  } catch (error) {
+    console.error('❌ Failed to send order status notification:', error);
+  }
 }
+// Handle order status notification via API
+
+
+export const handleOrderStatusNotification = async (req: Request, res: Response): Promise<void> => {
+  const { userId, orderId, newStatus, locale = 'he' } = req.body;
+
+  if (!userId || !orderId || !newStatus) {
+    res.status(400).json({ error: 'Missing required fields: userId, orderId, or newStatus' });
+    return;
+  }
+
+  try {
+    await sendOrderStatusChangeNotification({ userId, orderId, newStatus, locale });
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('❌ Error in handleOrderStatusNotification:', error);
+    res.status(500).json({ error: 'Failed to send order status notification' });
+  }
+};

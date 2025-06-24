@@ -10,7 +10,7 @@ import PDFDocument from 'pdfkit';
 import Address from '../models/addressModel';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import NotificationToken from '../models/notificationToken';
-import { sendOrderStatusChangeNotification } from '../utils/pushNotifications';
+import { sendOrderStatusChangeNotification } from './notificationController';
 import { notifyAdminOfNewOrder } from '../controllers/notificationController';
 // --- Utility: Send email with attachments ---
 export async function sendEmail({ to, subject, html, attachments }: { to: string; subject: string; html: string; attachments?: any[] }) {
@@ -114,7 +114,6 @@ export const placeOrder = async (
 ): Promise<void> => {
   try {
     const { items, paymentMethod, address, deliveryDate } = req.body;
-    console.log('📨 Full Request Body:', JSON.stringify(req.body, null, 2));
 
     // Get userId from the authenticated user
     const token = req.headers.authorization?.split(' ')[1];
@@ -546,7 +545,7 @@ export const getAllOrders = async (
   res: Response
 ): Promise<void> => {
   try {
-    console.log('🔍 Fetching all orders...');
+
     const orders = await Order.find()
       .populate('user', 'firstName lastName email')
       .populate({
@@ -794,26 +793,14 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
       new: true,
     }).populate('user', '_id email firstName lastName'); // populate user for token lookup
 
-    // --- Push Notification logic and logging ---
-    if (order && order.user && order.user._id) {
-      // Logging user id
-      // @ts-ignore
-      console.log('🧠 order.user._id:', order.user._id);
-      // @ts-ignore
-      const pushToken = await getPushTokenForUser(order.user._id);
-      console.log('📲 טוקן שנמצא:', pushToken);
-      if (pushToken) {
-        await sendOrderStatusChangeNotification(
-          pushToken,
-          order._id.toString(),
-          updateFields.status
-        );
-        console.log('🚀 שלחתי התראה ללקוח על שינוי סטטוס!');
-      } else {
-        console.log('⚠️ אין טוקן ללקוח, לא נשלחה התראה.');
-      }
+    // הוספת שליחת התראה אחרי עדכון סטטוס
+    if (order && updateFields.status) {
+      await sendOrderStatusChangeNotification({
+        userId: order.user._id.toString(),
+        orderId: order._id.toString(),
+        newStatus: order.status,
+      });
     }
-    // --- End Push Notification logic ---
 
     if (!order) {
       res.status(404).json({ error: 'Order not found' });
