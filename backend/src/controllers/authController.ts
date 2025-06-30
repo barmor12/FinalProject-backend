@@ -3,10 +3,12 @@ import express, { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+
+dotenv.config({
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
+});
 import User from '../models/userModel';
 import logger from '../logger';
 import cloudinary from '../config/cloudinary';
@@ -84,9 +86,9 @@ export const googleCallback = async (req: Request, res: Response) => {
           lastName: payload.family_name || 'User',
           profilePic: payload.picture
             ? {
-                url: payload.picture,
-                public_id: `google_${payload.sub}`,
-              }
+              url: payload.picture,
+              public_id: `google_${payload.sub}`,
+            }
             : undefined,
           password: hashedPassword,
           role: 'user',
@@ -142,7 +144,6 @@ export const googleCallback = async (req: Request, res: Response) => {
   }
 };
 
-dotenv.config();
 
 // הגדרת מבנה הטוקן
 interface TokenPayload extends JwtPayload {

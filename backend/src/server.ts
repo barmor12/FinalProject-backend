@@ -2,6 +2,10 @@ import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
+dotenv.config({
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
+});
 import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
@@ -22,7 +26,6 @@ import { notificationsRouter } from './routes/notificationsRoute';
 import './passport';
 import path from 'path';
 
-dotenv.config();
 console.log(
   'Serving static files from:',
   path.join(__dirname, '../src/uploads')
@@ -123,14 +126,19 @@ app.get('/health', async (req, res) => {
 });
 
 // Database Connection
-mongoose
-  .connect(process.env.MONGO_URI!)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('Failed to connect to MongoDB', err));
+if (process.env.NODE_ENV !== 'test') {
+  mongoose
+    .connect(process.env.MONGO_URI!)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch((err) => console.error('Failed to connect to MongoDB', err));
+}
 
 // Create HTTP Server
 const server = http.createServer(app);
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
 export { server, app };

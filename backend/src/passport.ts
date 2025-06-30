@@ -3,8 +3,9 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from './models/userModel'; // ודא שהנתיב נכון
 import dotenv from 'dotenv';
 
-// טוען את משתני הסביבה
-dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
+});
 
 // הגדרת Google OAuth Strategy
 passport.use(

@@ -4,13 +4,16 @@ import User from '../models/userModel';
 import logger from '../logger';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+
+dotenv.config({
+    path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
+});
 import jwt from 'jsonwebtoken';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 
-dotenv.config();
 
 export const getStatistics = async (req: Request, res: Response) => {
     try {
@@ -155,7 +158,7 @@ export const getStatistics = async (req: Request, res: Response) => {
         });
 
 
-        
+
         // עוגות הכי רווחיות
         const cakeStats = deliveredOrders.reduce((acc: any, order) => {
             order.items.forEach((item) => {
@@ -529,31 +532,31 @@ export const generateFinancialReport = async (req: Request, res: Response) => {
 
 export const getTopCakeName = async (req: Request, res: Response) => {
     try {
-      const deliveredOrders = await Order.find({
-        status: { $in: ['delivered', 'confirmed'] }
-      }).populate({
-        path: 'items.cake',
-        select: 'name',
-      });
-
-      const cakeCount: { [cakeName: string]: number } = {};
-
-      deliveredOrders.forEach(order => {
-        order.items.forEach(item => {
-          const cake = item.cake as any;
-          if (!cake || !cake.name) return;
-          cakeCount[cake.name] = (cakeCount[cake.name] || 0) + (item.quantity || 0);
+        const deliveredOrders = await Order.find({
+            status: { $in: ['delivered', 'confirmed'] }
+        }).populate({
+            path: 'items.cake',
+            select: 'name',
         });
-      });
 
-      const topCake = Object.entries(cakeCount).sort((a, b) => b[1] - a[1])[0];
+        const cakeCount: { [cakeName: string]: number } = {};
 
-      res.status(200).json({ name: topCake ? topCake[0] : 'N/A' });
+        deliveredOrders.forEach(order => {
+            order.items.forEach(item => {
+                const cake = item.cake as any;
+                if (!cake || !cake.name) return;
+                cakeCount[cake.name] = (cakeCount[cake.name] || 0) + (item.quantity || 0);
+            });
+        });
+
+        const topCake = Object.entries(cakeCount).sort((a, b) => b[1] - a[1])[0];
+
+        res.status(200).json({ name: topCake ? topCake[0] : 'N/A' });
     } catch (error) {
-      logger.error(`[ERROR] Failed to get top cake: ${error}`);
-      res.status(500).json({ name: 'N/A' });
+        logger.error(`[ERROR] Failed to get top cake: ${error}`);
+        res.status(500).json({ name: 'N/A' });
     }
-  };
+};
 
 export default {
     getStatistics,

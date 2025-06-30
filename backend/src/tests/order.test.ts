@@ -1,12 +1,20 @@
 import request from 'supertest';
-import app from '../testServer';
+import { app } from '../server';
+import { setup, teardown, clearDatabase } from './setup';
 
 describe('Orders Controller - Basic Tests', () => {
-  // Removed port conflict test (EADDRINUSE issue)
-  // it("should respond with 200 on base route (dummy test)", async () => {
-  //   const res = await request(app).get("/api/orders/test-health");
-  //   expect(res.status).toBe(200);
-  // });
+  beforeAll(async () => {
+    await setup();
+  });
+
+  afterEach(async () => {
+    await clearDatabase();
+  });
+
+  afterAll(async () => {
+    await teardown();
+  });
+
   it('should return 404 for a non-existent order', async () => {
     const res = await request(app).get('/api/orders/000000000000000000000000');
     expect(res.status).toBe(404);

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app, server } from '../server'; // ודא שזה הנתיב הנכון לאפליקציית האקספרס שלך
+import { app } from '../server'; // ודא שזה הנתיב הנכון לאפליקציית האקספרס שלך
 
 jest.mock('../models/inventoryModel', () => ({
   find: jest.fn(() => Promise.resolve([{ _id: '123', name: 'Mock Product' }])),
@@ -115,8 +115,4 @@ describe('Inventory Controller', () => {
   //     expect(res.body.error).toBe("Invalid productIds array");
   //   }
   // });
-});
-
-afterAll((done) => {
-  server.close(done);
 });
