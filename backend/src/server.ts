@@ -3,9 +3,7 @@ import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
-});
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
