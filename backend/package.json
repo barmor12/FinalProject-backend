@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "build": "tsc",
     "start": "npm run build && node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch src --ext ts --exec ts-node src/server.ts",
