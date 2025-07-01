@@ -54,5 +54,5 @@ jobs:
             git pull origin main
             npm install
             npm run build
-            pm2 restart Bakey || pm2 start dist/server.js --name Bakey
+            pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js
           EOF
