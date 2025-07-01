@@ -6,9 +6,7 @@ import multer from 'multer';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
-dotenv.config({
-  path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
-});
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 import User from '../models/userModel';
 import logger from '../logger';
 import cloudinary from '../config/cloudinary';
