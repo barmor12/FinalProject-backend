@@ -9,10 +9,7 @@ dist/
 dist/**
 dist/temp/
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+
 
 # IDE and editor files
 .idea/
