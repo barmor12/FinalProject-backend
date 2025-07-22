@@ -43,7 +43,7 @@ export function generateReceiptPDF(order: any) {
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
   let buffers: Buffer[] = [];
   doc.on('data', buffers.push.bind(buffers));
-  doc.on('end', () => {});
+  doc.on('end', () => { });
 
   // Header
   doc.fontSize(24).fillColor('#5A3827').text('Bakey - Payment Receipt', {
@@ -359,7 +359,7 @@ export const getOrdersByDate = async (req: Request, res: Response) => {
 
     const orders = await Order.find({
       deliveryDate: date,
-    }).populate('user', 'firstName lastName email');
+    }).populate('user', 'firstName lastName email phone');
 
     res.json(orders);
     console.log('✅ Orders retrieved:', JSON.stringify(orders, null, 2));
@@ -547,7 +547,7 @@ export const getAllOrders = async (
   try {
 
     const orders = await Order.find()
-      .populate('user', 'firstName lastName email')
+      .populate('user', 'firstName lastName email phone')
       .populate({
         path: 'items.cake',
         select: 'name price image',
@@ -791,7 +791,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 
     const order = await Order.findByIdAndUpdate(orderId, updateFields, {
       new: true,
-    }).populate('user', '_id email firstName lastName'); // populate user for token lookup
+    }).populate('user', '_id email firstName lastName phone'); // populate user for token lookup
 
     // הוספת שליחת התראה אחרי עדכון סטטוס
     if (order && updateFields.status) {
@@ -942,7 +942,7 @@ export const getOrderById = async (req: Request, res: Response) => {
 
     // חיפוש ההזמנה במסד הנתונים
     const order = await Order.findById(orderId)
-      .populate('user', 'firstName lastName email')
+      .populate('user', 'firstName lastName email phone')
       .populate({
         path: 'items.cake',
         select: 'name image',
@@ -988,7 +988,7 @@ export const getUserOrders = async (
     // ✅ שליפת כל ההזמנות של המשתמש
     const orders = await Order.find({ user: userId })
       .sort({ createdAt: -1 }) // מההזמנה האחרונה לישנה ביותר
-      .populate('user', 'firstName lastName email') // טוען מידע בסיסי על המשתמש
+      .populate('user', 'firstName lastName email phone') // טוען מידע בסיסי על המשתמש
       .populate({
         path: 'items.cake',
         select: 'name image price', // שליפת שם, תמונה ומחיר של העוגה
@@ -1054,7 +1054,7 @@ export const getOrdersByMonth = async (req: Request, res: Response) => {
         $lte: endDate,
       },
     })
-      .populate('user', 'firstName lastName email')
+      .populate('user', 'firstName lastName email phone')
       .populate({
         path: 'items.cake',
         select: 'name price image',
