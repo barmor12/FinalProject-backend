@@ -22,12 +22,13 @@ const mockUser = {
   _id: 'user123',
   firstName: 'Test',
   lastName: 'User',
+  phone: '+1234567890',
   profilePic: {
     url: 'http://example.com/old.jpg',
     public_id: 'oldPublicId',
   },
   save: jest.fn().mockResolvedValue(true),
-  toObject: jest.fn().mockReturnValue({ firstName: 'Test', lastName: 'User' }),
+  toObject: jest.fn().mockReturnValue({ firstName: 'Test', lastName: 'User', phone: '+1234567890' }),
 };
 
 export const app = express();
@@ -68,9 +69,9 @@ describe('User Controller Tests', () => {
 
     const res = await request(app)
       .put('/profile/name')
-      .send({ firstName: 'New', lastName: 'Name' });
+      .send({ firstName: 'New', lastName: 'Name', phone: '+1234567890' });
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Name updated successfully');
+    expect(res.body.message).toBe('Profile updated successfully');
   });
 });

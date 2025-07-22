@@ -93,6 +93,7 @@ export const updateUser = async (req: Request, res: Response) => {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
+            phone: user.phone,
             role: user.role,
             // Include other fields as needed, but omit password
         };

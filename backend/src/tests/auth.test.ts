@@ -34,6 +34,7 @@ const mockUser = {
   refresh_tokens: [],
   password: '$2a$10$HashedPass',
   isVerified: true,
+  phone: '+1234567890',
   save: mockSave,
 };
 
@@ -56,7 +57,7 @@ describe('AuthController', () => {
 
       const res = await request(app)
         .post('/auth/google')
-        .send({ id_token: 'valid-token', password: '123456' });
+        .send({ id_token: 'valid-token', password: '123456', phone: '+1234567890' });
 
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty('accessToken');
@@ -119,6 +120,7 @@ describe('AuthController', () => {
         lastName: 'User',
         email: 'test@example.com',
         password: '123',
+        phone: '+1234567890',
       });
       expect(res.statusCode).toBe(400);
       expect(res.body.error).toMatch(/Password must include/);
@@ -131,6 +133,7 @@ describe('AuthController', () => {
         lastName: 'User',
         email: 'test@example.com',
         password: 'Password123!',
+        phone: '+1234567890',
       });
 
       expect(res.statusCode).toBe(409);

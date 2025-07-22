@@ -18,7 +18,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID_IOS);
 
 
 export const googleCallback = async (req: Request, res: Response) => {
-  const { id_token, password } = req.body;
+  const { id_token, password, phone } = req.body;
 
   try {
     const ticket = await client.verifyIdToken({
@@ -89,6 +89,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             }
             : undefined,
           password: hashedPassword,
+          phone: phone || '',
           role: 'user',
           isVerified: true, // Google users are automatically verified
           isPasswordSet: false, // ← כאן מוסיפים
@@ -517,11 +518,11 @@ export const updatePassword = async (req: Request, res: Response) => {
 
 // רישום משתמש חדש
 export const register = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, phone } = req.body;
 
   logger.info(`[INFO] Attempting to register user: ${email}`);
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!firstName || !lastName || !email || !password || !phone) {
     logger.warn('[WARN] Registration failed: Missing fields');
     return sendError(res, 'All fields are required', 400);
   }
@@ -535,6 +536,12 @@ export const register = async (req: Request, res: Response) => {
       'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
       400
     );
+  }
+
+  // Optional: Add phone validation (basic example)
+  const phoneRegex = /^\+?\d{9,15}$/;
+  if (!phoneRegex.test(phone)) {
+    return sendError(res, 'Invalid phone number format', 400);
   }
 
   try {
@@ -585,6 +592,7 @@ export const register = async (req: Request, res: Response) => {
       firstName,
       lastName,
       email,
+      phone,
       password: hashedPassword,
       profilePic,
       role: 'user',

@@ -62,6 +62,7 @@ describe('AdminController - Additional Methods', () => {
         email: 'admin@example.com',
         firstName: 'Admin',
         lastName: 'Test',
+        phone: '+1234567890',
         role: 'admin',
       };
       (User.findByIdAndUpdate as jest.Mock).mockResolvedValue(userMock);
@@ -79,6 +80,7 @@ describe('AdminController - Additional Methods', () => {
           email: userMock.email,
           firstName: userMock.firstName,
           lastName: userMock.lastName,
+          phone: userMock.phone,
           role: userMock.role,
         },
       });

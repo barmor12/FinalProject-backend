@@ -24,20 +24,21 @@ export const updateUserName = async (req: Request, res: Response) => {
       return sendError(res, 'User not found', 404);
     }
 
-    const { firstName, lastName } = req.body;
+    const { firstName, lastName, phone } = req.body;
 
     user.firstName = firstName || user.firstName;
     user.lastName = lastName || user.lastName;
+    if (phone) user.phone = phone;
 
     const updatedUser = await user.save();
 
     res.status(200).json({
-      message: 'Name updated successfully',
+      message: 'Profile updated successfully',
       user: updatedUser,
     });
   } catch (err) {
     console.error('Update name error:', err);
-    sendError(res, 'Failed to update name', 500);
+    sendError(res, 'Failed to update profile', 500);
   }
 };
 

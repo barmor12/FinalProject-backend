@@ -1397,3 +1397,30 @@
 2025-06-30T12:25:14.217Z [ERROR]: [ERROR] All fields are required (Status: 400)
 2025-06-30T12:25:14.219Z [ERROR]: [ERROR] User not found (Status: 404)
 2025-06-30T12:25:14.222Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
+2025-07-22T06:57:34.102Z [INFO]: [INFO] Creating new user from Google login: test@example.com
+2025-07-22T06:57:34.241Z [INFO]: [INFO] New user created from Google login: 687f365eeefbeb403fb66ba5
+2025-07-22T06:57:34.242Z [INFO]: [INFO] Generating tokens for userId: 687f365eeefbeb403fb66ba5, role: user
+2025-07-22T06:57:34.263Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-07-22T06:57:34.308Z [INFO]: [INFO] Attempting to register user: undefined
+2025-07-22T06:57:34.312Z [WARN]: [WARN] Registration failed: Missing fields
+2025-07-22T06:57:34.313Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-07-22T06:57:34.320Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-07-22T06:57:34.321Z [ERROR]: [ERROR] Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. (Status: 400)
+2025-07-22T06:57:34.330Z [INFO]: [INFO] Attempting to register user: test@example.com
+2025-07-22T06:57:34.332Z [WARN]: [WARN] Registration failed: Email test@example.com already exists
+2025-07-22T06:57:34.332Z [ERROR]: [ERROR] User with this email already exists (Status: 409)
+2025-07-22T06:57:34.341Z [INFO]: [INFO] Login attempt for email: undefined
+2025-07-22T06:57:34.343Z [ERROR]: [ERROR] Email and password are required (Status: 400)
+2025-07-22T06:57:34.352Z [INFO]: [INFO] Login attempt for email: notfound@example.com
+2025-07-22T06:57:34.354Z [INFO]: [INFO] User fetched during login: null
+2025-07-22T06:57:34.355Z [ERROR]: [ERROR] Invalid email or password (Status: 400)
+2025-07-22T06:57:34.362Z [INFO]: [INFO] Login attempt for email: test@example.com
+2025-07-22T06:57:34.363Z [INFO]: [INFO] User fetched during login: [object Object]
+2025-07-22T06:57:34.363Z [INFO]: [INFO] Generating tokens for userId: user123, role: user
+2025-07-22T06:57:34.366Z [INFO]: [INFO] Generated tokens for user: test@example.com
+2025-07-22T06:57:34.391Z [ERROR]: [ERROR] Email is required (Status: 400)
+2025-07-22T06:57:34.397Z [ERROR]: [ERROR] User not found (Status: 404)
+2025-07-22T06:57:36.218Z [INFO]: [INFO] Password reset email sent to: test@example.com
+2025-07-22T06:57:36.222Z [ERROR]: [ERROR] All fields are required (Status: 400)
+2025-07-22T06:57:36.226Z [ERROR]: [ERROR] User not found (Status: 404)
+2025-07-22T06:57:36.230Z [ERROR]: [ERROR] Invalid or expired reset code (Status: 400)
